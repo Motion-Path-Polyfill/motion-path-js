@@ -1,5 +1,7 @@
-(function () {
-  window.hello = function () {
-    return 'Hello world!';
-  };
+(function() {
+	window.hello = function (name) {
+		return 'Hello ' + name + '!';
+	};
 })();
+
+
