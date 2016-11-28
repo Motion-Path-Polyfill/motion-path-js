@@ -11,6 +11,8 @@
   "author": "",
   "license": "apache-2",
   "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0",
     "semistandard": "~9.1.0"
   }
 }
