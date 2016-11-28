@@ -1,5 +1,5 @@
 suite("index", function() {
 	test("hello", function() {
-		assert.equal(hello("b"), "Hello a!");
+		assert.equal(hello("a"), "Hello a!");
 	}) 
 })
