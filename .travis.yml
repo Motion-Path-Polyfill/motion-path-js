@@ -4,6 +4,8 @@ install:
   - sudo apt-get install firefox
   - firefox --version
   - npm install
+  - export DISPLAY=:99.0
+  - xvfb start
 language: node_js
 node_js:
   - "6"
