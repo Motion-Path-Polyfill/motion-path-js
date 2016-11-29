@@ -4,9 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npm run lint",
-    "lint": "semistandard src/*.js",
-    "format": "semistandard --fix src/*.js"
+    "test": "npm run lint && karma start --single-run",
+    "watchTests": "karma start",
+    "lint": "semistandard src/*.js test/*.js",
+    "format": "semistandard --fix src/*.js test/*.js"
   },
   "author": "",
   "license": "apache-2",
