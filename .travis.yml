@@ -5,7 +5,7 @@ install:
   - firefox --version
   - npm install
   - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
+  - /etc/init.d/xvfb start
 language: node_js
 node_js:
   - "6"
