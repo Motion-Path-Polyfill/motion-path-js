@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "npm run lint && karma start --single-run",
-    "watchTests": "karma start",
+    "watchTests": "karma start --reporters nyan",
     "lint": "semistandard src/*.js test/*.js",
     "format": "semistandard --fix src/*.js test/*.js"
   },
