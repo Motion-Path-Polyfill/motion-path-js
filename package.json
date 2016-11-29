@@ -6,6 +6,7 @@
   "scripts": {
     "test": "npm run lint && karma start --single-run",
     "watchTests": "karma start --reporters nyan",
+    "build": "uglifyjs src/index.js > index.min.js",
     "lint": "semistandard src/*.js test/*.js",
     "format": "semistandard --fix src/*.js test/*.js"
   },
