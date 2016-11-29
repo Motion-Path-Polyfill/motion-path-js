@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npm run lint && karma start --single-run",
+    "test": "npm run lint && karma start --single-run && npm run build",
     "watchTests": "karma start --reporters nyan",
-    "build": "uglifyjs src/index.js > index.min.js",
+    "build": "uglifyjs src/*.js > index.min.js",
     "lint": "semistandard src/*.js test/*.js",
     "format": "semistandard --fix src/*.js test/*.js"
   },
@@ -20,6 +20,7 @@
     "karma-mocha": "^1.3.0",
     "karma-nyan-reporter": "^0.2.4",
     "mocha": "^3.2.0",
-    "semistandard": "~9.1.0"
+    "semistandard": "~9.1.0",
+    "uglifyjs": "^2.4.10"
   }
 }
