@@ -1,8 +1,5 @@
 /* global suite test chai toTransform */
 
-
-
-
 suite('toTransform', function () {
   test('testTranslate', function () {
   	
