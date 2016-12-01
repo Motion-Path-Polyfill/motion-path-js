@@ -9,6 +9,10 @@
   }
 
   function convertTranslate (values) {
+    if (values === undefined || values === 'none') {
+      return '';
+    }
+
     var valuesArray = values.split(' ');
     var numValues = valuesArray.length;
 
@@ -39,11 +43,8 @@
   }
 
   function toTransform (properties) {
-    var result = '';
-
-    if (properties.translate !== undefined && properties.translate !== 'none') {
-      result += convertTranslate(properties.translate);
-    }
+    var result = [];
+    result.push(convertTranslate(properties.translate));
     return result;
   }
 
