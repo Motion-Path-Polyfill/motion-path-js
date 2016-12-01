@@ -8,23 +8,12 @@
     return !isNaN(number);
   }
 
-  function convertTranslate (properties) {
-    var result = '';
-    if (!(properties.translate !== undefined && properties.translate !== 'none')) {
-      return result;
-    }
-    result += 'translate(';
-
-    var values = properties.translate;
+  function convertTranslate (values) {
     var valuesArray = values.split(' ');
     var numValues = valuesArray.length;
 
     if (numValues > 3) {
       throw new InvalidArgument('Too many values for translate');
-    }
-
-    if (numValues === 1 && valuesArray[0] === '') {
-      throw new InvalidArgument('Empty string is not a valid argument');
     }
 
     for (var i = 0; i < numValues; i++) {
@@ -40,32 +29,24 @@
       }
 
       // Check if characters before 'px' are valid numbers
-      var number = valuesArray[i].substring(0, numValues - 2);
+      var number = valuesArray[i].substring(0, elementLength - 2);
       if (!isNumeric(number)) {
         throw new InvalidArgument('Argument must be a number');
       }
     }
 
-    result += valuesArray.join(', ') + ')';
+    return 'translate(' + valuesArray.join(', ') + ')';
 
-    return result;
   }
 
   /**
   * This function is a WIP.
   */
-  function convertRotate (properties) {
-    var result = '';
-    if (!(properties.rotate !== undefined && properties.rotate !== 'none')) {
-      return result;
-    }
-
+  function convertRotate (values) {
     if (properties.translate !== undefined && properties.translate !== 'none') {
       result += ' ';
     }
-    result += 'rotate(';
 
-    var values = properties.rotate;
     var valuesArray = values.split(' ');
     var numValues = valuesArray.length;
 
@@ -97,30 +78,20 @@
     if (foundUnit === 0) {
       throw new InvalidArgument('Incorrect angle units');
     }
-
-    result += valuesArray.join(', ') + ')';
-
-    return result;
+    
+    return 'rotate(' + valuesArray.join(', ') + ')';
   }
 
   /**
   * This function is a WIP.
   */
-  function convertScale (properties) {
-    var result = '';
-    if (!(properties.scale !== undefined && properties.scale !== 'none')) {
-      return result;
-    }
-
+  function convertScale (scale) {
     if (properties.translate !== undefined && properties.translate !== 'none') {
       result += ' ';
     } else if (properties.rotate !== undefined && properties.rotate !== 'none') {
       result += ' ';
     }
 
-    result += 'scale(';
-
-    var values = properties.scale;
     var valuesArray = values.split(' ');
     var numValues = valuesArray.length;
 
@@ -132,20 +103,28 @@
       throw new InvalidArgument('Empty string is not a valid argument');
     }
 
-    result += valuesArray.join(', ') + ')';
-
-    return result;
+    return 'scale(' + valuesArray.join(', ') + ')';
   }
 
-  window.toTransform = function (properties) {
+  function toTransform (properties) {
     var result = '';
 
-    result += convertTranslate(properties);
-    result += convertRotate(properties); // WIP
-    result += convertScale(properties); // WIP
+    if (properties.translate !== undefined && properties.translate !== 'none') {
+      result += convertTranslate(properties.translate);
+    }
+    //WIP
+    if (properties.rotate !== undefined && properties.rotate !== 'none') {
+      result += convertRotate(properties.rotate);
+    }
+    //WIP
+    if (properties.scale !== undefined && properties.scale !== 'none') {
+      result += convertScale(properties.scale);
+    }
 
     return result;
   };
-
+  
   window.InvalidArgument = InvalidArgument;
+  window.toTransform = toTransform;
+
 })();
