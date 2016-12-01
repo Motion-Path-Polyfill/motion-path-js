@@ -55,10 +55,10 @@
       throw new InvalidArgument('Incorrect number of values for scale');
     }
 
-    if (numValues === 1 && valuesArray[0] === '') {
+/*    if (numValues === 1 && valuesArray[0] === '') {
       throw new InvalidArgument('Empty string is not a valid argument');
     }
-
+*/
     for(var i = 0; i < numValues; i++) {
       if (!isNumeric(valuesArray[i])) {
         throw new InvalidArgument('Argument must be a number');
