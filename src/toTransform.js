@@ -27,22 +27,21 @@
       throw new InvalidArgument('Empty string is not a valid argument');
     }
 
-
     for (var i = 0; i < numValues; i++) {
       var elementLength = valuesArray[i].length;
-      if(elementLength  <= 2) {
+      if (elementLength <= 2) {
         throw new InvalidArgument('Incorrect argument for translate');
       }
 
       // Check if units are px
       var unit = valuesArray[i].substring(elementLength - 2, elementLength);
-      if(unit !== "px") {
+      if (unit !== 'px') {
         throw new InvalidArgument('Incorrect units for translate');
       }
 
       // Check if characters before 'px' are valid numbers
       var number = valuesArray[i].substring(0, numValues - 2);
-      if(!isNumeric(number)) {
+      if (!isNumeric(number)) {
         throw new InvalidArgument('Argument must be a number');
       }
     }
@@ -100,10 +99,9 @@
     }
 
     result += valuesArray.join(', ') + ')';
-  
+
     return result;
   }
-
 
   /**
   * This function is a WIP.
