@@ -6,12 +6,17 @@ suite('toTransform', function () {
       toTransform({translate: ''});
     }, InvalidArgument);
 
-    assert.equal(toTransform({translate: 'none'}), '');
-
     assert.throws(function () {
       toTransform({translate: '20px 30px 27px 90px'});
     }, InvalidArgument);
 
-    assert.equal(toTransform({translate: '20px 30px'}), 'translate(20px, 30px)');
+    assert.throws(function () {
+      toTransform({translate: 'garbage'});
+    }, InvalidArgument);
+
+    assert.equal(toTransform({translate: 'none'}), '');
+    assert.equal(toTransform({translate: '50px'}), 'translate(50px)');     
+    assert.equal(toTransform({translate: '20px 30px'}), 'translate(20px, 30px)');  
+    assert.equal(toTransform({translate: '20px 30px 90px'}), 'translate(20px, 30px, 90px)');  
   });
 });
