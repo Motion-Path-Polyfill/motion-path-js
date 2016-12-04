@@ -45,7 +45,6 @@ suite('toTransform', function () {
       toTransform({rotate: 'threedegrees'});
     }, InvalidArgument);
 
-
     assert.throws(function () {
       toTransform({rotate: '10 hello 20 30deg'});
     }, InvalidArgument);

@@ -87,13 +87,13 @@
     }
 
     if (numValues > 1) {
-      for (var i=0; i<numValues-1; i++) {
+      for (var i = 0; i < numValues - 1; i++) {
         if (!(isNumeric(valuesArray[i]))) {
           throw new InvalidArgument('Axis value must be a number');
         }
       }
     }
-    
+
     return 'rotate(' + valuesArray.join(', ') + ')';
   }
 
@@ -111,9 +111,9 @@
       results.push(conversion);
     }
 
-    return results.join(" ");
+    return results.join(' ');
   }
-  
+
   window.InvalidArgument = InvalidArgument;
   window.toTransform = toTransform;
 })();
