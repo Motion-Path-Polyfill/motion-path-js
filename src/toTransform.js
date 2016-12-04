@@ -42,9 +42,8 @@
     return 'translate(' + valuesArray.join(', ') + ')';
   }
 
-
   function convertScale (values) {
-    if(values === undefined || values == 'none') {
+    if (values === undefined || values === 'none') {
       return null;
     }
 
@@ -55,7 +54,7 @@
       throw new InvalidArgument('Incorrect number of values for scale');
     }
 
-    for(var i = 0; i < numValues; i++) {
+    for (var i = 0; i < numValues; i++) {
       if (!isNumeric(valuesArray[i])) {
         throw new InvalidArgument('Argument must be a number');
       }
@@ -67,17 +66,17 @@
   function toTransform (properties) {
     var results = [];
     var conversion = convertTranslate(properties.translate);
-   
-    if(conversion !== null) {
+
+    if (conversion !== null) {
       results.push(conversion);
     }
 
     conversion = convertScale(properties.scale);
 
-    if(conversion !== null) {
+    if (conversion !== null) {
       results.push(conversion);
     }
-    
+
     return results.join(' ');
   }
 
