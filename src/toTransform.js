@@ -62,32 +62,35 @@
     var angleUnit = valuesArray[numValues - 1];
 
     var foundUnit = 0;
-    var unit = angleUnit.substring(angleUnit.length - 3, angleUnit.length);
+    var unit = angleUnit.substring(angleUnit.length - 4, angleUnit.length);
 
     if (angleUnits.indexOf(unit) !== -1) {
       foundUnit = 1;
     }
 
     if (foundUnit === 0) {
-      unit = angleUnit.substring(angleUnit.length - 4, angleUnit.length);
+      unit = angleUnit.substring(angleUnit.length - 3, angleUnit.length);
       if (angleUnits.indexOf(unit) !== -1) {
         foundUnit = 1;
       }
     }
 
     if (foundUnit === 0) {
-      throw new InvalidArgument('Incorrect angle units');
+      throw new InvalidArgument('Angle units must be one of: deg, grad, rad or turn');
     }
 
-    if (numValues === 1) {
-      var unitLength = unit.length;
-      var number = unit.substring(0, unitLength);
-      if (!(isNumeric(number))) {
-        throw new InvalidArgument('Angle must be a number')
-      }
-    } else {
-      for (var i=0; i<3; i++) {
-        
+    var angleLength = angleUnit.length;
+    var unitLength = unit.length;
+    var number = angleUnit.substring(0, angleLength - unitLength);
+    if (!(isNumeric(number))) {
+      throw new InvalidArgument('Angle given must be a number followed by units');
+    }
+
+    if (numValues > 1) {
+      for (var i=0; i<numValues-1; i++) {
+        if (!(isNumeric(valuesArray[i]))) {
+          throw new InvalidArgument('Axis value must be a number');
+        }
       }
     }
     
@@ -98,18 +101,19 @@
     var results = [];
     var conversion = convertTranslate(properties.translate);
 
-    if (conversion != null) {
+    if (conversion !== null) {
       results.push(conversion);
     }
 
     conversion = convertRotate(properties.rotate);
 
-    if (conversion != null) {
+    if (conversion !== null) {
       results.push(conversion);
     }
 
     return results.join(" ");
   }
+  
   window.InvalidArgument = InvalidArgument;
   window.toTransform = toTransform;
 })();
