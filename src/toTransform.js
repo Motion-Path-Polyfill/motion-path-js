@@ -10,7 +10,7 @@
 
   function convertTranslate (values) {
     if (values === undefined || values === 'none') {
-      return '';
+      return null;
     }
 
     var valuesArray = values.split(' ');
@@ -42,10 +42,42 @@
     return 'translate(' + valuesArray.join(', ') + ')';
   }
 
+  function convertScale (input) {
+    if (input === undefined || input === 'none') {
+      return null;
+    }
+
+    var values = input.split(' ');
+    var numValues = values.length;
+
+    if (numValues < 1 && numValues > 3) {
+      throw new InvalidArgument('Incorrect number of values for scale');
+    }
+
+    for (var i = 0; i < numValues; i++) {
+      if (!isNumeric(values[i])) {
+        throw new InvalidArgument('Argument must be a number');
+      }
+    }
+
+    return 'scale(' + values.join(', ') + ')';
+  }
+
   function toTransform (properties) {
-    var result = [];
-    result.push(convertTranslate(properties.translate));
-    return result;
+    var results = [];
+    var conversion = convertTranslate(properties.translate);
+
+    if (conversion !== null) {
+      results.push(conversion);
+    }
+
+    conversion = convertScale(properties.scale);
+
+    if (conversion !== null) {
+      results.push(conversion);
+    }
+
+    return results.join(' ');
   }
 
   window.InvalidArgument = InvalidArgument;
