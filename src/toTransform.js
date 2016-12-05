@@ -54,21 +54,16 @@
       throw new InvalidArgument('Incorrect number of arguments for rotate');
     }
 
-    if (values === '') {
-      throw new InvalidArgument('Empty string is not a valid argument');
-    }
-
     var angle = values[numValues - 1];
     var angleLength = angle.length;
 
-    var angleUnitArray = /deg|grad|rad|turn/.exec(angle);
+    var angleUnitArray = /deg|grad|rad|turn$/.exec(angle);
 
     if (angleUnitArray === null) {
       throw new InvalidArgument('Angle units must be one of: deg, grad, rad or turn');
-    } else {
-      var unit = angleUnitArray[0];
     }
 
+    var unit = angleUnitArray[0];
     var unitLength = unit.length;
     var number = angle.substring(0, angleLength - unitLength);
     if (!(isNumeric(number))) {
@@ -81,9 +76,10 @@
           throw new InvalidArgument('Axis value must be a number');
         }
       }
+      return 'rotate3d(' + values.join(', ') + ')';
+    } else {
+      return 'rotate(' + values.join(', ') + ')';
     }
-
-    return 'rotate(' + values.join(', ') + ')';
   }
 
   function convertScale (input) {
