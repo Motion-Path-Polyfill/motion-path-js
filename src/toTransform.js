@@ -55,17 +55,14 @@
     }
 
     var angle = values[numValues - 1];
-    var angleLength = angle.length;
-
-    var angleUnitArray = /deg|grad|rad|turn$/.exec(angle);
+    var angleUnitArray = /(deg|grad|rad|turn)$/.exec(angle);
 
     if (angleUnitArray === null) {
       throw new InvalidArgument('Angle units must be one of: deg, grad, rad or turn');
     }
 
     var unit = angleUnitArray[0];
-    var unitLength = unit.length;
-    var number = angle.substring(0, angleLength - unitLength);
+    var number = angle.substring(0, angle.length - unit.length);
     if (!(isNumeric(number))) {
       throw new InvalidArgument('Angle given must be a number followed by units');
     }
@@ -77,9 +74,8 @@
         }
       }
       return 'rotate3d(' + values.join(', ') + ')';
-    } else {
-      return 'rotate(' + values.join(', ') + ')';
     }
+    return 'rotate(' + values.join(', ') + ')';
   }
 
   function convertScale (input) {
