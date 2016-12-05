@@ -42,25 +42,25 @@
     return 'translate(' + valuesArray.join(', ') + ')';
   }
 
-  function convertScale (values) {
-    if (values === undefined || values === 'none') {
+  function convertScale (input) {
+    if (input === undefined || input === 'none') {
       return null;
     }
 
-    var valuesArray = values.split(' ');
-    var numValues = valuesArray.length;
+    var values = input.split(' ');
+    var numValues = values.length;
 
     if (numValues < 1 && numValues > 3) {
       throw new InvalidArgument('Incorrect number of values for scale');
     }
 
     for (var i = 0; i < numValues; i++) {
-      if (!isNumeric(valuesArray[i])) {
+      if (!isNumeric(values[i])) {
         throw new InvalidArgument('Argument must be a number');
       }
     }
 
-    return 'scale(' + valuesArray.join(', ') + ')';
+    return 'scale(' + values.join(', ') + ')';
   }
 
   function toTransform (properties) {
