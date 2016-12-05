@@ -58,7 +58,6 @@
       throw new InvalidArgument('Empty string is not a valid argument');
     }
 
-    var angleUnits = ['deg', 'grad', 'rad', 'turn'];
     var angle = values[numValues - 1];
     var angleLength = angle.length;
 
@@ -89,9 +88,9 @@
 
   function toTransform (properties) {
     return [
-      convertTranslate(properties.translate), 
+      convertTranslate(properties.translate),
       convertRotate(properties.rotate)
-    ].filter(function(result) {
+    ].filter(function (result) {
       return result !== null;
     }).join(' ') || 'none';
   }
