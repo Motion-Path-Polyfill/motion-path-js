@@ -86,10 +86,32 @@
     return 'rotate(' + values.join(', ') + ')';
   }
 
+  function convertScale (input) {
+    if (input === undefined || input === 'none') {
+      return null;
+    }
+
+    var values = input.split(' ');
+    var numValues = values.length;
+
+    if (numValues < 1 && numValues > 3) {
+      throw new InvalidArgument('Incorrect number of values for scale');
+    }
+
+    for (var i = 0; i < numValues; i++) {
+      if (!isNumeric(values[i])) {
+        throw new InvalidArgument('Argument must be a number');
+      }
+    }
+
+    return 'scale(' + values.join(', ') + ')';
+  }
+
   function toTransform (properties) {
     return [
       convertTranslate(properties.translate),
-      convertRotate(properties.rotate)
+      convertRotate(properties.rotate),
+      convertScale(properties.scale)
     ].filter(function (result) {
       return result !== null;
     }).join(' ') || 'none';
