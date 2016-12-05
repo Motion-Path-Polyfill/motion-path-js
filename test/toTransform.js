@@ -18,7 +18,7 @@ suite('toTransform', function () {
       toTransform({translate: 'garbagepx'});
     }, InvalidArgument);
 
-    assert.equal(toTransform({translate: 'none'}), '');
+    assert.equal(toTransform({translate: 'none'}), 'none');
     assert.equal(toTransform({translate: '50px'}), 'translate(50px)');
     assert.equal(toTransform({translate: '20px 30px'}), 'translate(20px, 30px)');
     assert.equal(toTransform({translate: '20px 30px 90px'}), 'translate(20px, 30px, 90px)');
@@ -49,7 +49,11 @@ suite('toTransform', function () {
       toTransform({rotate: '10 hello 20 30deg'});
     }, InvalidArgument);
 
-    assert.equal(toTransform({rotate: 'none'}), '');
+    assert.throws(function () {
+      toTransform({rotate: 'garbagedeg'});
+    }, InvalidArgument);
+
+    assert.equal(toTransform({rotate: 'none'}), 'none');
     assert.equal(toTransform({rotate: '50 10 30 100rad'}), 'rotate(50, 10, 30, 100rad)');
     assert.equal(toTransform({rotate: '360turn'}), 'rotate(360turn)');
     assert.equal(toTransform({rotate: '200deg'}), 'rotate(200deg)');
