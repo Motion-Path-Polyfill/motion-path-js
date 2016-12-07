@@ -7,8 +7,7 @@ function InvalidArgument (message) {
   this.name = 'InvalidArgument';
 }
 
-function parse(input) {
-  console.log(input);
+function parse (input) {
   if (input === undefined || input === 'none') {
     return null;
   }
@@ -28,24 +27,18 @@ function parse(input) {
   for (var j = 0; j < numValues; j++) {
     values[j] = Number(values[j]);
   }
+
   return values;
 }
 
-function merge(start, end) {
-  console.log("Merge Start: "+ start + " End: "  + end);
+function merge (start, end) {
   return {
     start: start,
     end: end,
-    apply: function(input) {
-      var numValues = input.length;
-      console.log(numValues);
-      /*if(numValues === 3) {
-        console.log('scale3d(' + input.join(', ') + ')');
-        return 'scale3d(' + input.join(', ') + ')';
-      }*/
+    apply: function (input) {
       return input.join(' ');
     }
-  }
+  };
 }
 
 WebAnimationsPolyfillExtension.register({
@@ -53,43 +46,33 @@ WebAnimationsPolyfillExtension.register({
   properties: {
     scale: {
       parse: parse,
-      merge: merge,
+      merge: merge
     }
   },
   applyHook: {
-    callback: function(values, style) {
-      //animated transform is values.transform
-      // Getting the values for the scale string
+    callback: function (values, style) {
       var scale = values.scale;
-
       if (scale === undefined) {
         style.transform = values.transform;
         return;
       }
+
       var valuesArray = values.scale.split(/\s+/);
       var numValues = valuesArray.length;
-
-      // Creating the scale string
+      var scaleStr = '';
       if (numValues === 3) {
-        var scaleStr = 'scale3d(' + valuesArray.join(', ') + ')';
+        scaleStr = 'scale3d(' + valuesArray.join(', ') + ')';
       } else {
-        var scaleStr = 'scale(' + valuesArray.join(', ') + ')';
+        scaleStr = 'scale(' + valuesArray.join(', ') + ')';
       }
-      
-      console.log(scaleStr);
-      console.log('transform values: ' + values.transform);
-      console.log('style values before: ' + style.transform);
       style.transform = scaleStr;
-      console.log('style values after: ' + style.transform);
-      /*if (values.transform === '') {
+
+      if (values.transform === '') {
         style.transform = scaleStr;
       } else {
-        style.transform = scaleStr + ' ' + values.transform;
-      }*/
-
+        style.transform = scaleStr + ' '; // + values.transform;
+      }
     },
-    watchedProperties: ['scale', 'transform'],
+    watchedProperties: ['scale', 'transform']
   }
-
 });
-

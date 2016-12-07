@@ -7,9 +7,9 @@ function InvalidArgument (message) {
   this.name = 'InvalidArgument';
 }
 
-function parse(input) {
+function parse (input) {
   if (input === undefined || input === 'none') {
-      return null;
+    return null;
   }
 
   var values = input.split(' ');
@@ -37,9 +37,9 @@ function parse(input) {
       if (!(isNumeric(values[i]))) {
         throw new InvalidArgument('Axis value must be a number');
       }
-    } 
+    }
   }
-  
+
   // numValues - 1 --> because the last values of the array contains unit characters
   for (var i = 0; i < numValues - 1; i++) {
     values[i] = Number(values[i]);
@@ -49,19 +49,19 @@ function parse(input) {
   return values;
 }
 
-function merge(start, end) {
-  console.log("Merge Start: " + start + " End: "  + end);
+function merge (start, end) {
+  console.log('Merge Start: ' + start + ' End: ' + end);
   return {
-    start: start, 
+    start: start,
     end: end,
-    apply: function(input) {
+    apply: function (input) {
       var numValues = input.length;
       if (numValues > 1) {
         return 'rotate3d(' + values.join(', ') + ')';
       }
       return 'rotate(' + values.join(', ') + ')';
     }
-  }
+  };
 }
 
 WebAnimationsPolyfillExtension.register({
@@ -69,11 +69,11 @@ WebAnimationsPolyfillExtension.register({
   properties: {
     rotate: {
       parse: parse,
-      merge: merge,
+      merge: merge
     }
   },
   applyHook: {
-    callback: function(values, style) {
+    callback: function (values, style) {
       var rotate = values.rotate;
       if (rotate == null) {
         style.transform = values.transform;
@@ -81,7 +81,7 @@ WebAnimationsPolyfillExtension.register({
       }
       style.transform = rotate;
     },
-    watchedProperties: ['rotate', 'transform'],
+    watchedProperties: ['rotate', 'transform']
   }
 
 });

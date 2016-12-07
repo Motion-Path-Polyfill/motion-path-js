@@ -96,7 +96,7 @@
       }
     }
 
-    if(numValues === 3) {
+    if (numValues === 3) {
       return 'scale3d(' + values.join(', ') + ')';
     }
     return 'scale(' + values.join(', ') + ')';
