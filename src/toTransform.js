@@ -13,7 +13,7 @@
       return null;
     }
 
-    var values = input.split(' ');
+    var values = input.split(/\s+/);
     var numValues = values.length;
 
     if (numValues > 3) {
@@ -47,7 +47,7 @@
       return null;
     }
 
-    var values = input.split(' ');
+    var values = input.split(/\s+/);
     var numValues = values.length;
 
     if (numValues !== 4 && numValues !== 1) {
@@ -83,10 +83,10 @@
       return null;
     }
 
-    var values = input.split(' ');
+    var values = input.split(/\s+/);
     var numValues = values.length;
 
-    if (numValues < 1 && numValues > 3) {
+    if (numValues < 1 || numValues > 3) {
       throw new InvalidArgument('Incorrect number of values for scale');
     }
 
@@ -96,6 +96,9 @@
       }
     }
 
+    if(numValues === 3) {
+      return 'scale3d(' + values.join(', ') + ')';
+    }
     return 'scale(' + values.join(', ') + ')';
   }
 

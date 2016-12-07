@@ -78,10 +78,11 @@ suite('toTransform', function () {
       toTransform({translate: '2 3 4 5'});
     }, InvalidArgument);
 
+    assert.equal(toTransform({scale: '2 2'}), 'scale(2, 2)');
     assert.equal(toTransform({translate: 'none'}), 'none');
 
     assert.equal(toTransform({scale: '2'}), 'scale(2)');
     assert.equal(toTransform({scale: '2 3'}), 'scale(2, 3)');
-    assert.equal(toTransform({scale: '2 3 4'}), 'scale(2, 3, 4)');
+    assert.equal(toTransform({scale: '2 3 4'}), 'scale3d(2, 3, 4)');
   });
 });

@@ -1,6 +1,15 @@
 <!DOCTYPE html>
-<script src="src/index.js"></script>
+<script src="web-animations-js/web-animations.dev.js"></script>
+<script src="src/scale.js"></script>
 <div id="target"></div>
 <script>
-	target.textContent = hello("User");
+	//target.textContent = hello("User");
+
+  var targetB = document.createElement('div');
+  document.body.appendChild(targetB);
+  
+  var animation = targetB.animate({transform: ['scale(0.5)', 'scale(2.5)']}, 2000);
+  animation.currentTime = 1000;
+  var expected = getComputedStyle(targetB).transform;
+  console.log(expected);
 </script>
