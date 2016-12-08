@@ -29,7 +29,7 @@ function parse (input) {
   }
 
   var unit = angleUnitArray[0];
-  rotationUnit = unit; //global
+  rotationUnit = unit; // global
   var number = angle.substring(0, angle.length - unit.length);
   if (!(isNumeric(number))) {
     throw new InvalidArgument('Angle given must be a number followed by units');
@@ -48,17 +48,14 @@ function parse (input) {
   }
   // Add rotation values without its unit characters
   values[i] = Number(number);
-  console.log('Parse: ' + values);
   return values;
 }
 
 function merge (start, end) {
-  console.log("Merge --> Start: " + start + " End: " + end);
   return {
     start: start,
     end: end,
-    apply: function (input) {
-      console.log("Merge -> return: " +  input.join(' '));
+    serialize: function (input) {
       return input.join(' ') + rotationUnit;
     }
   };
@@ -73,16 +70,13 @@ WebAnimationsPolyfillExtension.register({
     }
   },
   applyHook: {
-    callback: function (values, style) {
-      console.log("values: ", values);
+    callback: function (values) {
       var rotate = values.rotate;
       if (rotate == undefined) {
-        style.transform = values.transform;
-        return;
+        return null;
       }
-      
+
       var valuesArray = rotate.split(/\s+/);
-      console.log('callback -> valuesarray: ' + valuesArray);
       var numValues = valuesArray.length;
       var rotateStr = '';
       if (numValues > 1) {
@@ -90,8 +84,8 @@ WebAnimationsPolyfillExtension.register({
       } else {
         rotateStr = 'rotate(' + valuesArray.join(', ') + ')';
       }
-      
-      style.transform = rotateStr;
+
+      return {transform: rotateStr + ' ' + values.transform};
     },
     watchedProperties: ['rotate', 'transform']
   }
