@@ -1,3 +1,4 @@
+var WebAnimationsPolyfillExtension;
 var rotationUnit;
 
 function isNumeric (number) {

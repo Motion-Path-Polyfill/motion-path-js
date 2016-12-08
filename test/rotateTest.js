@@ -10,11 +10,11 @@ function isAnimationEqual (keyframesA, keyframesB, currentTime) {
 
   var animation = targetA.animate(keyframesA, timing);
   animation.currentTime = currentTime;
-  var result = getComputedStyle(targetA).transform;
+  var result = window.getComputedStyle(targetA).transform;
 
   animation = targetB.animate(keyframesB, timing);
   animation.currentTime = currentTime;
-  var expected = getComputedStyle(targetB).transform;
+  var expected = window.getComputedStyle(targetB).transform;
 
   targetA.parentNode.removeChild(targetA);
   targetB.parentNode.removeChild(targetB);
