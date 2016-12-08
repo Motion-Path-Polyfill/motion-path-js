@@ -53,6 +53,7 @@ WebAnimationsPolyfillExtension.register({
     callback: function (values, style) {
       var scale = values.scale;
       if (scale === undefined) {
+        // To remove this line once changes have been made in the submodule
         style.transform = values.transform;
         return;
       }

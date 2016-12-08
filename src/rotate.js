@@ -1,3 +1,5 @@
+var rotationUnit;
+
 function isNumeric (number) {
   return !isNaN(number);
 }
@@ -12,7 +14,7 @@ function parse (input) {
     return null;
   }
 
-  var values = input.split(' ');
+  var values = input.split(/\s+/);
   var numValues = values.length;
 
   if (numValues !== 4 && numValues !== 1) {
@@ -27,6 +29,7 @@ function parse (input) {
   }
 
   var unit = angleUnitArray[0];
+  rotationUnit = unit; //global
   var number = angle.substring(0, angle.length - unit.length);
   if (!(isNumeric(number))) {
     throw new InvalidArgument('Angle given must be a number followed by units');
@@ -40,26 +43,23 @@ function parse (input) {
     }
   }
 
-  // numValues - 1 --> because the last values of the array contains unit characters
   for (var i = 0; i < numValues - 1; i++) {
     values[i] = Number(values[i]);
   }
+  // Add rotation values without its unit characters
   values[i] = Number(number);
-
+  console.log('Parse: ' + values);
   return values;
 }
 
 function merge (start, end) {
-  console.log('Merge Start: ' + start + ' End: ' + end);
+  console.log("Merge --> Start: " + start + " End: " + end);
   return {
     start: start,
     end: end,
     apply: function (input) {
-      var numValues = input.length;
-      if (numValues > 1) {
-        return 'rotate3d(' + values.join(', ') + ')';
-      }
-      return 'rotate(' + values.join(', ') + ')';
+      console.log("Merge -> return: " +  input.join(' '));
+      return input.join(' ') + rotationUnit;
     }
   };
 }
@@ -74,14 +74,25 @@ WebAnimationsPolyfillExtension.register({
   },
   applyHook: {
     callback: function (values, style) {
+      console.log("values: ", values);
       var rotate = values.rotate;
-      if (rotate == null) {
+      if (rotate == undefined) {
         style.transform = values.transform;
         return;
       }
-      style.transform = rotate;
+      
+      var valuesArray = rotate.split(/\s+/);
+      console.log('callback -> valuesarray: ' + valuesArray);
+      var numValues = valuesArray.length;
+      var rotateStr = '';
+      if (numValues > 1) {
+        rotateStr = 'rotate3d(' + valuesArray.join(', ') + ')';
+      } else {
+        rotateStr = 'rotate(' + valuesArray.join(', ') + ')';
+      }
+      
+      style.transform = rotateStr;
     },
     watchedProperties: ['rotate', 'transform']
   }
-
 });
