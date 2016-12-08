@@ -1,3 +1,5 @@
+var WebAnimationsPolyfillExtension;
+
 function isNumeric (number) {
   return !isNaN(number);
 }
