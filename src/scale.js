@@ -35,7 +35,7 @@ function merge (start, end) {
   return {
     start: start,
     end: end,
-    apply: function (input) {
+    serialize: function (input) {
       return input.join(' ');
     }
   };
@@ -50,12 +50,10 @@ WebAnimationsPolyfillExtension.register({
     }
   },
   applyHook: {
-    callback: function (values, style) {
+    callback: function (values) {
       var scale = values.scale;
       if (scale === undefined) {
-        // To remove this line once changes have been made in the submodule
-        style.transform = values.transform;
-        return;
+        return null;
       }
 
       var valuesArray = values.scale.split(/\s+/);
@@ -66,13 +64,7 @@ WebAnimationsPolyfillExtension.register({
       } else {
         scaleStr = 'scale(' + valuesArray.join(', ') + ')';
       }
-      style.transform = scaleStr;
-
-      if (values.transform === '') {
-        style.transform = scaleStr;
-      } else {
-        style.transform = scaleStr + ' '; // + values.transform;
-      }
+      return {transform: scaleStr + ' ' + values.transform};
     },
     watchedProperties: ['scale', 'transform']
   }
