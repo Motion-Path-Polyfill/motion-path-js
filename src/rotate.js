@@ -43,11 +43,11 @@ function parse (input) {
     }
   }
 
-  for (var i = 0; i < numValues - 1; i++) {
-    values[i] = Number(values[i]);
+  for (var j = 0; j < numValues - 1; j++) {
+    values[j] = Number(values[j]);
   }
   // Add rotation values without its unit characters
-  values[i] = Number(number);
+  values[numValues - 1] = Number(number);
   return values;
 }
 
@@ -72,7 +72,7 @@ WebAnimationsPolyfillExtension.register({
   applyHook: {
     callback: function (values) {
       var rotate = values.rotate;
-      if (rotate == undefined) {
+      if (rotate === undefined) {
         return null;
       }
 
