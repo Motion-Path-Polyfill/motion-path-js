@@ -108,7 +108,7 @@
       convertScale(properties.scale)
     ].filter(function (result) {
       return result !== null;
-    }).join(' ') || 'none';internalScope.toTransform = toTransform;
+    }).join(' ') || 'none'; internalScope.toTransform = toTransform;
   }
 
   internalScope.InvalidArgument = InvalidArgument;
