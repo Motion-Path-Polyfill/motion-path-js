@@ -1,3 +1,5 @@
+/* global internalScope */
+
 (function () {
   function InvalidArgument (message) {
     this.message = message;
@@ -106,7 +108,7 @@
       convertScale(properties.scale)
     ].filter(function (result) {
       return result !== null;
-    }).join(' ') || 'none';
+    }).join(' ') || 'none';internalScope.toTransform = toTransform;
   }
 
   internalScope.InvalidArgument = InvalidArgument;
