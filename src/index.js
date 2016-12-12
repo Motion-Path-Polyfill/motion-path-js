@@ -1,6 +1,4 @@
-(function () {
-  window.hello = function (name) {
-    return 'Hello ' + name + '!';
-  };
-})();
+window.hello = function (name) {
+  return 'Hello ' + name + '!';
+};
 

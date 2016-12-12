@@ -10,8 +10,10 @@ function InvalidArgument (message) {
 }
 
 function parse (input) {
-  if (input === undefined || input === 'none') {
+  if (input === undefined) {
     return null;
+  } else if (input === 'none') {
+    return 'none';
   }
 
   var values = input.split(/\s+/);
@@ -56,12 +58,13 @@ WebAnimationsPolyfillExtension.register({
       var scale = values.scale;
       if (scale === undefined) {
         return null;
+      } else if (scale === 'none') {
+        return {transform: 'scale3d(1 1 1) ' + values.transform};
       }
 
       var valuesArray = values.scale.split(/\s+/);
-      var numValues = valuesArray.length;
       var scaleStr = '';
-      if (numValues === 3) {
+      if (valuesArray.length === 3) {
         scaleStr = 'scale3d(' + valuesArray.join(', ') + ')';
       } else {
         scaleStr = 'scale(' + valuesArray.join(', ') + ')';

@@ -1,7 +1,7 @@
 /* global suite test assert */
 
 function isAnimationEqual (keyframesA, keyframesB, currentTime) {
-  var timing = {duration: 2000, iterations: 5, direction: 'alternate', easing: 'linear'};
+  var timing = {duration: 2000};
   var targetA = document.createElement('div');
   document.body.appendChild(targetA);
 
@@ -24,16 +24,30 @@ function isAnimationEqual (keyframesA, keyframesB, currentTime) {
 
 suite('transforms', function () {
   test('scaleTransform', function () {
+    
     var isEqual = isAnimationEqual({scale: [0.5, 2.5]}, {transform: ['scale(0.5)', 'scale(2.5)']}, 267);
     assert.equal(isEqual, true);
 
-    isEqual = isAnimationEqual({scale: ['', '']}, {transform: ['scale()', 'scale()']}, 1000);
-    assert.equal(isEqual, true);
+    /*isEqual = isAnimationEqual({scale: ['', '']}, {transform: ['scale()', 'scale()']}, 1000);
+    assert.equal(isEqual, true);*/
 
     isEqual = isAnimationEqual({scale: ['9 2', '2 2']}, {transform: ['scale(9, 2)', 'scale(2, 2)']}, 50);
     assert.equal(isEqual, true);
 
     isEqual = isAnimationEqual({scale: ['1 2 3', '3 4 5']}, {transform: ['scale3d(1, 2, 3)', 'scale3d(3, 4, 5)']}, 333);
     assert.equal(isEqual, true);
+
+    isEqual = isAnimationEqual({scale: ['none', '8']}, {transform: ['scale3d(1, 1, 1)', 'scale(8)']}, 333);
+    assert.equal(isEqual, true);
+
+    var errorCaught = false;
+
+    try { 
+      isEqual = isAnimationEqual({scale: ['2', '3 4']}, {transform: ['scale(2)', 'scale(3, 4)']}, 1000);
+    }
+    catch (error) {
+      errorCaught = true;
+    }
+    assert.equal(errorCaught, true);
   });
 });
