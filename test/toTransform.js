@@ -1,8 +1,8 @@
 /* global suite test assert internalScope */
-function() {
+(function () {
   var InvalidArgument = internalScope.InvalidArgument;
   var toTransform = internalScope.toTransform;
-   
+
   suite('toTransform', function () {
     test('convertTranslate', function () {
       assert.throws(function () {
@@ -88,4 +88,4 @@ function() {
       assert.equal(toTransform({scale: '2 3 4'}), 'scale(2, 3, 4)');
     });
   });
-}();
+})();
