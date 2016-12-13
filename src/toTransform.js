@@ -1,3 +1,5 @@
+/* global internalScope */
+
 (function () {
   function InvalidArgument (message) {
     this.message = message;
@@ -109,6 +111,6 @@
     }).join(' ') || 'none';
   }
 
-  window.InvalidArgument = InvalidArgument;
-  window.toTransform = toTransform;
+  internalScope.InvalidArgument = InvalidArgument;
+  internalScope.toTransform = toTransform;
 })();
