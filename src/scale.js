@@ -1,6 +1,7 @@
 /* global WebAnimationsPolyfillExtension internalScope*/
 
 (function () {
+
   function isNumeric (number) {
     return !isNaN(number);
   }
@@ -71,17 +72,20 @@
     },
     applyHook: {
       callback: function (values) {
-        var scale = values.scale;
-        if (scale === undefined) {
+        var toTransform = internalScope.toTransform;
+        //var scale = values.scale;
+        var transformString = toTransform(values);
+        /*if (scale === undefined) {
           return null;
         } else if (scale === 'none') {
-          return {transform: 'scale(1, 1, 1)' + values.transform};
-        }
+          //return {transform: 'scale(1, 1, 1)' + values.transform};
+          tranformSr
+        }*/
 
-        var valuesArray = values.scale.split(/\s+/);
-        var scaleStr = 'scale3d(' + valuesArray.join(', ') + ')';
+        //var valuesArray = values.scale.split(/\s+/);
+        //var scaleStr = 'scale3d(' + valuesArray.join(', ') + ')';
 
-        return {transform: scaleStr + ' ' + values.transform};
+        return {transform: transformString + ' ' + values.transform};
       },
       watchedProperties: ['scale', 'transform']
     }
