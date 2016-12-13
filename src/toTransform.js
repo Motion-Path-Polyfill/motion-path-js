@@ -83,7 +83,7 @@
   function convertScale (input) {
     //console.log('input: ' + input);
     valuesArray = internalScope.scaleParse(input);
-    if (valuesArray === null) {
+    if (valuesArray === null || valuesArray === undefined) {
       return null;
     }
     return 'scale3d(' + valuesArray.join(', ') + ')';

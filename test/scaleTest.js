@@ -17,8 +17,7 @@ function isAnimationEqual (actualKeyframes, expectedKeyframes) {
 
   checkTransformKeyframes(expectedKeyframes.transform);
 
-  for (var i = 0; i < currentTimes.length; i++) {
-    var currentTime = currentTimes[i];
+  for (var currentTime of currentTimes) {
 
     var actualTarget = document.createElement('div');
     document.body.appendChild(actualTarget);
@@ -37,7 +36,7 @@ function isAnimationEqual (actualKeyframes, expectedKeyframes) {
     actualTarget.parentNode.removeChild(actualTarget);
     expectedTarget.parentNode.removeChild(expectedTarget);
 
-    assert.equal(result, expected, 'test failed for scale: ' + actualKeyframes.scale + ' transform: ' + expectedKeyframes.transform);
+    assert.equal(result, expected, 'at currentTime ' + currentTime + ' comparing ' + actualKeyframes + ' with ' + expectedKeyframes);
   }
 }
 

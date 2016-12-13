@@ -30,16 +30,19 @@
     var values = input.split(/\s+/);
     var numValues = values.length;
     if (numValues < 1 || numValues > 3) {
-      throw new InvalidArgument('Incorrect number of values for scale');
+      return undefined;
+      //throw new InvalidArgument('Incorrect number of values for scale');
     }
 
     for (var i = 0; i < numValues; i++) {
       if (values[i] === '') {
-        throw new InvalidArgument('Argument cannot be an empty string');
+        return undefined;
+        //throw new InvalidArgument('Argument cannot be an empty string');
       }
 
       if (!isNumeric(values[i])) {
-        throw new InvalidArgument('Argument must be a number');
+        return undefined;
+        //throw new InvalidArgument('Argument must be a number');
       }
     }
 
