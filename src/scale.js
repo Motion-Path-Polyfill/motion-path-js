@@ -31,18 +31,15 @@
     var numValues = values.length;
     if (numValues < 1 || numValues > 3) {
       return undefined;
-      //throw new InvalidArgument('Incorrect number of values for scale');
     }
 
     for (var i = 0; i < numValues; i++) {
       if (values[i] === '') {
         return undefined;
-        //throw new InvalidArgument('Argument cannot be an empty string');
       }
 
       if (!isNumeric(values[i])) {
         return undefined;
-        //throw new InvalidArgument('Argument must be a number');
       }
     }
 
@@ -76,18 +73,7 @@
     applyHook: {
       callback: function (values) {
         var toTransform = internalScope.toTransform;
-        //var scale = values.scale;
         var transformString = toTransform(values);
-        /*if (scale === undefined) {
-          return null;
-        } else if (scale === 'none') {
-          //return {transform: 'scale(1, 1, 1)' + values.transform};
-          tranformSr
-        }*/
-
-        //var valuesArray = values.scale.split(/\s+/);
-        //var scaleStr = 'scale3d(' + valuesArray.join(', ') + ')';
-
         return {transform: transformString + ' ' + values.transform};
       },
       watchedProperties: ['scale', 'transform']
