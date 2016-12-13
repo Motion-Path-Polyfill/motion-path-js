@@ -1,13 +1,8 @@
-/* global  WebAnimationsPolyfillExtension */
+/* global WebAnimationsPolyfillExtension internalScope*/
 
 (function () {
   function isNumeric (number) {
     return !isNaN(number);
-  }
-
-  function InvalidArgument (message) {
-    this.message = message;
-    this.name = 'InvalidArgument';
   }
 
   function addDefaultAxis (values) {
@@ -19,7 +14,8 @@
     return values;
   }
 
-  function parse (input) {
+  function scaleParse (input) {
+    var InvalidArgument = internalScope.InvalidArgument; 
     /* According to spec:
       https://drafts.csswg.org/css-transforms-2/#propdef-scale
       unspecified scales default to 1
@@ -37,6 +33,10 @@
     }
 
     for (var i = 0; i < numValues; i++) {
+      if (values[i] === '') {
+        throw new InvalidArgument('Argument cannot be an empty string');
+      }
+
       if (!isNumeric(values[i])) {
         throw new InvalidArgument('Argument must be a number');
       }
@@ -65,7 +65,7 @@
     name: 'scale',
     properties: {
       scale: {
-        parse: parse,
+        parse: scaleParse,
         merge: merge
       }
     },
@@ -75,7 +75,7 @@
         if (scale === undefined) {
           return null;
         } else if (scale === 'none') {
-          return {transform: 'scale(1)' + values.transform};
+          return {transform: 'scale(1, 1, 1)' + values.transform};
         }
 
         var valuesArray = values.scale.split(/\s+/);
@@ -86,4 +86,5 @@
       watchedProperties: ['scale', 'transform']
     }
   });
+  internalScope.scaleParse = scaleParse;
 })();

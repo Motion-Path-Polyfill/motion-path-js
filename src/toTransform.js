@@ -10,7 +10,7 @@
     return !isNaN(number);
   }
 
-  function convertTranslate (input) {
+/*  function convertTranslate (input) {
     if (input === undefined || input === 'none') {
       return null;
     }
@@ -79,9 +79,12 @@
     }
     return 'rotate(' + values.join(', ') + ')';
   }
-
+*/  
   function convertScale (input) {
-    if (input === undefined || input === 'none') {
+    valuesArray = internalScope.scaleParse(input);
+    return 'scale3d(' + valuesArray.join(', ') + ')';
+
+/*    if (input === undefined || input === 'none') {
       return null;
     }
 
@@ -98,13 +101,13 @@
       }
     }
 
-    return 'scale(' + values.join(', ') + ')';
+    return 'scale(' + values.join(', ') + ')';*/
   }
 
   function toTransform (properties) {
     return [
-      convertTranslate(properties.translate),
-      convertRotate(properties.rotate),
+      //convertTranslate(properties.translate),
+      //convertRotate(properties.rotate),
       convertScale(properties.scale)
     ].filter(function (result) {
       return result !== null;
