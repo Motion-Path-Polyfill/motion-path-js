@@ -1,6 +1,5 @@
 /* global suite test assert internalScope */
 (function () {
-  var InvalidArgument = internalScope.InvalidArgument;
   var toTransform = internalScope.toTransform;
 
   suite('toTransform', function () {

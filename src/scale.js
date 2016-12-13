@@ -1,7 +1,6 @@
-/* global WebAnimationsPolyfillExtension internalScope*/
+/* global WebAnimationsPolyfillExtension internalScope */
 
 (function () {
-
   function isNumeric (number) {
     return !isNaN(number);
   }
@@ -16,7 +15,6 @@
   }
 
   function scaleParse (input) {
-    var InvalidArgument = internalScope.InvalidArgument; 
     /* According to spec:
       https://drafts.csswg.org/css-transforms-2/#propdef-scale
       unspecified scales default to 1

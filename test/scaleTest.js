@@ -18,7 +18,6 @@ function isAnimationEqual (actualKeyframes, expectedKeyframes) {
   checkTransformKeyframes(expectedKeyframes.transform);
 
   for (var currentTime of currentTimes) {
-
     var actualTarget = document.createElement('div');
     document.body.appendChild(actualTarget);
 
