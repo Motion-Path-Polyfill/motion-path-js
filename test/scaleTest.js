@@ -1,64 +1,52 @@
 /* global suite test assert */
 
-function isAnimationEqual (keyframesA, keyframesB) {
+function checkTransformKeyframes (keyframes) {
+  var target = document.createElement('div');
+
+  for (var value of keyframes) {
+    target.style.transform = '';
+    target.style.transform = value;
+    assert.notEqual(target.style.transform, '',
+      'Invalid expected keyframe: ' + value);
+  }
+}
+
+function isAnimationEqual (actualKeyframes, expectedKeyframes) {
   var timing = {duration: 1};
   var currentTimes = [0.10, 0.25, 0.50, 0.75, 0.90];
-  var testPassed = true;
 
-  for(var i = 0; i < currentTimes.length; i++) {
-    currentTime = currentTimes[i];
+  checkTransformKeyframes(expectedKeyframes.transform);
 
-    var targetA = document.createElement('div');
-    document.body.appendChild(targetA);
+  for (var i = 0; i < currentTimes.length; i++) {
+    var currentTime = currentTimes[i];
 
-    var targetB = document.createElement('div');
-    document.body.appendChild(targetB);
+    var actualTarget = document.createElement('div');
+    document.body.appendChild(actualTarget);
 
-    var animation = targetA.animate(keyframesA, timing);
+    var expectedTarget = document.createElement('div');
+    document.body.appendChild(expectedTarget);
+
+    var animation = actualTarget.animate(actualKeyframes, timing);
     animation.currentTime = currentTime;
-    var result = window.getComputedStyle(targetA).transform;
+    var result = window.getComputedStyle(actualTarget).transform;
 
-    animation = targetB.animate(keyframesB, timing);
+    animation = expectedTarget.animate(expectedKeyframes, timing);
     animation.currentTime = currentTime;
-    var expected = window.getComputedStyle(targetB).transform;
+    var expected = window.getComputedStyle(expectedTarget).transform;
 
-    targetA.parentNode.removeChild(targetA);
-    targetB.parentNode.removeChild(targetB);
-    if (result !== expected) {
-      console.log('test failed for ' + 'scale: ' + keyframesA.scale + ' transform: ' + keyframesB.transform);
-      testPassed = false;
-      return testPassed;
-    }
+    actualTarget.parentNode.removeChild(actualTarget);
+    expectedTarget.parentNode.removeChild(expectedTarget);
+
+    assert.equal(result, expected, 'test failed for scale: ' + actualKeyframes.scale + ' transform: ' + expectedKeyframes.transform);
   }
-  return testPassed;
 }
 
 suite('transforms', function () {
   test('scaleTransform', function () {
-    
-    var isEqual = isAnimationEqual({scale: [0.5, 2.5]}, {transform: ['scale(0.5)', 'scale(2.5)']});
-    assert.equal(isEqual, true);
-
-    /*isEqual = isAnimationEqual({scale: ['', '']}, {transform: ['scale()', 'scale()']}, 1000);
-    assert.equal(isEqual, true);*/
-
-    isEqual = isAnimationEqual({scale: ['9 2', '2 2']}, {transform: ['scale(9, 2)', 'scale(2, 2)']});
-    assert.equal(isEqual, true);
-/*
-    isEqual = isAnimationEqual({scale: ['1 2 3', '3 4 5']}, {transform: ['scale3d(1, 2, 3)', 'scale3d(3, 4, 5)']});
-    assert.equal(isEqual, true);*/
-
-    /*isEqual = isAnimationEqual({scale: ['none', '8']}, {transform: ['scale3d(1, 1, 1)', 'scale(8)']}, 333);
-    assert.equal(isEqual, true);
-*/
-    var errorCaught = false;
-
-    try { 
-      isEqual = isAnimationEqual({scale: ['2', '3 4']}, {transform: ['scale(2)', 'scale(3, 4)']});
-    }
-    catch (error) {
-      errorCaught = true;
-    }
-    assert.equal(errorCaught, true);
+    isAnimationEqual({scale: ['0.5', '2.5']}, {transform: ['scale3d(0.5, 1, 1)', 'scale3d(2.5, 1, 1)']});
+    isAnimationEqual({scale: ['9 2', '2 2']}, {transform: ['scale3d(9, 2, 1)', 'scale3d(2, 2, 1)']});
+    isAnimationEqual({scale: ['1 2 3', '3 4 5']}, {transform: ['scale3d(1, 2, 3)', 'scale3d(3, 4, 5)']});
+    isAnimationEqual({scale: ['none', '8']}, {transform: ['scale3d(1, 1, 1)', 'scale3d(8, 1, 1)']});
+    isAnimationEqual({scale: ['2', '3 4']}, {transform: ['scale3d(2, 1, 1)', 'scale3d(3, 4, 1)']});
   });
 });
