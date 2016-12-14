@@ -5,7 +5,7 @@
     this.message = message;
     this.name = 'InvalidArgument';
   }
- 
+
   function isNumeric (number) {
     return !isNaN(number);
   }
@@ -79,7 +79,6 @@
     }
     return 'rotate(' + values.join(', ') + ')';
   }
-
 
   function convertScale (input) {
     var valuesArray = internalScope.scaleParse(input);
