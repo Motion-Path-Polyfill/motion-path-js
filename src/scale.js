@@ -39,9 +39,6 @@
   }
 
   function merge (start, end) {
-    console.log(start);
-    console.log(end);
-
     return {
       start: start,
       end: end,
@@ -74,7 +71,6 @@
     applyHook: {
       callback: function (values) {
         var transformString = internalScope.toTransform(values);
-        console.log(transformString);
         return {transform: transformString + ' ' + values.transform};
       },
       watchedProperties: ['scale', 'transform']
