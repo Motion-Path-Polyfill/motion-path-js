@@ -4,7 +4,6 @@
   var toTransform = internalScope.toTransform;
 
   suite('toTransform', function () {
-
     test('convertTranslate', function () {
       assert.throws(function () {
         toTransform({translate: ''});
