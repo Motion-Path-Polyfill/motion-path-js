@@ -55,7 +55,7 @@
     } catch (error) {
       if (error.constructor === InvalidArgument) {
         return undefined;
-      } 
+      }
       throw error;
     }
   }

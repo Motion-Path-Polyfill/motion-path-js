@@ -42,7 +42,7 @@ function isAnimationEqual (actualKeyframes, expectedKeyframes) {
 suite('transforms', function () {
   test('scaleTransform', function () {
     var InvalidArgument = internalScope.InvalidArgument;
- 
+
     isAnimationEqual({scale: ['0.5', '2.5']}, {transform: ['scale3d(0.5, 1, 1)', 'scale3d(2.5, 1, 1)']});
     isAnimationEqual({scale: ['9 2', '2 2']}, {transform: ['scale3d(9, 2, 1)', 'scale3d(2, 2, 1)']});
     isAnimationEqual({scale: ['1 2 3', '3 4 5']}, {transform: ['scale3d(1, 2, 3)', 'scale3d(3, 4, 5)']});
@@ -50,11 +50,11 @@ suite('transforms', function () {
     isAnimationEqual({scale: ['2', '3 4']}, {transform: ['scale3d(2, 1, 1)', 'scale3d(3, 4, 1)']});
 
     assert.throws(function () {
-        isAnimationEqual({scale: ['0.5 garbage', '2.5']}, {transform: ['none', 'scale3d(2.5, 1, 1)']});
+      isAnimationEqual({scale: ['0.5 garbage', '2.5']}, {transform: ['none', 'scale3d(2.5, 1, 1)']});
     }, InvalidArgument);
 
     assert.throws(function () {
-        isAnimationEqual({scale: ['1 2 3 4', '2.5']}, {transform: ['none', 'scale3d(2.5, 1, 1)']});
+      isAnimationEqual({scale: ['1 2 3 4', '2.5']}, {transform: ['none', 'scale3d(2.5, 1, 1)']});
     }, InvalidArgument);
   });
 });
