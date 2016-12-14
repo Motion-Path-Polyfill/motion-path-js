@@ -15,6 +15,10 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+      'third_party/web-animations-js/web-animations.dev.js',
+      {pattern: 'third_party/web-animations-js/target-config.js', included: false},
+      {pattern: 'third_party/web-animations-js/target-loader.js', included: false},
+      {pattern: 'third_party/web-animations-js/src/*.js', included: false},
       'tools/internal-scope.js',
       'src/*.js',
       'test/*.js'
