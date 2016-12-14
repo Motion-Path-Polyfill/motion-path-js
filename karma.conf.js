@@ -19,6 +19,7 @@ module.exports = function(config) {
       {pattern: 'third_party/web-animations-js/target-config.js', included: false},
       {pattern: 'third_party/web-animations-js/target-loader.js', included: false},
       {pattern: 'third_party/web-animations-js/src/*.js', included: false},
+      'tools/internal-scope.js',
       'src/*.js',
       'test/*.js'
     ],
