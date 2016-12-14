@@ -69,19 +69,7 @@
     },
     applyHook: {
       callback: function (values) {
-        var toTransform = internalScope.toTransform;
-        //var scale = values.scale;
-        var transformString = toTransform(values);
-        /*if (scale === undefined) {
-          return null;
-        } else if (scale === 'none') {
-          //return {transform: 'scale(1, 1, 1)' + values.transform};
-          tranformSr
-        }*/
-
-        //var valuesArray = values.scale.split(/\s+/);
-        //var scaleStr = 'scale3d(' + valuesArray.join(', ') + ')';
-
+        var transformString = internalScope.toTransform(values);
         return {transform: transformString + ' ' + values.transform};
       },
       watchedProperties: ['scale', 'transform']

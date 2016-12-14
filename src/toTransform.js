@@ -91,8 +91,8 @@
 
   function toTransform (properties) {
     return [
-      // convertTranslate(properties.translate),
-      // convertRotate(properties.rotate),
+      convertTranslate(properties.translate),
+      convertRotate(properties.rotate),
       convertScale(properties.scale)
     ].filter(function (result) {
       return result !== null;
