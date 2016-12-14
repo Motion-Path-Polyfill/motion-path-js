@@ -4,7 +4,7 @@
   var toTransform = internalScope.toTransform;
 
   suite('toTransform', function () {
-/*
+
     test('convertTranslate', function () {
       assert.throws(function () {
         toTransform({translate: ''});
@@ -64,7 +64,7 @@
       assert.equal(toTransform({rotate: '20grad'}), 'rotate(20grad)');
       assert.equal(toTransform({rotate: '164rad'}), 'rotate(164rad)');
     });
-*/
+
     test('convertScale', function () {
       assert.throws(function () {
         toTransform({scale: ''});
