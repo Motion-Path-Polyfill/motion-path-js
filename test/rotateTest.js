@@ -1,4 +1,4 @@
-/* global suite test assert internalScope*/
+/* global suite test assert */
 
 function checkTransformKeyframes (keyframes) {
   var target = document.createElement('div');
@@ -37,15 +37,12 @@ function isAnimationEqual (actualKeyframes, expectedKeyframes) {
     actualTarget.remove();
     expectedTarget.remove();
 
-
     assert.equal(result, expected, 'at currentTime ' + currentTime + ' comparing ' + actualKeyframes + ' with ' + expectedKeyframes);
   }
 }
 
 suite('transforms', function () {
   test('rotateTransform', function () {
-    var InvalidArgument = internalScope.InvalidArgument;
-
     isAnimationEqual({rotate: ['45grad', '50grad']}, {transform: ['rotate(45grad)', 'rotate(50grad)']});
     isAnimationEqual({rotate: ['44.3rad', '66rad']}, {transform: ['rotate(44.3rad)', 'rotate(66rad)']});
     isAnimationEqual({rotate: ['33.8deg', '19deg']}, {transform: ['rotate(33.8deg)', 'rotate(19deg)']});
@@ -54,8 +51,7 @@ suite('transforms', function () {
 
     isAnimationEqual({rotate: ['7 9 20 3 60deg', '2 4 13 8 20deg']}, {transform: ['none', 'none']});
     isAnimationEqual({rotate: ['7 9 20 3 60garbage', '2 4 13 8 20deg']}, {transform: ['none', 'none']});
-    isAnimationEqual({rotate: ['73', '19']}, {transform: ['none', 'none']});    
+    isAnimationEqual({rotate: ['73', '19']}, {transform: ['none', 'none']});
     isAnimationEqual({rotate: ['twentyone 2 3 73pants', '19']}, {transform: ['none', 'none']});
-
   });
 });

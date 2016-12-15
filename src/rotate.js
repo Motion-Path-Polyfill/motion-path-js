@@ -1,6 +1,6 @@
 /* global WebAnimationsPolyfillExtension internalScope */
 
-(function () {  
+(function () {
   function isNumeric (number) {
     return !isNaN(number);
   }

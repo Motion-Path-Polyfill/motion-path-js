@@ -48,8 +48,8 @@
     var valuesArray = internalScope.rotateParse(input);
     if (valuesArray === null || valuesArray === undefined) {
       return null;
-    };
-    
+    }
+
     if (valuesArray.length > 1) {
       return 'rotate3d(' + valuesArray.join(', ') + internalScope.rotationUnit + ')';
     }
