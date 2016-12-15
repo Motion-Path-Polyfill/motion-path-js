@@ -6,7 +6,7 @@
   }
 
   function rotateParse (input) {
-    var InvalidArgument = internalScope.InvalidArgument;
+    //var InvalidArgument = internalScope.InvalidArgument;
     var rotationUnit = '';
 
     /* According to spec:
@@ -24,27 +24,31 @@
     var numValues = values.length;
 
     if (numValues !== 4 && numValues !== 1) {
-      throw new InvalidArgument('Incorrect number of arguments for rotate');
+      //throw new InvalidArgument('Incorrect number of arguments for rotate');
+      return undefined;
     }
 
     var angle = values[numValues - 1];
     var angleUnitArray = /(deg|grad|rad|turn)$/.exec(angle);
 
     if (angleUnitArray === null) {
-      throw new InvalidArgument('Angle units must be one of: deg, grad, rad or turn');
+      //throw new InvalidArgument('Angle units must be one of: deg, grad, rad or turn');
+      return undefined;
     }
 
     var unit = angleUnitArray[0];
     rotationUnit = unit; // global
     var number = angle.substring(0, angle.length - unit.length);
     if (!(isNumeric(number))) {
-      throw new InvalidArgument('Angle given must be a number followed by units');
+      //throw new InvalidArgument('Angle given must be a number followed by units');
+      return undefined;
     }
 
     if (numValues > 1) {
       for (var i = 0; i < numValues - 1; i++) {
         if (!(isNumeric(values[i]))) {
-          throw new InvalidArgument('Axis value must be a number');
+          //throw new InvalidArgument('Axis value must be a number');
+          return undefined;
         }
       }
     }
@@ -68,7 +72,7 @@
     };
   }
 
-  function parseManager (input) {
+/*  function parseManager (input) {
     var InvalidArgument = internalScope.InvalidArgument;
     try {
       return rotateParse(input);
@@ -78,13 +82,13 @@
       }
       throw error;
     }
-  }
+  }*/
 
   WebAnimationsPolyfillExtension.register({
     name: 'rotate',
     properties: {
       rotate: {
-        parse: parseManager,
+        parse: rotateParse,
         merge: merge
       }
     },
