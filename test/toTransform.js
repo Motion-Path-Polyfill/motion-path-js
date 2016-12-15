@@ -56,7 +56,7 @@
         toTransform({rotate: 'garbagedeg'});
       }, InvalidArgument);
 
-      assert.equal(toTransform({rotate: 'none'}), 'none');
+      assert.equal(toTransform({rotate: 'none'}), 'rotate3d(0, 0, 1, 0deg)');
       assert.equal(toTransform({rotate: '50 10 30 100rad'}), 'rotate3d(50, 10, 30, 100rad)');
       assert.equal(toTransform({rotate: '360turn'}), 'rotate(360turn)');
       assert.equal(toTransform({rotate: '200deg'}), 'rotate(200deg)');

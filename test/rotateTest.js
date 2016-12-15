@@ -1,42 +1,69 @@
-/* global suite test assert */
+/* global suite test assert internalScope*/
 
-function isAnimationEqual (keyframesA, keyframesB, currentTime) {
-  var timing = {duration: 2000, iterations: 5, direction: 'alternate', easing: 'linear'};
-  var targetA = document.createElement('div');
-  document.body.appendChild(targetA);
+function checkTransformKeyframes (keyframes) {
+  var target = document.createElement('div');
 
-  var targetB = document.createElement('div');
-  document.body.appendChild(targetB);
+  for (var value of keyframes) {
+    target.style.transform = '';
+    target.style.transform = value;
+    assert.notEqual(target.style.transform, '',
+      'Invalid expected keyframe: ' + value);
+  }
+}
 
-  var animation = targetA.animate(keyframesA, timing);
-  animation.currentTime = currentTime;
-  var result = window.getComputedStyle(targetA).transform;
+function isAnimationEqual (actualKeyframes, expectedKeyframes) {
+  var timing = {duration: 1};
+  var currentTimes = [0.10, 0.25, 0.50, 0.75, 0.90];
 
-  animation = targetB.animate(keyframesB, timing);
-  animation.currentTime = currentTime;
-  var expected = window.getComputedStyle(targetB).transform;
+  checkTransformKeyframes(expectedKeyframes.transform);
 
-  targetA.parentNode.removeChild(targetA);
-  targetB.parentNode.removeChild(targetB);
+  for (var currentTime of currentTimes) {
+    var actualTarget = document.createElement('div');
+    document.body.appendChild(actualTarget);
 
-  return result === expected;
+    var expectedTarget = document.createElement('div');
+    document.body.appendChild(expectedTarget);
+
+    var animation = actualTarget.animate(actualKeyframes, timing);
+    animation.currentTime = currentTime;
+    var result = window.getComputedStyle(actualTarget).transform;
+
+    animation = expectedTarget.animate(expectedKeyframes, timing);
+    animation.currentTime = currentTime;
+    var expected = window.getComputedStyle(expectedTarget).transform;
+
+    actualTarget.remove();
+    expectedTarget.remove();
+
+    assert.equal(result, expected, 'at currentTime ' + currentTime + ' comparing ' + actualKeyframes + ' with ' + expectedKeyframes);
+  }
 }
 
 suite('transforms', function () {
   test('rotateTransform', function () {
-    var isEqual = isAnimationEqual({rotate: ['45grad', '50grad']}, {transform: ['rotate(45grad)', 'rotate(50grad)']}, 666);
-    assert.equal(isEqual, true);
+    var InvalidArgument = internalScope.InvalidArgument;
 
-    isEqual = isAnimationEqual({rotate: ['44.3rad', '66rad']}, {transform: ['rotate(44.3rad)', 'rotate(66rad)']}, 1500);
-    assert.equal(isEqual, true);
+    isAnimationEqual({rotate: ['45grad', '50grad']}, {transform: ['rotate(45grad)', 'rotate(50grad)']});
+    isAnimationEqual({rotate: ['44.3rad', '66rad']}, {transform: ['rotate(44.3rad)', 'rotate(66rad)']});
+    isAnimationEqual({rotate: ['33.8deg', '19deg']}, {transform: ['rotate(33.8deg)', 'rotate(19deg)']});
+    isAnimationEqual({rotate: ['182turn', '199.9turn']}, {transform: ['rotate(182turn)', 'rotate(199.9turn)']});
+    isAnimationEqual({rotate: ['1 9 1 45deg', '1 9 1 45deg']}, {transform: ['rotate3d(1, 9, 1, 45deg)', 'rotate3d(1, 9, 1, 45deg)']});
 
-    isEqual = isAnimationEqual({rotate: ['33.8deg', '19deg']}, {transform: ['rotate(33.8deg)', 'rotate(19deg)']}, 670);
-    assert.equal(isEqual, true);
+    assert.throws(function () {
+      isAnimationEqual({rotate: ['7 9 20 3 60deg', '2 4 13 8 20deg']}, {transform: ['none', 'none']});
+    }, InvalidArgument);
 
-    isEqual = isAnimationEqual({rotate: ['182turn', '199.9turn']}, {transform: ['rotate(182turn)', 'rotate(199.9turn)']}, 1900);
-    assert.equal(isEqual, true);
+    assert.throws(function () {
+      isAnimationEqual({rotate: ['7 9 20 3 60garbage', '2 4 13 8 20deg']}, {transform: ['none', 'none']});
+    }, InvalidArgument);    
 
-    isEqual = isAnimationEqual({rotate: ['1 9 1 45deg', '1 9 1 45deg']}, {transform: ['rotate3d(1, 9, 1, 45deg)', 'rotate3d(1, 9, 1, 45deg)']}, 1480);
-    assert.equal(isEqual, true);
+    assert.throws(function () {
+      isAnimationEqual({rotate: ['73', '19']}, {transform: ['none', 'none']});
+    }, InvalidArgument);    
+
+    assert.throws(function () {
+      isAnimationEqual({rotate: ['twentyone 2 3 73pants', '19']}, {transform: ['none', 'none']});
+    }, InvalidArgument);
+
   });
 });
