@@ -75,13 +75,6 @@
         merge: merge
       }
     },
-    applyHook: {
-      callback: function (values) {
-        var transformString = internalScope.toTransform(values);
-        return {transform: transformString + ' ' + values.transform};
-      },
-      watchedProperties: ['rotate', 'transform']
-    }
   });
   internalScope.rotateParse = rotateParse;
 })();
