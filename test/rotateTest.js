@@ -53,17 +53,9 @@ suite('transforms', function () {
     isAnimationEqual({rotate: ['1 9 1 45deg', '1 9 1 45deg']}, {transform: ['rotate3d(1, 9, 1, 45deg)', 'rotate3d(1, 9, 1, 45deg)']});
 
     isAnimationEqual({rotate: ['7 9 20 3 60deg', '2 4 13 8 20deg']}, {transform: ['none', 'none']});
-
     isAnimationEqual({rotate: ['7 9 20 3 60garbage', '2 4 13 8 20deg']}, {transform: ['none', 'none']});
-   
-
-/*    assert.throws(function () {
-      isAnimationEqual({rotate: ['73', '19']}, {transform: ['none', 'none']});
-    }, InvalidArgument);    
-
-    assert.throws(function () {
-      isAnimationEqual({rotate: ['twentyone 2 3 73pants', '19']}, {transform: ['none', 'none']});
-    }, InvalidArgument);*/
+    isAnimationEqual({rotate: ['73', '19']}, {transform: ['none', 'none']});    
+    isAnimationEqual({rotate: ['twentyone 2 3 73pants', '19']}, {transform: ['none', 'none']});
 
   });
 });
