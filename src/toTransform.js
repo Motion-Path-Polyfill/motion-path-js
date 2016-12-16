@@ -11,7 +11,8 @@
   }
 
   function convertTranslate (input) {
-    if (input === undefined || input === 'none') {
+    console.log("convertTranslate input: " + input);
+/*    if (input === undefined || input === 'none') {
       return null;
     }
 
@@ -41,7 +42,27 @@
       }
     }
 
-    return 'translate(' + values.join(', ') + ')';
+    return 'translate(' + values.join(', ') + ')';*/
+    var valuesArray = internalScope.translateParse(input);
+    console.log("toTransform valuesArray: " + valuesArray);
+    if (valuesArray === null || valuesArray === undefined) {
+      console.log("Parse was null\n");
+      return null;
+    }  
+
+    var unitsArray = internalScope.unitsArray;
+
+    while (unitsArray.length < 3) {
+      unitsArray.push('px'); // Add default value to unspecified axis
+    }
+    console.log(unitsArray);
+    for(var i = 0; i < unitsArray.length; i++) {
+      valuesArray[i] += unitsArray[i];
+    }
+
+    var string = 'translate3d(' + valuesArray.join(', ') + ')'
+    console.log("\ntoTransform final string: " + string + '\n');
+    return string;
   }
 
   function convertRotate (input) {
