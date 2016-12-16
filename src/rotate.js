@@ -16,6 +16,7 @@
       return null;
     } else if (input === 'none') {
       rotationUnit = 'deg'; // using deg as default units when angle is 0
+      internalScope.rotationUnit = rotationUnit;
       return [0, 0, 1, 0];
     }
 
@@ -74,7 +75,7 @@
         parse: rotateParse,
         merge: merge
       }
-    },
+    }
   });
   internalScope.rotateParse = rotateParse;
 })();
