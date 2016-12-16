@@ -45,24 +45,12 @@
     });
 
     test('convertScale', function () {
-/*      assert.throws(function () {
-        toTransform({scale: ''});
-      }, InvalidArgument);
-
-      assert.throws(function () {
-        toTransform({scale: 'a'});
-      }, InvalidArgument);
-
-      assert.throws(function () {
-        toTransform({scale: '2 a'});
-      }, InvalidArgument);
-
-      assert.throws(function () {
-        toTransform({scale: '2 3 4 5'});
-      }, InvalidArgument); */
+      assert.equal(toTransform({scale: ''}), 'none');
+      assert.equal(toTransform({scale: 'a'}), 'none');
+      assert.equal(toTransform({scale: '2 a'}), 'none');
+      assert.equal(toTransform({scale: '2 3 4 5'}), 'none');
 
       assert.equal(toTransform({scale: 'none'}), 'scale3d(1, 1, 1)');
-
       assert.equal(toTransform({scale: '2'}), 'scale3d(2, 1, 1)');
       assert.equal(toTransform({scale: '2 3'}), 'scale3d(2, 3, 1)');
       assert.equal(toTransform({scale: '2 3 4'}), 'scale3d(2, 3, 4)');
