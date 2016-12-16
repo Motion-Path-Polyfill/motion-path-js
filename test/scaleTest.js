@@ -54,6 +54,7 @@
       isAnimationEqual({scale: ['none', '8']}, {transform: ['scale3d(1, 1, 1)', 'scale3d(8, 1, 1)']});
       isAnimationEqual({scale: ['2', '3 4']}, {transform: ['scale3d(2, 1, 1)', 'scale3d(3, 4, 1)']});
       isAnimationEqual({scale: ['1 2 3 4', '3 4']}, {transform: [InvalidTransformValue, 'scale3d(3, 4, 1)']});
+      isAnimationEqual({scale: ['0.5 garbage', '2.5']}, {transform: [InvalidTransformValue, 'scale3d(2.5, 1, 1)']});
     });
   });
 })();
