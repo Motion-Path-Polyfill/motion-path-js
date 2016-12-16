@@ -19,12 +19,14 @@
     var values = input.split(/\s+/);
     var numValues = values.length;
     if (numValues < 1 || numValues > 3) {
-      return undefined;       // Incorrect number of values for scale
+      // Incorrect number of values for scale
+      return undefined;
     }
 
     for (var i = 0; i < numValues; i++) {
       if (values[i] === '' || !isNumeric(values[i])) {
-        return undefined;     // Argument must be a number
+        // Argument must be a number
+        return undefined;
       }
     }
 
@@ -60,7 +62,7 @@
         var transformString = internalScope.toTransform(values);
         return {transform: transformString + ' ' + values.transform};
       },
-      watchedProperties: ['scale', 'rotate', 'transform']
+      watchedProperties: ['scale', 'transform']
     }
   });
   internalScope.scaleParse = scaleParse;
