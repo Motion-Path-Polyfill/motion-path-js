@@ -6,7 +6,6 @@
   }
 
   function scaleParse (input) {
-    var InvalidArgument = internalScope.InvalidArgument;
     /* According to spec:
       https://drafts.csswg.org/css-transforms-2/#propdef-scale
       unspecified scales default to 1
@@ -20,12 +19,12 @@
     var values = input.split(/\s+/);
     var numValues = values.length;
     if (numValues < 1 || numValues > 3) {
-      throw new InvalidArgument('Incorrect number of values for scale');
+      return undefined;       // Incorrect number of values for scale
     }
 
     for (var i = 0; i < numValues; i++) {
       if (values[i] === '' || !isNumeric(values[i])) {
-        throw new InvalidArgument('Argument must be a number');
+        return undefined;     // Argument must be a number
       }
     }
 
@@ -48,23 +47,11 @@
     };
   }
 
-  function parseManager (input) {
-    var InvalidArgument = internalScope.InvalidArgument;
-    try {
-      return scaleParse(input);
-    } catch (error) {
-      if (error.constructor === InvalidArgument) {
-        return undefined;
-      }
-      throw error;
-    }
-  }
-
   WebAnimationsPolyfillExtension.register({
     name: 'scale',
     properties: {
       scale: {
-        parse: parseManager,
+        parse: scaleParse,
         merge: merge
       }
     },
@@ -73,7 +60,7 @@
         var transformString = internalScope.toTransform(values);
         return {transform: transformString + ' ' + values.transform};
       },
-      watchedProperties: ['scale', 'transform']
+      watchedProperties: ['scale', 'rotate', 'transform']
     }
   });
   internalScope.scaleParse = scaleParse;
