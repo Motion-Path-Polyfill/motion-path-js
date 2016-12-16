@@ -41,17 +41,13 @@
       return undefined;      // Angle given must be a number followed by units
     }
 
-    if (numValues > 1) {
-      for (var i = 0; i < numValues - 1; i++) {
-        if (!(isNumeric(values[i]))) {
-          return undefined;          // Axis value isn't a number
-        }
+    for (var i = 0; i < numValues - 1; i++) {
+      if (!(isNumeric(values[i]))) {
+        return undefined;          // Axis value isn't a number
       }
+      values[i] = Number(values[i]);
     }
 
-    for (var j = 0; j < numValues - 1; j++) {
-      values[j] = Number(values[j]);
-    }
     // Add rotation values without its unit characters
     values[numValues - 1] = Number(number);
     internalScope.rotationUnit = rotationUnit;

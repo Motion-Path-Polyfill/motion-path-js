@@ -4,6 +4,7 @@
 
   suite('toTransform', function () {
     test('convertTranslate', function () {
+      // TODO: Alter convertTranslate function to not rely on InvalidArgument
 /*      assert.throws(function () {
         toTransform({translate: ''});
       }, InvalidArgument);
