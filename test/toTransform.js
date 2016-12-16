@@ -65,7 +65,6 @@
     });
 
     test('convertScale', function () {
-
       assert.equal(toTransform({scale: ''}), 'none');
       assert.equal(toTransform({scale: 'a'}), 'none');
       assert.equal(toTransform({scale: '2 a'}), 'none');
