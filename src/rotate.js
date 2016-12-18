@@ -14,8 +14,11 @@
     */
     if (input === undefined) {
       return null;
-    } else if (input === 'none') {
-      rotationUnit = 'deg'; // using deg as default units when angle is 0
+    }
+
+    if (input === 'none') {
+      // using deg as default units when angle is 0
+      rotationUnit = 'deg';
       internalScope.rotationUnit = rotationUnit;
       return [0, 0, 1, 0];
     }
@@ -24,26 +27,30 @@
     var numValues = values.length;
 
     if (numValues !== 4 && numValues !== 1) {
-      return undefined;       // Incorrect number of arguments for rotate
+      // Incorrect number of arguments for rotate
+      return undefined;
     }
 
     var angle = values[numValues - 1];
     var angleUnitArray = /(deg|grad|rad|turn)$/.exec(angle);
 
     if (angleUnitArray === null) {
-      return undefined;      // Angle units isn't one of: deg, grad, rad or turn
+      // Angle units isn't one of: deg, grad, rad or turn
+      return undefined;
     }
 
     var unit = angleUnitArray[0];
     rotationUnit = unit; // global
     var number = angle.substring(0, angle.length - unit.length);
     if (!(isNumeric(number))) {
-      return undefined;      // Angle given must be a number followed by units
+      // Angle given must be a number followed by units
+      return undefined;
     }
 
     for (var i = 0; i < numValues - 1; i++) {
       if (!(isNumeric(values[i]))) {
-        return undefined;          // Axis value isn't a number
+        // Axis value isn't a number
+        return undefined;
       }
       values[i] = Number(values[i]);
     }
@@ -59,6 +66,7 @@
       start: start,
       end: end,
       serialize: function (input) {
+        console.log(input);
         return input.join(' ') + internalScope.rotationUnit;
       }
     };
