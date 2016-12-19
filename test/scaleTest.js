@@ -1,4 +1,4 @@
-/* global suite test assert internalScope */
+/* global suite test internalScope */
 
 (function () {
   var isAnimationEqual = internalScope.isAnimationEqual;
