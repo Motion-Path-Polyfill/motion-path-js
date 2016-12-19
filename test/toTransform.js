@@ -1,11 +1,11 @@
 /* global suite test assert internalScope */
 (function () {
   var toTransform = internalScope.toTransform;
+  var InvalidArgument = internalScope.InvalidArgument;
 
   suite('toTransform', function () {
     test('convertTranslate', function () {
-      // TODO: Alter convertTranslate function to not rely on InvalidArgument
-/*      assert.throws(function () {
+     assert.throws(function () {
         toTransform({translate: ''});
       }, InvalidArgument);
 
@@ -19,7 +19,7 @@
 
       assert.throws(function () {
         toTransform({translate: 'garbagepx'});
-      }, InvalidArgument); */
+      }, InvalidArgument);
 
       assert.equal(toTransform({translate: 'none'}), 'none');
       assert.equal(toTransform({translate: '50px'}), 'translate(50px)');
