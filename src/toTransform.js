@@ -1,26 +1,17 @@
 /* global internalScope */
 
 (function () {
-  function InvalidArgument (message) {
-    this.message = message;
-    this.name = 'InvalidArgument';
-  }
-
-  function isNumeric (number) {
-    return !isNaN(number);
-  }
-
   function convertTranslate (input) {
     var valuesArray = internalScope.translateParse(input);
 
     if (valuesArray === null || valuesArray === undefined) {
       return null;
-    }  
-    
-    var result = valuesArray.map(function(x) {
-          return x + 'px';
-        });
-        
+    }
+
+    var result = valuesArray.map(function (x) {
+      return x + 'px';
+    });
+
     return 'translate3d(' + result.join(', ') + ')';
   }
 
@@ -53,6 +44,5 @@
       return result !== null;
     }).join(' ') || 'none';
   }
-  internalScope.InvalidArgument = InvalidArgument;
   internalScope.toTransform = toTransform;
 })();

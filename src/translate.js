@@ -11,7 +11,7 @@
     } else if (input === 'none') {
       return [0, 0, 0]; // For the default translate3d(0, 0, 0)
     }
-    
+
     var inputValues = input.split(/\s+/);
     var numValues = inputValues.length;
 
@@ -26,10 +26,10 @@
       var elementLength = inputValues[i].length;
 
       // Get the number before the unit characters
-      var numberString = inputValues[i].substring(0 , elementLength - 2);
-      if(!isNumeric(numberString)) {
+      var numberString = inputValues[i].substring(0, elementLength - 2);
+      if (!isNumeric(numberString)) {
         return undefined;
-      }     
+      }
 
       // TODO: Check for units other than px
       var unit = inputValues[i].substring(elementLength - 2, elementLength);
@@ -53,7 +53,7 @@
       start: start,
       end: end,
       serialize: function (valuesArray) {
-        var result = valuesArray.map(function(x) {
+        var result = valuesArray.map(function (x) {
           return x + 'px';
         }).join(' ');
 
@@ -69,7 +69,7 @@
         parse: translateParse,
         merge: merge
       }
-    },
+    }
   });
   internalScope.translateParse = translateParse;
 })();
