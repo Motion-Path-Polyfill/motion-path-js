@@ -1,7 +1,7 @@
 /* global suite test assert internalScope */
 (function () {
-  var InvalidArgument = internalScope.InvalidArgument;
   var toTransform = internalScope.toTransform;
+  var InvalidArgument = internalScope.InvalidArgument;
 
   suite('toTransform', function () {
     test('convertTranslate', function () {
@@ -13,64 +13,35 @@
     });
 
     test('convertRotate', function () {
-      // assert.throws(function () {
-      //   toTransform({rotate: '20 10'});
-      // }, InvalidArgument);
+      assert.equal(toTransform({rotate: '20 10'}), 'none');
+      assert.equal(toTransform({rotate: ''}), 'none');
+      assert.equal(toTransform({rotate: 'garbage'}), 'none');
+      assert.equal(toTransform({rotate: '300degrees'}), 'none');
+      assert.equal(toTransform({rotate: 'threedegrees'}), 'none');
+      assert.equal(toTransform({rotate: '10 hello 20 30deg'}), 'none');
+      assert.equal(toTransform({rotate: 'garbagedeg'}), 'none');
 
-      // assert.throws(function () {
-      //   toTransform({rotate: ''});
-      // }, InvalidArgument);
-
-      // assert.throws(function () {
-      //   toTransform({rotate: 'garbage'});
-      // }, InvalidArgument);
-
-      // assert.throws(function () {
-      //   toTransform({rotate: '300degrees'});
-      // }, InvalidArgument);
-
-      // assert.throws(function () {
-      //   toTransform({rotate: 'threedegrees'});
-      // }, InvalidArgument);
-
-      // assert.throws(function () {
-      //   toTransform({rotate: '10 hello 20 30deg'});
-      // }, InvalidArgument);
-
-      // assert.throws(function () {
-      //   toTransform({rotate: 'garbagedeg'});
-      // }, InvalidArgument);
-
-      // assert.equal(toTransform({rotate: 'none'}), 'none');
-      // assert.equal(toTransform({rotate: '50 10 30 100rad'}), 'rotate3d(50, 10, 30, 100rad)');
-      // assert.equal(toTransform({rotate: '360turn'}), 'rotate(360turn)');
-      // assert.equal(toTransform({rotate: '200deg'}), 'rotate(200deg)');
-      // assert.equal(toTransform({rotate: '20grad'}), 'rotate(20grad)');
-      // assert.equal(toTransform({rotate: '164rad'}), 'rotate(164rad)');
+      assert.equal(toTransform({rotate: 'none'}), 'rotate3d(0, 0, 1, 0deg)');
+      var expectedDeg = 100 * (180 / Math.PI);
+      assert.equal(toTransform({rotate: '50 10 30 100rad'}), 'rotate3d(50, 10, 30, ' + expectedDeg + 'deg)');
+      assert.equal(toTransform({rotate: '15turn'}), 'rotate(5400deg)');
+      assert.equal(toTransform({rotate: '200deg'}), 'rotate(200deg)');
+      assert.equal(toTransform({rotate: '20grad'}), 'rotate(18deg)');
+      expectedDeg = 164 * (180 / Math.PI);
+      assert.equal(toTransform({rotate: '164rad'}), 'rotate(' + expectedDeg + 'deg)');
     });
 
     test('convertScale', function () {
-      /*assert.throws(function () {
-        toTransform({scale: ''});
-      }, InvalidArgument);
+      assert.equal(toTransform({scale: ''}), 'none');
+      assert.equal(toTransform({scale: 'a'}), 'none');
+      assert.equal(toTransform({scale: '2 a'}), 'none');
+      assert.equal(toTransform({scale: '2 3 4 5'}), 'none');
 
-      assert.throws(function () {
-        toTransform({scale: 'a'});
-      }, InvalidArgument);
-
-      assert.throws(function () {
-        toTransform({scale: '2 a'});
-      }, InvalidArgument);
-
-      assert.throws(function () {
-        toTransform({scale: '2 3 4 5'});
-      }, InvalidArgument);
 
       assert.equal(toTransform({scale: 'none'}), 'scale3d(1, 1, 1)');
-
       assert.equal(toTransform({scale: '2'}), 'scale3d(2, 1, 1)');
       assert.equal(toTransform({scale: '2 3'}), 'scale3d(2, 3, 1)');
-      assert.equal(toTransform({scale: '2 3 4'}), 'scale3d(2, 3, 4)');*/
+      assert.equal(toTransform({scale: '2 3 4'}), 'scale3d(2, 3, 4)');
     });
   });
 })();
