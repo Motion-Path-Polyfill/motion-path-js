@@ -5,7 +5,7 @@
 
   suite('toTransform', function () {
     test('convertTranslate', function () {
-     assert.throws(function () {
+      assert.throws(function () {
         toTransform({translate: ''});
       }, InvalidArgument);
 
