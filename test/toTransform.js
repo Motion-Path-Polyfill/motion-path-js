@@ -5,26 +5,11 @@
 
   suite('toTransform', function () {
     test('convertTranslate', function () {
-/*      assert.throws(function () {
-        toTransform({translate: ''});
-      }, InvalidArgument);
-
-      assert.throws(function () {
-        toTransform({translate: '20px 30px 27px 90px'});
-      }, InvalidArgument);
-
-      assert.throws(function () {
-        toTransform({translate: 'garbage'});
-      }, InvalidArgument);
-
-      assert.throws(function () {
-        toTransform({translate: 'garbagepx'});
-      }, InvalidArgument);
-
-      assert.equal(toTransform({translate: 'none'}), 'translate3d(0, 0, 0)');
-      assert.equal(toTransform({translate: '50px'}), 'translate3d(50, 0, 0)');
-      assert.equal(toTransform({translate: '20px 30px'}), 'translate3d(20, 30, 0)');
-      assert.equal(toTransform({translate: '20px 30px 90px'}), 'translate3d(20, 30, 90)');*/
+      assert.equal(toTransform({translate: 'none'}), 'translate3d(0px, 0px, 0px)');
+      assert.equal(toTransform({translate: '0.6px'}), 'translate3d(0.6px, 0px, 0px)');
+      assert.equal(toTransform({translate: '50px'}), 'translate3d(50px, 0px, 0px)');
+      assert.equal(toTransform({translate: '20px 30px'}), 'translate3d(20px, 30px, 0px)');
+      assert.equal(toTransform({translate: '20px 30px 90px'}), 'translate3d(20px, 30px, 90px)');
     });
 
     test('convertRotate', function () {

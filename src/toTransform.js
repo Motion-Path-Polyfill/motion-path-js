@@ -11,58 +11,17 @@
   }
 
   function convertTranslate (input) {
-    console.log("convertTranslate input: " + input);
-/*    if (input === undefined || input === 'none') {
-      return null;
-    }
-
-    var values = input.split(' ');
-    var numValues = values.length;
-
-    if (numValues > 3) {
-      throw new InvalidArgument('Too many values for translate');
-    }
-
-    for (var i = 0; i < numValues; i++) {
-      var elementLength = values[i].length;
-      if (elementLength <= 2) {
-        throw new InvalidArgument('Incorrect argument for translate');
-      }
-
-      // Check if units are px
-      var unit = values[i].substring(elementLength - 2, elementLength);
-      if (unit !== 'px') {
-        throw new InvalidArgument('Incorrect units for translate');
-      }
-
-      // Check if characters before 'px' are valid numbers
-      var number = values[i].substring(0, elementLength - 2);
-      if (!isNumeric(number)) {
-        throw new InvalidArgument('Argument must be a number');
-      }
-    }
-
-    return 'translate(' + values.join(', ') + ')';*/
     var valuesArray = internalScope.translateParse(input);
-    console.log("toTransform valuesArray: " + valuesArray);
+
     if (valuesArray === null || valuesArray === undefined) {
-      console.log("Parse was null\n");
       return null;
     }  
-
-    var unitsArray = internalScope.unitsArray;
-
-    while (unitsArray.length < 3) {
-      unitsArray.push('px'); // Add default value to unspecified axis
-    }
-    console.log(unitsArray);
-    for(var i = 0; i < unitsArray.length; i++) {
-      valuesArray[i] += unitsArray[i];
-    }
-
-    var string = 'translate3d(' + valuesArray.join(', ') + ')'
-    console.log("\ntoTransform final string: " + string + '\n');
-    return string;
+    
+    var result = valuesArray.map(function(x) {
+          return x + 'px';
+        });
+        
+    return 'translate3d(' + result.join(', ') + ')';
   }
 
   function convertRotate (input) {

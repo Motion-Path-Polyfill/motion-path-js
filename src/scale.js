@@ -73,7 +73,7 @@
         var transformString = internalScope.toTransform(values);
         return {transform: transformString + ' ' + values.transform};
       },
-      watchedProperties: ['scale', 'transform']
+      watchedProperties: ['scale', 'translate', 'transform']
     }
   });
   internalScope.scaleParse = scaleParse;
