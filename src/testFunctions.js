@@ -1,4 +1,4 @@
-/* global suite test assert internalScope */
+/* global assert internalScope */
 
 (function () {
   var InvalidTransformValue = {};
