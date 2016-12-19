@@ -49,10 +49,14 @@
 
   suite('transforms', function () {
     test('rotateTransform', function () {
-      isAnimationEqual({rotate: ['45grad', '50grad']}, {transform: ['rotate(45grad)', 'rotate(50grad)']});
-      isAnimationEqual({rotate: ['44.3rad', '66rad']}, {transform: ['rotate(44.3rad)', 'rotate(66rad)']});
+      isAnimationEqual({rotate: ['100grad', '200grad']}, {transform: ['rotate(100grad)', 'rotate(200grad)']});
+
+      // Web animations transform does not support turn, but it should!
+      isAnimationEqual({rotate: ['1turn', '90deg']}, {transform: ['rotate(360deg)', 'rotate(90deg)']});
+
+      isAnimationEqual({rotate: ['1rad', '2rad']}, {transform: ['rotate(1rad)', 'rotate(2rad)']});
       isAnimationEqual({rotate: ['33.8deg', '19deg']}, {transform: ['rotate(33.8deg)', 'rotate(19deg)']});
-      isAnimationEqual({rotate: ['182turn', '199.9turn']}, {transform: ['rotate(182turn)', 'rotate(199.9turn)']});
+      isAnimationEqual({rotate: ['2turn', '4turn']}, {transform: ['rotate(2turn)', 'rotate(4turn)']});
       isAnimationEqual({rotate: ['1 9 1 45deg', '1 9 1 45deg']}, {transform: ['rotate3d(1, 9, 1, 45deg)', 'rotate3d(1, 9, 1, 45deg)']});
 
       isAnimationEqual({rotate: ['7 9 20 3 60deg', '2 4 13 8 20deg']}, {transform: ['none', 'none']});

@@ -37,11 +37,13 @@
       assert.equal(toTransform({rotate: 'garbagedeg'}), 'none');
 
       assert.equal(toTransform({rotate: 'none'}), 'rotate3d(0, 0, 1, 0deg)');
-      assert.equal(toTransform({rotate: '50 10 30 100rad'}), 'rotate3d(50, 10, 30, 100rad)');
-      assert.equal(toTransform({rotate: '360turn'}), 'rotate(360turn)');
+      var expectedDeg = 100 * (180 / Math.PI);
+      assert.equal(toTransform({rotate: '50 10 30 100rad'}), 'rotate3d(50, 10, 30, ' + expectedDeg + 'deg)');
+      assert.equal(toTransform({rotate: '15turn'}), 'rotate(5400deg)');
       assert.equal(toTransform({rotate: '200deg'}), 'rotate(200deg)');
-      assert.equal(toTransform({rotate: '20grad'}), 'rotate(20grad)');
-      assert.equal(toTransform({rotate: '164rad'}), 'rotate(164rad)');
+      assert.equal(toTransform({rotate: '20grad'}), 'rotate(18deg)');
+      expectedDeg = 164 * (180 / Math.PI);
+      assert.equal(toTransform({rotate: '164rad'}), 'rotate(' + expectedDeg + 'deg)');
     });
 
     test('convertScale', function () {

@@ -6,8 +6,6 @@
   }
 
   function rotateParse (input) {
-    var rotationUnit = '';
-
     /* According to spec:
        https://drafts.csswg.org/css-transforms-2/#propdef-rotate
        unspecified rotate axis default to 0 0 1
@@ -17,9 +15,6 @@
     }
 
     if (input === 'none') {
-      // using deg as default units when angle is 0
-      rotationUnit = 'deg';
-      internalScope.rotationUnit = rotationUnit;
       return [0, 0, 1, 0];
     }
 
@@ -40,7 +35,6 @@
     }
 
     var unit = angleUnitArray[0];
-    rotationUnit = unit; // global
     var number = angle.substring(0, angle.length - unit.length);
     if (!(isNumeric(number))) {
       // Angle given must be a number followed by units
@@ -57,7 +51,11 @@
 
     // Add rotation values without its unit characters
     values[numValues - 1] = Number(number);
-    internalScope.rotationUnit = rotationUnit;
+
+    // all units will be converted to degrees
+    var conversion = {turn: 360, grad: 0.9, rad: 180 / Math.PI, deg: 1};
+    values[numValues - 1] = values[numValues - 1] * conversion[unit];
+
     return values;
   }
 
@@ -66,8 +64,7 @@
       start: start,
       end: end,
       serialize: function (input) {
-        console.log(input);
-        return input.join(' ') + internalScope.rotationUnit;
+        return input.join(' ') + 'deg';
       }
     };
   }

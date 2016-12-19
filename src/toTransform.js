@@ -51,9 +51,9 @@
     }
 
     if (valuesArray.length > 1) {
-      return 'rotate3d(' + valuesArray.join(', ') + internalScope.rotationUnit + ')';
+      return 'rotate3d(' + valuesArray.join(', ') + 'deg)';
     }
-    return 'rotate(' + valuesArray.join(', ') + internalScope.rotationUnit + ')';
+    return 'rotate(' + valuesArray.join(', ') + 'deg)';
   }
 
   function convertScale (input) {
