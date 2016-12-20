@@ -42,7 +42,10 @@
     }
 
     while (valuesArray.length < 3) {
-      valuesArray.push(0); // Add default value to unspecified axis
+      // According to spec:
+      // https://drafts.csswg.org/css-transforms-2/#propdef-translate
+      // The default value an unspecified axis is o
+      valuesArray.push(0);
     }
 
     return valuesArray;
