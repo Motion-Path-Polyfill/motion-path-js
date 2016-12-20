@@ -62,7 +62,7 @@
         var transformString = internalScope.toTransform(values);
         return {transform: transformString + ' ' + values.transform};
       },
-      watchedProperties: ['scale', 'rotate', 'transform']
+      watchedProperties: ['scale', 'rotate', 'translate', 'transform']
     }
   });
   internalScope.scaleParse = scaleParse;

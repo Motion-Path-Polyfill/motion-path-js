@@ -1,47 +1,18 @@
 /* global internalScope */
 
 (function () {
-  function InvalidArgument (message) {
-    this.message = message;
-    this.name = 'InvalidArgument';
-  }
-
-  function isNumeric (number) {
-    return !isNaN(number);
-  }
-
   function convertTranslate (input) {
-    if (input === undefined || input === 'none') {
+    var valuesArray = internalScope.translateParse(input);
+
+    if (valuesArray === null || valuesArray === undefined) {
       return null;
     }
 
-    var values = input.split(' ');
-    var numValues = values.length;
+    var result = valuesArray.map(function (x) {
+      return x + 'px';
+    });
 
-    if (numValues > 3) {
-      throw new InvalidArgument('Too many values for translate');
-    }
-
-    for (var i = 0; i < numValues; i++) {
-      var elementLength = values[i].length;
-      if (elementLength <= 2) {
-        throw new InvalidArgument('Incorrect argument for translate');
-      }
-
-      // Check if units are px
-      var unit = values[i].substring(elementLength - 2, elementLength);
-      if (unit !== 'px') {
-        throw new InvalidArgument('Incorrect units for translate');
-      }
-
-      // Check if characters before 'px' are valid numbers
-      var number = values[i].substring(0, elementLength - 2);
-      if (!isNumeric(number)) {
-        throw new InvalidArgument('Argument must be a number');
-      }
-    }
-
-    return 'translate(' + values.join(', ') + ')';
+    return 'translate3d(' + result.join(', ') + ')';
   }
 
   function convertRotate (input) {
@@ -73,6 +44,5 @@
       return result !== null;
     }).join(' ') || 'none';
   }
-  internalScope.InvalidArgument = InvalidArgument;
   internalScope.toTransform = toTransform;
 })();

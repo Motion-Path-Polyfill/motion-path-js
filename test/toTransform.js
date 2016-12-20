@@ -1,30 +1,14 @@
 /* global suite test assert internalScope */
 (function () {
   var toTransform = internalScope.toTransform;
-  var InvalidArgument = internalScope.InvalidArgument;
 
   suite('toTransform', function () {
     test('convertTranslate', function () {
-      assert.throws(function () {
-        toTransform({translate: ''});
-      }, InvalidArgument);
-
-      assert.throws(function () {
-        toTransform({translate: '20px 30px 27px 90px'});
-      }, InvalidArgument);
-
-      assert.throws(function () {
-        toTransform({translate: 'garbage'});
-      }, InvalidArgument);
-
-      assert.throws(function () {
-        toTransform({translate: 'garbagepx'});
-      }, InvalidArgument);
-
-      assert.equal(toTransform({translate: 'none'}), 'none');
-      assert.equal(toTransform({translate: '50px'}), 'translate(50px)');
-      assert.equal(toTransform({translate: '20px 30px'}), 'translate(20px, 30px)');
-      assert.equal(toTransform({translate: '20px 30px 90px'}), 'translate(20px, 30px, 90px)');
+      assert.equal(toTransform({translate: 'none'}), 'translate3d(0px, 0px, 0px)');
+      assert.equal(toTransform({translate: '0.6px'}), 'translate3d(0.6px, 0px, 0px)');
+      assert.equal(toTransform({translate: '50px'}), 'translate3d(50px, 0px, 0px)');
+      assert.equal(toTransform({translate: '20px 30px'}), 'translate3d(20px, 30px, 0px)');
+      assert.equal(toTransform({translate: '20px 30px 90px'}), 'translate3d(20px, 30px, 90px)');
     });
 
     test('convertRotate', function () {
