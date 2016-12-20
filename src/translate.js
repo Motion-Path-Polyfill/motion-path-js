@@ -7,6 +7,7 @@
 
   function translateParse (input) {
     if (input === undefined) {
+      // TODO: move handling of undefined to toTransform as that's where it is expected
       return null;
     } else if (input === 'none') {
       return [0, 0, 0]; // For the default translate3d(0, 0, 0)
@@ -51,7 +52,7 @@
     return valuesArray;
   }
 
-  function merge (start, end) {
+  function translateMerge (start, end) {
     return {
       start: start,
       end: end,
@@ -65,14 +66,6 @@
     };
   }
 
-  WebAnimationsPolyfillExtension.register({
-    name: 'translate',
-    properties: {
-      translate: {
-        parse: translateParse,
-        merge: merge
-      }
-    }
-  });
   internalScope.translateParse = translateParse;
+  internalScope.translateMerge = translateMerge;
 })();
