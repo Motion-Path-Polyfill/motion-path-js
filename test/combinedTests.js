@@ -3,7 +3,6 @@
 suite('transforms', function () {
   test('transform', function () {
     var isAnimationEqual = internalScope.isAnimationEqual;
-    var InvalidTransformValue = internalScope.InvalidTransformValue;
 
     isAnimationEqual({translate: ['20px 30px', '20px'], rotate: ['40deg', '80deg']}, {transform: ['translate3d(20px, 30px, 0px) rotate(40deg)', 'translate3d(20px, 0px, 0px) rotate(80deg)']});
     isAnimationEqual({translate: ['20px 30px', '20px'], rotate: ['1rad', '2rad']}, {transform: ['translate3d(20px, 30px, 0px) rotate(1rad)', 'translate3d(20px, 0px, 0px) rotate(2rad)']});
