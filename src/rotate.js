@@ -1,4 +1,4 @@
-/* global WebAnimationsPolyfillExtension internalScope */
+/* global internalScope */
 
 (function () {
   function isNumeric (number) {
@@ -59,7 +59,7 @@
     return values;
   }
 
-  function merge (start, end) {
+  function rotateMerge (start, end) {
     return {
       start: start,
       end: end,
@@ -69,14 +69,6 @@
     };
   }
 
-  WebAnimationsPolyfillExtension.register({
-    name: 'rotate',
-    properties: {
-      rotate: {
-        parse: rotateParse,
-        merge: merge
-      }
-    }
-  });
   internalScope.rotateParse = rotateParse;
+  internalScope.rotateMerge = rotateMerge;
 })();
