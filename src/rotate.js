@@ -59,7 +59,7 @@
     return values;
   }
 
-  function rotateMerge (start, end) {
+  function merge (start, end) {
     return {
       start: start,
       end: end,
@@ -69,6 +69,14 @@
     };
   }
 
+  WebAnimationsPolyfillExtension.register({
+    name: 'rotate',
+    properties: {
+      rotate: {
+        parse: rotateParse,
+        merge: merge
+      }
+    }
+  });
   internalScope.rotateParse = rotateParse;
-  internalScope.rotateMerge = rotateMerge;
 })();

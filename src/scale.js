@@ -39,7 +39,7 @@
     return values;
   }
 
-  function scaleMerge (start, end) {
+  function merge (start, end) {
     return {
       start: start,
       end: end,
@@ -49,6 +49,21 @@
     };
   }
 
+  WebAnimationsPolyfillExtension.register({
+    name: 'scale',
+    properties: {
+      scale: {
+        parse: scaleParse,
+        merge: merge
+      }
+    },
+    applyHook: {
+      callback: function (values) {
+        var transformString = internalScope.toTransform(values);
+        return {transform: transformString + ' ' + values.transform};
+      },
+      watchedProperties: ['scale', 'rotate', 'translate', 'transform']
+    }
+  });
   internalScope.scaleParse = scaleParse;
-  internalScope.scaleMerge = scaleMerge;
 })();
