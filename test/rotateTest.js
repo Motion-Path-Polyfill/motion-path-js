@@ -5,9 +5,20 @@
     test('rotateTransform', function () {
       var isAnimationEqual = internalScope.isAnimationEqual;
       var InvalidTransformValue = internalScope.InvalidTransformValue;
+      var assertInterpolation = internalScope.assertInterpolation;
+
+      assertInterpolation({
+        property: 'rotate',
+        from: '100deg',
+        to: '-100deg'
+      }, [
+        {at: 0, is: '100deg'},
+        {at: 0.25, is: '50deg'},
+        {at: 0.75, is: '-50deg'},
+        {at: 1, is: '-100deg'}
+      ]);
 
       isAnimationEqual({rotate: ['100grad', '200grad']}, {transform: ['rotate(100grad)', 'rotate(200grad)']});
-
       // Web animations transform does not support turn, but it should!
       isAnimationEqual({rotate: ['1turn', '90deg']}, {transform: ['rotate(360deg)', 'rotate(90deg)']});
 

@@ -46,7 +46,36 @@
       assert.equal(result, expected, 'at currentTime ' + currentTime + ' comparing ' + JSON.stringify(actualKeyframes) + ' with ' + JSON.stringify(expectedKeyframes));
     }
   }
+
+  function assertInterpolation (transformation, expectation) {
+    var target = document.createElement('div');
+
+    for (var {at, is} of expectation) {
+      var timing = {duration: 1, fill: 'forwards'};
+
+      assert.equal((at > 1 || at < 0), false, "Invalid value for 'at'");
+
+      var animation;
+      if (transformation.property === 'translate') {
+        animation = target.animate({translate: [transformation.from, transformation.to]}, timing);
+      } else if (transformation.property === 'rotate') {
+        animation = target.animate({rotate: [transformation.from, transformation.to]}, timing);
+      } else if (transformation.property === 'scale') {
+        animation = target.animate({scale: [transformation.from, transformation.to]}, timing);
+      }
+
+      animation.currentTime = at;
+      var result = target.style._getAnimated(transformation.property);
+
+      animation.cancel();
+
+      assert.equal(result, is, 'For: ' + JSON.stringify(transformation) + ' at: ' + at + '\n');
+    }
+  }
+
   internalScope.isAnimationEqual = isAnimationEqual;
   internalScope.checkTransformKeyframes = checkTransformKeyframes;
   internalScope.InvalidTransformValue = InvalidTransformValue;
+  internalScope.assertInterpolation = assertInterpolation;
 })();
+
