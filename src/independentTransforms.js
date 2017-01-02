@@ -15,6 +15,10 @@
       rotate: {
         parse: internalScope.rotateParse,
         merge: internalScope.rotateMerge
+      },
+      offsetDistance: {
+        parse: internalScope.offsetDistanceParse,
+        merge: internalScope.offsetDistanceMerge
       }
     },
     applyHook: {
@@ -22,7 +26,7 @@
         var transformString = internalScope.toTransform(values);
         return {transform: transformString + ' ' + values.transform};
       },
-      watchedProperties: ['scale', 'rotate', 'translate', 'transform']
+      watchedProperties: ['scale', 'rotate', 'translate', 'transform', 'offset-distance']
     }
   });
 })();
