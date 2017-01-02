@@ -56,9 +56,8 @@
       assert.equal((at > 1 || at < 0), false, "Invalid value for 'at'");
 
       var animation;
-      var keyframes = {};
 
-      keyframes[transformation.property] = [transformation.from, transformation.to];
+      var keyframes = {[transformation.property]: [transformation.from, transformation.to]};
       animation = target.animate(keyframes, timing);
 
       animation.currentTime = at;
