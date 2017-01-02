@@ -56,17 +56,12 @@
       assert.equal((at > 1 || at < 0), false, "Invalid value for 'at'");
 
       var animation;
-      if (transformation.property === 'translate') {
-        animation = target.animate({translate: [transformation.from, transformation.to]}, timing);
-      } else if (transformation.property === 'rotate') {
-        animation = target.animate({rotate: [transformation.from, transformation.to]}, timing);
-      } else if (transformation.property === 'scale') {
-        animation = target.animate({scale: [transformation.from, transformation.to]}, timing);
-      }
+
+      var keyframes = {[transformation.property]: [transformation.from, transformation.to]};
+      animation = target.animate(keyframes, timing);
 
       animation.currentTime = at;
       var result = target.style._getAnimated(transformation.property);
-
       animation.cancel();
 
       assert.equal(result, is, 'For: ' + JSON.stringify(transformation) + ' at: ' + at + '\n');
