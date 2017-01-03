@@ -12,7 +12,7 @@
        Will return a number when units is px and a number array if units is %.
     */
     if (input === undefined) {
-      return 0;
+      return {value: 0, unit: 'px'};
     }
 
     var distance = 0;
@@ -21,43 +21,45 @@
       distance = input.substring(0, input.length - 1);
       if (!(isNumeric(distance))) {
         // distance must be a number
-        return 0;
+        return {value: 0, unit: 'px'};
       }
-      return [Number(distance)];
+      return {value: Number(distance), unit: '%'};
     }
 
     distance = input.substring(0, input.length - 2);
 
     if (!input.endsWith('px') || !(isNumeric(distance))) {
       // unit must be one of px or % and distance must be a number
-      return 0;
+      return {value: 0, unit: 'px'};
     }
-    return Number(distance);
+    return {value: Number(distance), unit: 'px'};
+  }
+
+  function flip(start, end) {
+    return {
+      start: true,
+      end: false,
+      serialize: function (input) {
+        if (input) {
+          return start.value + start.unit;
+        }
+        return end.value + end.unit;
+      }
+    };
   }
 
   function offsetDistanceMerge (start, end) {
     function serialize (input) {
-      if (typeof input === 'number') {
-        return input + 'px';
-      }
-      return input[0] + '%';
+      return input + start.unit;
     }
 
-    if (typeof start !== typeof end) {
-      return {
-        start: true,
-        end: false,
-        serialize: function (input) {
-          if (input) {
-            return serialize(start);
-          }
-          return serialize(end);
-        }
-      };
+    if (start.unit != end.unit) {
+      return flip(start, end);
     }
+
     return {
-      start: start,
-      end: end,
+      start: start.value,
+      end: end.value,
       serialize: serialize
     };
   }
