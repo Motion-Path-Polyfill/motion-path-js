@@ -1,9 +1,7 @@
 /* global internalScope */
 
 (function () {
-  function isNumeric (number) {
-    return !isNaN(number);
-  }
+  var isNumeric = internalScope.isNumeric;
 
   function offsetDistanceParse (input) {
     /* According to spec:
@@ -35,26 +33,13 @@
     return {value: Number(distance), unit: 'px'};
   }
 
-  function flip(start, end) {
-    return {
-      start: true,
-      end: false,
-      serialize: function (input) {
-        if (input) {
-          return start.value + start.unit;
-        }
-        return end.value + end.unit;
-      }
-    };
-  }
-
   function offsetDistanceMerge (start, end) {
     function serialize (input) {
       return input + start.unit;
     }
 
-    if (start.unit != end.unit) {
-      return flip(start, end);
+    if (start.unit !== end.unit) {
+      return internalScope.flip(start, end);
     }
 
     return {

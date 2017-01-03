@@ -1,3 +1,4 @@
+src/helpers.js
 src/rotate.js
 src/scale.js
 src/translate.js
