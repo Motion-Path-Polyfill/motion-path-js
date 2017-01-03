@@ -17,7 +17,7 @@
 
     var distance = 0;
 
-    if (input.charAt(input.length - 1) === '%') {
+    if (input.endsWith('%')) {
       distance = input.substring(0, input.length - 1);
       if (!(isNumeric(distance))) {
         // distance must be a number
@@ -26,11 +26,9 @@
       return [Number(distance)];
     }
 
-    // see if unit is px
-    var unit = input.substring(input.length - 2, input.length);
     distance = input.substring(0, input.length - 2);
 
-    if (unit !== 'px' || !(isNumeric(distance))) {
+    if (!input.endsWith('px') || !(isNumeric(distance))) {
       // unit must be one of px or % and distance must be a number
       return 0;
     }
