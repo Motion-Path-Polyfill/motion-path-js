@@ -1,16 +1,19 @@
 /* global internalScope */
 
+
+
 (function () {
   function isNumeric (number) {
     return !isNaN(number);
   }
 
   function offsetDistanceParse (input) {
-    /* According to spec:
+        /* According to spec:
        https://drafts.fxtf.org/motion-1/#offset-distance-property
        initial value is 0 so will return 0 on undefined.
        Will return a number when units is px and a number array if units is %.
     */
+    console.log('offsetDistanceParse input ' + input);
     if (input === undefined) {
       return 0;
     }
@@ -23,7 +26,8 @@
         // distance must be a number
         return 0;
       }
-      return [distance];
+      console.log([Number(distance)]);
+      return [Number(distance)];
     }
 
     // see if unit is px
@@ -34,19 +38,35 @@
       // unit must be one of px or % and distance must be a number
       return 0;
     }
-    return distance;
+    console.log(Number(distance));
+    return Number(distance);
   }
 
   function offsetDistanceMerge (start, end) {
-    return {
-      start: start,
-      end: end,
-      serialize: function (input) {
+      function serialize(input) {
+        console.log('Merge input: ' + input);
         if (typeof input === 'number') {
             return input + 'px'; 
         }
-        return input + '%';
+        return input[0] + '%';
       }
+
+
+    if (typeof start !== typeof end) {
+      return {
+        start: true,
+        end: false,
+        serialize: function (input) {
+          if (input)
+            return serialize(start);
+          return serialize(end);
+        }
+      };
+    }
+    return {
+      start: start,
+      end: end,
+      serialize: serialize
     };
   }
 
