@@ -19,15 +19,17 @@
       'offset-rotate': {
         parse: internalScope.offsetRotateParse,
         merge: internalScope.offsetRotateMerge
+
+      'offset-distance': {
+        parse: internalScope.offsetDistanceParse,
+        merge: internalScope.offsetDistanceMerge
       }
     },
     applyHook: {
       callback: function (values) {
-        // console.log("The callback");
         var transformString = internalScope.toTransform(values);
         return {transform: transformString + ' ' + values.transform};
       },
-      // Need to check if the offset-rotate is kebab case or camel case!
       watchedProperties: ['scale', 'rotate', 'translate', 'transform', 'offset-rotate']
     }
   });
