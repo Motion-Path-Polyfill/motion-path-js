@@ -23,7 +23,6 @@
         // distance must be a number
         return 0;
       }
-
       return [Number(distance)];
     }
 
@@ -35,7 +34,6 @@
       // unit must be one of px or % and distance must be a number
       return 0;
     }
-
     return Number(distance);
   }
 
