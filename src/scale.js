@@ -1,9 +1,7 @@
 /* global internalScope */
 
 (function () {
-  function isNumeric (number) {
-    return !isNaN(number);
-  }
+  var isNumeric = internalScope.isNumeric;
 
   function scaleParse (input) {
     /* According to spec:

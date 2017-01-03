@@ -1,9 +1,7 @@
 /* global internalScope */
 
 (function () {
-  function isNumeric (number) {
-    return !isNaN(number);
-  }
+  var isNumeric = internalScope.isNumeric;
 
   function translateParse (input) {
     if (input === undefined) {

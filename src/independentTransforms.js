@@ -15,6 +15,10 @@
       rotate: {
         parse: internalScope.rotateParse,
         merge: internalScope.rotateMerge
+      },
+      'offset-distance': {
+        parse: internalScope.offsetDistanceParse,
+        merge: internalScope.offsetDistanceMerge
       }
     },
     applyHook: {
