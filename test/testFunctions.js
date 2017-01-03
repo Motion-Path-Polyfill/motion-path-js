@@ -63,7 +63,7 @@
       animation.currentTime = at;
       var result = target.style._getAnimated(transformation.property);
       animation.cancel();
-      
+
       assert.equal(result, is, 'For: ' + JSON.stringify(transformation) + ' at: ' + at + '\n');
     }
   }
