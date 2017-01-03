@@ -62,13 +62,14 @@
         animation = target.animate({rotate: [transformation.from, transformation.to]}, timing);
       } else if (transformation.property === 'scale') {
         animation = target.animate({scale: [transformation.from, transformation.to]}, timing);
+      } else if (transformation.property === 'offset-rotate') {
+        animation = target.animate({'offset-rotate': [transformation.from, transformation.to]}, timing);
       }
 
       animation.currentTime = at;
+
       var result = target.style._getAnimated(transformation.property);
-
       animation.cancel();
-
       assert.equal(result, is, 'For: ' + JSON.stringify(transformation) + ' at: ' + at + '\n');
     }
   }
