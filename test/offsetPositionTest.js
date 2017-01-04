@@ -2,11 +2,11 @@
 
 (function () {
   suite('transforms', function () {
-    test('offsetAnchor', function () {
+    test('offsetPosition', function () {
       var assertInterpolation = internalScope.assertInterpolation;
 
       assertInterpolation({
-        property: 'offset-anchor',
+        property: 'offset-position',
         from: '10% 20%',
         to: '60% 40%'
       }, [
@@ -17,7 +17,7 @@
       ]);
 
       assertInterpolation({
-        property: 'offset-anchor',
+        property: 'offset-position',
         from: 'auto',
         to: '80% 30%'
       }, [
@@ -28,7 +28,7 @@
       ]);
 
       assertInterpolation({
-        property: 'offset-anchor',
+        property: 'offset-position',
         from: '15% 73%',
         to: 'auto'
       }, [
@@ -39,7 +39,7 @@
       ]);
 
       assertInterpolation({
-        property: 'offset-anchor',
+        property: 'offset-position',
         from: 'auto',
         to: 'auto'
       }, [

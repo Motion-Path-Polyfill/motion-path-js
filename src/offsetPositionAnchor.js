@@ -3,10 +3,13 @@
 (function () {
   /* spec for the offset-anchor property:
      https://drafts.fxtf.org/motion-1/#offset-anchor-property
+
+     spec for the offset-position property:
+     https://drafts.fxtf.org/motion-1/#offset-position-property
   */
   var isNumeric = internalScope.isNumeric;
 
-  function offsetAnchorParse (input) {
+  function offsetPositionAnchorParse (input) {
     // TODO: add support for the full range of <position> values in the grammar.
     if (input === 'auto') {
       return input;
@@ -34,7 +37,7 @@
     return values;
   }
 
-  function offsetAnchorMerge (start, end) {
+  function offsetPositionAnchorMerge (start, end) {
     function serialize (input) {
       if (input === 'auto') {
         return input;
@@ -53,6 +56,6 @@
     };
   }
 
-  internalScope.offsetAnchorParse = offsetAnchorParse;
-  internalScope.offsetAnchorMerge = offsetAnchorMerge;
+  internalScope.offsetPositionAnchorParse = offsetPositionAnchorParse;
+  internalScope.offsetPositionAnchorMerge = offsetPositionAnchorMerge;
 })();
