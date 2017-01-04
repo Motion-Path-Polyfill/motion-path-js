@@ -13,8 +13,8 @@
 
     var unit = angleUnitArray[0];
     var angleDegrees = angle.substring(0, angle.length - unit.length);
-    
-    if(angleDegrees === '') {
+
+    if (angleDegrees === '') {
       return null;
     }
 
@@ -31,7 +31,7 @@
   function offsetRotateParse (input) {
     // Link to off-set rotate:
     // https://drafts.fxtf.org/motion-1/#offset-rotate-property
-    
+
     if (input === undefined) {
       return null;
     } else if (input === 'none') {
@@ -51,12 +51,12 @@
     for (var i = 0; i < numValues; i++) {
       if (values[i] === 'auto') {
         // Check that either 'auto' or 'reverse' was provided and only once
-        if(autoProvided) { 
+        if (autoProvided) {
           return undefined;
         }
         autoProvided = true;
       } else if (values[i] === 'reverse') {
-        if(autoProvided) { 
+        if (autoProvided) {
           return undefined;
         }
         // The 'reverse' is equivalent to 'auto 180deg'
@@ -75,9 +75,9 @@
   }
 
   function offsetRotateMerge (start, end) {
-    function serializeParsed(input) {
+    function serializeParsed (input) {
       if (input.auto) {
-          return 'auto ' + input.angle + 'deg';
+        return 'auto ' + input.angle + 'deg';
       }
       return input.angle + 'deg';
     }

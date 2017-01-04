@@ -1,11 +1,11 @@
-/* global suite test internalScope */
+/* global suite test assert internalScope */
 
 (function () {
   suite('transforms', function () {
     test('offsetRotate', function () {
       var assertInterpolation = internalScope.assertInterpolation;
       var assertNoInterpolation = internalScope.assertNoInterpolation;
-      
+
       assertInterpolation({
         property: 'offset-rotate',
         from: '10deg',
@@ -61,7 +61,7 @@
         to: 'reverse -130deg'
       }, [
         {at: 0.3, is: 'auto 22deg'},
-        {at: 0.6, is: 'auto 34deg'},
+        {at: 0.6, is: 'auto 34deg'}
       ]);
 
       assertNoInterpolation({
