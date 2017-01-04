@@ -1,9 +1,13 @@
 /* global internalScope */
 
 (function () {
+  /* spec for the offset-anchor property:
+     https://drafts.fxtf.org/motion-1/#offset-anchor-property
+  */
   var isNumeric = internalScope.isNumeric;
 
   function offsetAnchorParse (input) {
+    // TODO: add support for the full range of <position> values in the grammar.
     if (input === 'auto') {
       return input;
     }
