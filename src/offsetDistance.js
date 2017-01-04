@@ -30,7 +30,7 @@
     }
 
     if (start.unit !== end.unit) {
-      return internalScope.flip(start, end);
+      return internalScope.flip(start.value + start.unit, end.value + end.unit);
     }
 
     return {

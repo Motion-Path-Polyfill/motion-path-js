@@ -11,9 +11,9 @@
       end: false,
       serialize: function (input) {
         if (input) {
-          return start.value + start.unit;
+          return start;
         }
-        return end.value + end.unit;
+        return end;
       }
     };
   }

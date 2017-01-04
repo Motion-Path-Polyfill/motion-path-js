@@ -3,5 +3,6 @@ src/rotate.js
 src/scale.js
 src/translate.js
 src/offsetDistance.js
+src/offsetAnchor.js
 src/toTransform.js
 src/independentTransforms.js

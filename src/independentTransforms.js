@@ -19,6 +19,10 @@
       'offset-distance': {
         parse: internalScope.offsetDistanceParse,
         merge: internalScope.offsetDistanceMerge
+      },
+      'offset-anchor': {
+        parse: internalScope.offsetAnchorParse,
+        merge: internalScope.offsetAnchorMerge
       }
     },
     applyHook: {
