@@ -14,22 +14,20 @@
       return undefined;
     }
 
-    var position = [];
-
-    for (var value of values) {
-      if (!value.endsWith('%')) {
+    for (var i = 0; i < values.length; i++) {
+      if (!values[i].endsWith('%')) {
         // value must be a percentage
         return undefined;
       }
-      var percentage = value.substring(0, value.length - 1);
+      var percentage = values[i].substring(0, values[i].length - 1);
       if (!(isNumeric(percentage)) || percentage.length === 0) {
         // precentage must be a number
         return undefined;
       }
-      position.push(Number(percentage));
+      values[i] = Number(percentage);
     }
 
-    return position;
+    return values;
   }
 
   function offsetAnchorMerge (start, end) {
