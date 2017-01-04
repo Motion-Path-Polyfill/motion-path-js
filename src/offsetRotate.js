@@ -13,8 +13,13 @@
 
     var unit = angleUnitArray[0];
     var angleDegrees = angle.substring(0, angle.length - unit.length);
+    
+    if(angleDegrees === '') {
+      return null;
+    }
+
     if (!(isNumeric(angleDegrees))) {
-      return undefined;
+      return null;
     }
 
     // To now convert angle to degrees
@@ -24,6 +29,9 @@
   }
 
   function offsetRotateParse (input) {
+    // Link to off-set rotate:
+    // https://drafts.fxtf.org/motion-1/#offset-rotate-property
+    
     if (input === undefined) {
       return null;
     } else if (input === 'none') {
@@ -33,7 +41,7 @@
     var values = input.split(/\s+/);
     var numValues = values.length;
     if (numValues < 1 || numValues > 2) {
-      // Incorrect number of values for scale
+      // Invalid number of arguments for offset-rotate
       return undefined;
     }
 
@@ -41,21 +49,25 @@
     var angle = 0;
 
     for (var i = 0; i < numValues; i++) {
-      // Check if the first argument was auto
-      if (i === 0 && values[i] === 'auto') { // Check if the first arugment provided was 'auto'
+      if (values[i] === 'auto') {
+        // Check that either 'auto' or 'reverse' was provided and only once
+        if(autoProvided) { 
+          return undefined;
+        }
         autoProvided = true;
-      }
-      if (i === 0 && values[i] === 'reverse') { // Check if the first arugment provided was 'reverse'
+      } else if (values[i] === 'reverse') {
+        if(autoProvided) { 
+          return undefined;
+        }
         // The 'reverse' is equivalent to 'auto 180deg'
         autoProvided = true;
         angle += 180;
-      }
-      if (numValues === 1 && !autoProvided && i === 0) { // Only an 'angle' value was provided
-        angle += convertToDegrees(values[i]);
-      }
-
-      if (numValues === 2 && autoProvided && i === 1) { // 'auto' or 'reverse' was provided with an 'angle'
-        angle += convertToDegrees(values[i]);
+      } else {
+        var angleDegrees = convertToDegrees(values[i]);
+        if (angleDegrees === null) {
+          return undefined;
+        }
+        angle += angleDegrees;
       }
     }
 
@@ -63,25 +75,25 @@
   }
 
   function offsetRotateMerge (start, end) {
-    var startValue;
-    var endValue;
+    function serializeParsed(input) {
+      if (input.auto) {
+          return 'auto ' + input.angle + 'deg';
+      }
+      return input.angle + 'deg';
+    }
 
     if (start.auto !== end.auto) {
-      startValue = true;
-      endValue = false;
-    } else {
-      startValue = start.angle;
-      endValue = end.angle;
+      return internalScope.flip(serializeParsed(start), serializeParsed(end));
     }
 
     return {
-      start: startValue,
-      end: endValue,
-      serialize: function (input) {
-        if (start.auto || end.auto) {
-          return 'auto ' + input + 'deg';
-        }
-        return input + 'deg';
+      start: start.angle,
+      end: end.angle,
+      serialize: function (angle) {
+        return serializeParsed({
+          angle: angle,
+          auto: start.auto
+        });
       }
     };
   }

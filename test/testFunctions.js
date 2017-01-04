@@ -68,9 +68,32 @@
     }
   }
 
+  function assertNoInterpolation (transformation) {
+    var target = document.createElement('div');
+
+    for (var at; at < 1; at += 0.1) {
+
+      var timing = {duration: 1, fill: 'forwards'};
+
+      var animation;
+
+      var keyframes = {[transformation.property]: [transformation.from, transformation.to]};
+      animation = target.animate(keyframes, timing);
+
+      animation.currentTime = at;
+      var result = target.style._getAnimated(transformation.property);
+      animation.cancel();
+      if(at < 0.5) {
+        assert.equal(result, transformation.from, 'For: ' + JSON.stringify(transformation) + ' at: ' + at + '\n');
+      } else if (at >= 0.5) {
+        assert.equal(result, transformation.from, 'For: ' + JSON.stringify(transformation) + ' at: ' + at + '\n');
+      }
+    }
+  }
   internalScope.isAnimationEqual = isAnimationEqual;
   internalScope.checkTransformKeyframes = checkTransformKeyframes;
   internalScope.InvalidTransformValue = InvalidTransformValue;
   internalScope.assertInterpolation = assertInterpolation;
+  internalScope.assertNoInterpolation = assertNoInterpolation;
 })();
 

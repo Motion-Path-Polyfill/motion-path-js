@@ -30,7 +30,7 @@
         var transformString = internalScope.toTransform(values);
         return {transform: transformString + ' ' + values.transform};
       },
-      watchedProperties: ['scale', 'rotate', 'translate', 'transform', 'offset-rotate']
+      watchedProperties: ['scale', 'rotate', 'translate', 'transform']
     }
   });
 })();
