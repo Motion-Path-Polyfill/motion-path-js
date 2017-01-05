@@ -4,7 +4,7 @@
   function offsetRotateParse (input) {
     // https://drafts.fxtf.org/motion-1/#offset-rotate-property
 
-    var convertToDegrees = internalScope.convertToDegrees;
+    var parseAngleAsDegrees = internalScope.parseAngleAsDegrees;
 
     if (input === undefined) {
       return null;
@@ -36,14 +36,11 @@
         autoProvided = true;
         angle += 180;
       } else {
-        var angleDegrees = convertToDegrees(values[i]);
-        if (angleDegrees === null) {
+        var angleDegrees = parseAngleAsDegrees(values[i]);
+        if (angleDegrees === null || angleProvided) {
           return undefined;
         }
-        if (angleProvided) {
-          return undefined;
-        }
-        angleProvided === true;
+        angleProvided = true;
         angle += angleDegrees;
       }
     }

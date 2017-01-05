@@ -72,7 +72,10 @@
 
       assert.equal(internalScope.offsetRotateParse('auto asdadeg'), undefined);
       assert.equal(internalScope.offsetRotateParse('auto reverse'), undefined);
+      assert.equal(internalScope.offsetRotateParse('auto auto'), undefined);
+      assert.equal(internalScope.offsetRotateParse('reverse reverse'), undefined);
       assert.equal(internalScope.offsetRotateParse('auto deg'), undefined);
+      assert.equal(internalScope.offsetRotateParse('20deg 40deg'), undefined);
     });
   });
 })();

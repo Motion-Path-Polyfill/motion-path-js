@@ -4,7 +4,7 @@
   var isNumeric = internalScope.isNumeric;
 
   function rotateParse (input) {
-    var convertToDegrees = internalScope.convertToDegrees;
+    var parseAngleAsDegrees = internalScope.parseAngleAsDegrees;
 
     /* According to spec:
        https://drafts.csswg.org/css-transforms-2/#propdef-rotate
@@ -27,7 +27,7 @@
     }
 
     // Convert the given rotation angle to degrees
-    var angle = convertToDegrees(values[numValues - 1]);
+    var angle = parseAngleAsDegrees(values[numValues - 1]);
     if (angle === null) {
       return undefined;
     }
