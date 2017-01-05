@@ -1,41 +1,13 @@
 /* global internalScope */
 
 (function () {
-  function isNumeric (number) {
-    return !isNaN(number);
-  }
-
-  function convertToDegrees (angle) {
-    var angleUnitArray = /(deg|grad|rad|turn)$/.exec(angle);
-    if (angleUnitArray === null) {
-      return undefined;
-    }
-
-    var unit = angleUnitArray[0];
-    var angleDegrees = angle.substring(0, angle.length - unit.length);
-
-    if (angleDegrees === '') {
-      return null;
-    }
-
-    if (!(isNumeric(angleDegrees))) {
-      return null;
-    }
-
-    // To now convert angle to degrees
-    var conversion = {turn: 360, grad: 0.9, rad: 180 / Math.PI, deg: 1};
-    angleDegrees *= conversion[unit];
-    return angleDegrees;
-  }
-
   function offsetRotateParse (input) {
-    // Link to off-set rotate:
     // https://drafts.fxtf.org/motion-1/#offset-rotate-property
+
+    var convertToDegrees = internalScope.convertToDegrees;
 
     if (input === undefined) {
       return null;
-    } else if (input === 'none') {
-      return 'auto';
     }
 
     var values = input.split(/\s+/);
@@ -46,6 +18,7 @@
     }
 
     var autoProvided = false;
+    var angleProvided = false;
     var angle = 0;
 
     for (var i = 0; i < numValues; i++) {
@@ -67,6 +40,10 @@
         if (angleDegrees === null) {
           return undefined;
         }
+        if (angleProvided) {
+          return undefined;
+        }
+        angleProvided === true;
         angle += angleDegrees;
       }
     }

@@ -4,6 +4,8 @@
   var isNumeric = internalScope.isNumeric;
 
   function rotateParse (input) {
+    var convertToDegrees = internalScope.convertToDegrees;
+
     /* According to spec:
        https://drafts.csswg.org/css-transforms-2/#propdef-rotate
        unspecified rotate axis default to 0 0 1
@@ -24,20 +26,12 @@
       return undefined;
     }
 
-    var angle = values[numValues - 1];
-    var angleUnitArray = /(deg|grad|rad|turn)$/.exec(angle);
-
-    if (angleUnitArray === null) {
-      // Angle units isn't one of: deg, grad, rad or turn
+    // Convert the given rotation angle to degrees
+    var angle = convertToDegrees(values[numValues - 1]);
+    if (angle === null) {
       return undefined;
     }
-
-    var unit = angleUnitArray[0];
-    var number = angle.substring(0, angle.length - unit.length);
-    if (!(isNumeric(number))) {
-      // Angle given must be a number followed by units
-      return undefined;
-    }
+    values[numValues - 1] = angle;
 
     for (var i = 0; i < numValues - 1; i++) {
       if (!(isNumeric(values[i]))) {
@@ -46,13 +40,6 @@
       }
       values[i] = Number(values[i]);
     }
-
-    // Add rotation values without its unit characters
-    values[numValues - 1] = Number(number);
-
-    // all units will be converted to degrees
-    var conversion = {turn: 360, grad: 0.9, rad: 180 / Math.PI, deg: 1};
-    values[numValues - 1] = values[numValues - 1] * conversion[unit];
 
     return values;
   }

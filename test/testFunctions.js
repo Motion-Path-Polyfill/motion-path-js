@@ -47,7 +47,7 @@
     }
   }
 
-  function assertInterpolation (transformation, expectation) {
+  function assertInterpolation ({property, from, to}, expectation) {
     var target = document.createElement('div');
 
     for (var {at, is} of expectation) {
@@ -57,38 +57,25 @@
 
       var animation;
 
-      var keyframes = {[transformation.property]: [transformation.from, transformation.to]};
+      var keyframes = {[property]: [from, to]};
       animation = target.animate(keyframes, timing);
 
       animation.currentTime = at;
-      var result = target.style._getAnimated(transformation.property);
+      var result = target.style._getAnimated(property);
       animation.cancel();
 
-      assert.equal(result, is, 'For: ' + JSON.stringify(transformation) + ' at: ' + at + '\n');
+      assert.equal(result, is, 'For: ' + JSON.stringify({property, from, to}) + ' at: ' + at + '\n');
     }
   }
 
   function assertNoInterpolation (transformation) {
-    var target = document.createElement('div');
-
-    for (var at; at < 1; at += 0.1) {
-      var timing = {duration: 1, fill: 'forwards'};
-
-      var animation;
-
-      var keyframes = {[transformation.property]: [transformation.from, transformation.to]};
-      animation = target.animate(keyframes, timing);
-
-      animation.currentTime = at;
-      var result = target.style._getAnimated(transformation.property);
-      animation.cancel();
-      if (at < 0.5) {
-        assert.equal(result, transformation.from, 'For: ' + JSON.stringify(transformation) + ' at: ' + at + '\n');
-      } else if (at >= 0.5) {
-        assert.equal(result, transformation.from, 'For: ' + JSON.stringify(transformation) + ' at: ' + at + '\n');
-      }
+    var expectation = [];
+    for (var i = 0; i <= 1; i += 0.1) {
+      expectation.push({at: i, is: i < 0.5 ? transformation.from : transformation.to});
     }
+    assertInterpolation(transformation, expectation);
   }
+
   internalScope.isAnimationEqual = isAnimationEqual;
   internalScope.checkTransformKeyframes = checkTransformKeyframes;
   internalScope.InvalidTransformValue = InvalidTransformValue;
