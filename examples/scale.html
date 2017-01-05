@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<script src="../third_party/web-animations-js/web-animations.dev.js"></script>
+<script src="../index.min.js"></script>
+
+<div id="container">
+  <div id="target">
+  </div>
+</div>
+
+<style>
+  #container {
+    width: 1000px;
+    height: 1000px;
+    transform: scale(1);
+  }
+
+  #target {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    left: 400px;
+    top: 300px;
+    background-color: purple;
+  }
+</style>
+
+<script>
+  var keyframes = [{scale: 1}, {scale: 2}];
+  var timing = {duration: 2000, iterations: 3};
+  target.animate(keyframes, timing);
+</script>
