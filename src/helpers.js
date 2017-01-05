@@ -1,6 +1,24 @@
 /* global internalScope */
 
 (function () {
+  function parseAngleAsDegrees (angle) {
+    var angleUnitArray = /(deg|grad|rad|turn)$/.exec(angle);
+    if (angleUnitArray === null) {
+      return null;
+    }
+
+    var unit = angleUnitArray[0];
+    var unitlessAngle = angle.substring(0, angle.length - unit.length);
+    if (!(isNumeric(unitlessAngle)) || (unitlessAngle === '')) {
+      return null;
+    }
+    unitlessAngle = Number(unitlessAngle);
+
+    var conversionToDegrees = {turn: 360, grad: 0.9, rad: 180 / Math.PI, deg: 1};
+
+    return unitlessAngle * conversionToDegrees[unit];
+  }
+
   function isNumeric (number) {
     return !isNaN(number);
   }
@@ -18,6 +36,7 @@
     };
   }
 
+  internalScope.parseAngleAsDegrees = parseAngleAsDegrees;
   internalScope.isNumeric = isNumeric;
   internalScope.flip = flip;
 })();

@@ -16,6 +16,10 @@
         parse: internalScope.rotateParse,
         merge: internalScope.rotateMerge
       },
+      'offset-rotate': {
+        parse: internalScope.offsetRotateParse,
+        merge: internalScope.offsetRotateMerge
+      },
       'offset-distance': {
         parse: internalScope.offsetDistanceParse,
         merge: internalScope.offsetDistanceMerge
