@@ -1,7 +1,7 @@
 {
   "name": "motion-path-js",
   "version": "0.0.0",
-  "description": "",
+  "description": "Web Animations polyfill extension for motion path animation",
   "main": "index.js",
   "scripts": {
     "test": "npm run lint && karma start --single-run && npm run build",
@@ -22,5 +22,9 @@
     "mocha": "^3.2.0",
     "semistandard": "~9.1.0",
     "uglifyjs": "^2.4.10"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Motion-Path-Polyfill/motion-path-js.git"
   }
 }
