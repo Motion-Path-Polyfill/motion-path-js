@@ -23,7 +23,12 @@
       'offset-distance': {
         parse: internalScope.offsetDistanceParse,
         merge: internalScope.offsetDistanceMerge
+      },
+      'offset-path': {
+        parse: internalScope.offsetPathParse,
+        merge: internalScope.offsetPathMerge
       }
+
     },
     applyHook: {
       callback: function (values) {
