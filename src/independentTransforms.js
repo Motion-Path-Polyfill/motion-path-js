@@ -27,6 +27,7 @@
       'offset-path': {
         parse: internalScope.offsetPathParse,
         merge: internalScope.offsetPathMerge
+      },
       'offset-anchor': {
         parse: internalScope.offsetPositionAnchorParse,
         merge: internalScope.offsetPositionAnchorMerge
@@ -35,7 +36,6 @@
         parse: internalScope.offsetPositionAnchorParse,
         merge: internalScope.offsetPositionAnchorMerge
       }
-
     },
     applyHook: {
       callback: function (values) {

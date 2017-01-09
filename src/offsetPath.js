@@ -20,9 +20,10 @@
       inputType = 'ray';
       var rayInput = ray[1];
       var rayInputDegrees = parseAngleAsDegrees(rayInput);
-      if (rayInputDegrees !== null) {
-        return {type: inputType, input: rayInputDegrees};
+      if (rayInputDegrees === null) {
+        return undefined;
       }
+      return {type: inputType, input: rayInputDegrees};
     } else if (path !== null) {
       inputType = 'path';
       var pathInput = path[1];
