@@ -1,4 +1,4 @@
-/* global suite test internalScope */
+/* global suite test assert internalScope */
 
 (function () {
   suite('offsetPath', function () {
