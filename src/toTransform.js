@@ -36,6 +36,11 @@
   }
 
   function toTransform (properties) {
+    /* W3C spec for what syntax toTransform() outputs:
+       https://drafts.csswg.org/css-transforms/#transform-functions
+       W3C spec for what syntax toTransform() parses:
+       https://drafts.csswg.org/css-transforms-2/#individual-transforms
+    */
     return [
       convertTranslate(properties.translate),
       convertRotate(properties.rotate),
