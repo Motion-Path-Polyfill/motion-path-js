@@ -36,7 +36,7 @@
     applyHook: {
       callback: function (values) {
         var transformString = internalScope.toTransform(values);
-        return {transform: transformString + ' ' + values.transform};
+        return {transform: transformString + ' ' + values.transform, scale: 'none', rotate: 'none', translate: 'none'};
       },
       watchedProperties: ['scale', 'rotate', 'translate', 'transform']
     }

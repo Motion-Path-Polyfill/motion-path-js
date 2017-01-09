@@ -36,7 +36,29 @@
     };
   }
 
+  function assertInterpolation ({property, from, to}, expectation, propertyToAnimate) {
+    var target = document.createElement('div');
+
+    for (var {at, is} of expectation) {
+      var timing = {duration: 1, fill: 'forwards'};
+
+      assert.equal((at > 1 || at < 0), false, "Invalid value for 'at'");
+
+      var animation;
+
+      var keyframes = {[property]: [from, to]};
+      animation = target.animate(keyframes, timing);
+
+      animation.currentTime = at;
+      var result = target.style._getAnimated(propertyToAnimate);
+      animation.cancel();
+
+      assert.equal(result, is, 'For: ' + JSON.stringify({property, from, to}) + ' at: ' + at + '\n');
+    }
+  }
+
   internalScope.parseAngleAsDegrees = parseAngleAsDegrees;
   internalScope.isNumeric = isNumeric;
   internalScope.flip = flip;
+  internalScope.assertInterpolation = assertInterpolation;
 })();

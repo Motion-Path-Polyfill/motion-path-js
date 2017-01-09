@@ -28,4 +28,10 @@
   var keyframes = [{rotate: '0deg'}, {rotate: '45deg'}];
   var timing = {duration: 2000, iterations: 3, direction: 'alternate'};
   target.animate(keyframes, timing);
+
+  function report() {
+    console.log(getComputedStyle(target).rotate);
+    setTimeout(report, 500);
+  }
+  setTimeout(report, 0);
 </script>

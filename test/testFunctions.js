@@ -47,25 +47,12 @@
     }
   }
 
-  function assertInterpolation ({property, from, to}, expectation) {
-    var target = document.createElement('div');
+  function assertTransformInterpolation ({property, from, to}, expectation) {
+    internalScope.assertInterpolation({property, from, to}, expectation, 'transform');
+  }
 
-    for (var {at, is} of expectation) {
-      var timing = {duration: 1, fill: 'forwards'};
-
-      assert.equal((at > 1 || at < 0), false, "Invalid value for 'at'");
-
-      var animation;
-
-      var keyframes = {[property]: [from, to]};
-      animation = target.animate(keyframes, timing);
-
-      animation.currentTime = at;
-      var result = target.style._getAnimated(property);
-      animation.cancel();
-
-      assert.equal(result, is, 'For: ' + JSON.stringify({property, from, to}) + ' at: ' + at + '\n');
-    }
+  function assertOffsetInterpolation ({property, from, to}, expectation) {
+    internalScope.assertInterpolation({property, from, to}, expectation, property);
   }
 
   function assertNoInterpolation (transformation) {
@@ -73,13 +60,14 @@
     for (var i = 0; i <= 1; i += 0.1) {
       expectation.push({at: i, is: i < 0.5 ? transformation.from : transformation.to});
     }
-    assertInterpolation(transformation, expectation);
+    assertOffsetInterpolation(transformation, expectation);
   }
 
   internalScope.isAnimationEqual = isAnimationEqual;
   internalScope.checkTransformKeyframes = checkTransformKeyframes;
   internalScope.InvalidTransformValue = InvalidTransformValue;
-  internalScope.assertInterpolation = assertInterpolation;
+  internalScope.assertTransformInterpolation = assertTransformInterpolation;
+  internalScope.assertOffsetInterpolation = assertOffsetInterpolation;
   internalScope.assertNoInterpolation = assertNoInterpolation;
 })();
 

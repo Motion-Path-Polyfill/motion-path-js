@@ -3,10 +3,10 @@
 (function () {
   suite('transforms', function () {
     test('offsetRotate', function () {
-      var assertInterpolation = internalScope.assertInterpolation;
+      var assertOffsetInterpolation = internalScope.assertOffsetInterpolation;
       var assertNoInterpolation = internalScope.assertNoInterpolation;
 
-      assertInterpolation({
+      assertOffsetInterpolation({
         property: 'offset-rotate',
         from: '10deg',
         to: '50deg'
@@ -17,7 +17,7 @@
         {at: 1, is: '50deg'}
       ]);
 
-      assertInterpolation({
+      assertOffsetInterpolation({
         property: 'offset-rotate',
         from: 'auto 10deg',
         to: 'auto 50deg'
@@ -28,7 +28,7 @@
         {at: 1, is: 'auto 50deg'}
       ]);
 
-      assertInterpolation({
+      assertOffsetInterpolation({
         property: 'offset-rotate',
         from: 'reverse -170deg',
         to: 'reverse -130deg'
@@ -37,7 +37,7 @@
         {at: 0.6, is: 'auto 34deg'}
       ]);
 
-      assertInterpolation({
+      assertOffsetInterpolation({
         property: 'offset-rotate',
         from: 'auto 10deg',
         to: 'reverse -130deg'
@@ -46,7 +46,7 @@
         {at: 0.6, is: 'auto 34deg'}
       ]);
 
-      assertInterpolation({
+      assertOffsetInterpolation({
         property: 'offset-rotate',
         from: 'reverse -170deg',
         to: 'auto 50deg'
@@ -55,7 +55,7 @@
         {at: 0.6, is: 'auto 34deg'}
       ]);
 
-      assertInterpolation({
+      assertOffsetInterpolation({
         property: 'offset-rotate',
         from: 'auto 10deg',
         to: 'reverse -130deg'
