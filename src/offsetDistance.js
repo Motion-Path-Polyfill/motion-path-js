@@ -4,31 +4,22 @@
   var isNumeric = internalScope.isNumeric;
 
   function offsetDistanceParse (input) {
-    /* According to spec:
-       https://drafts.fxtf.org/motion-1/#offset-distance-property
-       initial value is 0 so will return 0 on undefined.
-       Will return a number when units is px and a number array if units is %.
-    */
-    if (input === undefined) {
-      return {value: 0, unit: 'px'};
-    }
-
     var distance = 0;
 
     if (input.endsWith('%')) {
       distance = input.substring(0, input.length - 1);
-      if (!(isNumeric(distance))) {
+      if (!(isNumeric(distance)) || distance.length === 0) {
         // distance must be a number
-        return {value: 0, unit: 'px'};
+        return undefined;
       }
       return {value: Number(distance), unit: '%'};
     }
 
     distance = input.substring(0, input.length - 2);
 
-    if (!input.endsWith('px') || !(isNumeric(distance))) {
+    if (!input.endsWith('px') || !(isNumeric(distance)) || distance.length === 0) {
       // unit must be one of px or % and distance must be a number
-      return {value: 0, unit: 'px'};
+      return undefined;
     }
     return {value: Number(distance), unit: 'px'};
   }

@@ -27,6 +27,13 @@
       'offset-path': {
         parse: internalScope.offsetPathParse,
         merge: internalScope.offsetPathMerge
+      'offset-anchor': {
+        parse: internalScope.offsetPositionAnchorParse,
+        merge: internalScope.offsetPositionAnchorMerge
+      },
+      'offset-position': {
+        parse: internalScope.offsetPositionAnchorParse,
+        merge: internalScope.offsetPositionAnchorMerge
       }
 
     },

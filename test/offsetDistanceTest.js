@@ -1,4 +1,4 @@
-/* global suite test internalScope */
+/* global assert suite test internalScope */
 
 (function () {
   suite('transforms', function () {
@@ -37,6 +37,11 @@
         {at: 0.6, is: '50px'},
         {at: 1, is: '50px'}
       ]);
+
+      assert.equal(internalScope.offsetDistanceParse('garbage%'), undefined);
+      assert.equal(internalScope.offsetDistanceParse('garbagepx'), undefined);
+      assert.equal(internalScope.offsetDistanceParse('%'), undefined);
+      assert.equal(internalScope.offsetDistanceParse('px'), undefined);
     });
   });
 })();
