@@ -35,10 +35,29 @@
     return 'scale3d(' + valuesArray.join(', ') + ')';
   }
 
-  function convertOffsetAnchorPosition (element) {
-    var dict = element.getBoundingClientRect()
-    console.log(dict.width);
-    console.log(dict.height);
+  function convertOffsetAnchorPosition (properties, element) {
+    // clear transform ?
+    element.style._style.transform = 'none';
+
+    var anchor = internalScope.offsetPositionAnchorParse(properties.'offset-anchor');
+    var position = internalScope.offsetPositionAnchorParse(properties.'offset-position');
+
+    if (anchor === 'auto' && position !== 'auto') {
+      anchor = position;
+    }
+
+    var elementProperties = element.getBoundingClientRect();
+    // not sure how this works with negative percentages
+    var anchorPosX = 0.01 * anchor[0] * elementProperties.width;
+    var anchorPosY = 0.01 * anchor[1] * elementProperties.height;
+    // need code path for if there is no parent
+    var parentProperties = element.parent.getBoundingClientRect();
+
+    var offsetPosX = 0.01 * position[0] * parentProperties.width;
+    var offsetPosY = 0.01 * position[1] * parentProperties.height;
+
+    
+
   }
 
   function toTransform (properties, element) {
