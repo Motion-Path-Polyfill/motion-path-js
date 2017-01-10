@@ -47,7 +47,7 @@
     }
   }
 
-  function assertInterpolationHelper (keyframes, expectation, propertyToAnimate) {
+  function assertInterpolationHelper (keyframes, expectation, propertyToRead) {
     var target = document.createElement('div');
 
     for (var {at, is} of expectation) {
@@ -58,7 +58,7 @@
       var animation = target.animate(keyframes, timing);
 
       animation.currentTime = at;
-      var result = target.style._getAnimated(propertyToAnimate);
+      var result = target.style._getAnimated(propertyToRead);
       animation.cancel();
 
       assert.equal(result, is, 'For: ' + JSON.stringify(keyframes) + ' at: ' + at + '\n');

@@ -39,6 +39,8 @@
     },
     applyHook: {
       callback: function (values) {
+        /* TODO: set scale, rotate and translate to none once they are supported.
+                 link to bug: crbug.com/679873 */
         var transformString = internalScope.toTransform(values);
         return {
           transform: transformString + ' ' + values.transform,
