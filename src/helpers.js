@@ -1,4 +1,4 @@
-/* global internalScope */
+/* global assert internalScope */
 
 (function () {
   function parseAngleAsDegrees (angle) {
