@@ -35,7 +35,14 @@
     return 'scale3d(' + valuesArray.join(', ') + ')';
   }
 
-  function toTransform (properties) {
+  function convertOffsetAnchorPosition (element) {
+    var dict = element.getBoundingClientRect()
+    console.log(dict.width);
+    console.log(dict.height);
+  }
+
+  function toTransform (properties, element) {
+    convertOffsetAnchorPosition(element);
     return [
       convertTranslate(properties.translate),
       convertRotate(properties.rotate),

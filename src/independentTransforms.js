@@ -38,8 +38,8 @@
       }
     },
     applyHook: {
-      callback: function (values) {
-        var transformString = internalScope.toTransform(values);
+      callback: function (values, element) {
+        var transformString = internalScope.toTransform(values, element);
         return {transform: transformString + ' ' + values.transform};
       },
       watchedProperties: ['scale', 'rotate', 'translate', 'transform']
