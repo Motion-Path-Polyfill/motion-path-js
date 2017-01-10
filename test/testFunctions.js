@@ -47,12 +47,34 @@
     }
   }
 
-  function assertTransformInterpolation ({property, from, to}, expectation) {
-    internalScope.assertInterpolation({property, from, to}, expectation, 'transform');
+  function assertInterpolationHelper (keyframes, expectation, propertyToAnimate) {
+    var target = document.createElement('div');
+
+    for (var {at, is} of expectation) {
+      var timing = {duration: 1, fill: 'forwards'};
+
+      assert.equal((at > 1 || at < 0), false, "Invalid value for 'at'");
+
+      var animation = target.animate(keyframes, timing);
+
+      animation.currentTime = at;
+      var result = target.style._getAnimated(propertyToAnimate);
+      animation.cancel();
+
+      assert.equal(result, is, 'For: ' + JSON.stringify(keyframes) + ' at: ' + at + '\n');
+    }
+  }
+
+  function assertTransformInterpolation (keyframes, expectation) {
+    assertInterpolationHelper(keyframes, expectation, 'transform');
+  }
+
+  function assertInterpolation ({property, from, to}, expectation) {
+    assertInterpolationHelper({[property]: [from, to]}, expectation, property + 'ForTesting');
   }
 
   function assertOffsetInterpolation ({property, from, to}, expectation) {
-    internalScope.assertInterpolation({property, from, to}, expectation, property);
+    assertInterpolationHelper({[property]: [from, to]}, expectation, property);
   }
 
   function assertNoInterpolation (transformation) {
@@ -68,6 +90,7 @@
   internalScope.InvalidTransformValue = InvalidTransformValue;
   internalScope.assertTransformInterpolation = assertTransformInterpolation;
   internalScope.assertOffsetInterpolation = assertOffsetInterpolation;
+  internalScope.assertInterpolation = assertInterpolation;
   internalScope.assertNoInterpolation = assertNoInterpolation;
 })();
 

@@ -5,17 +5,17 @@
     test('scaleTransform', function () {
       var isAnimationEqual = internalScope.isAnimationEqual;
       var InvalidTransformValue = internalScope.InvalidTransformValue;
-      var assertTransformInterpolation = internalScope.assertTransformInterpolation;
+      var assertInterpolation = internalScope.assertInterpolation;
 
-      assertTransformInterpolation({
+      assertInterpolation({
         property: 'scale',
         from: '-10 5 1',
         to: '10 -5 1'
       }, [
-        {at: 0, is: 'scale3d(-10, 5, 1)'},
-        {at: 0.25, is: 'scale3d(-5, 2.5, 1)'},
-        {at: 0.75, is: 'scale3d(5, -2.5, 1)'},
-        {at: 1, is: 'scale3d(10, -5, 1)'}
+        {at: 0, is: '-10 5 1'},
+        {at: 0.25, is: '-5 2.5 1'},
+        {at: 0.75, is: '5 -2.5 1'},
+        {at: 1, is: '10 -5 1'}
       ]);
 
       isAnimationEqual({scale: ['0.5', '2.5']}, {transform: ['scale3d(0.5, 1, 1)', 'scale3d(2.5, 1, 1)']});
