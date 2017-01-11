@@ -56,7 +56,7 @@
 
         return result;
       },
-      watchedProperties: ['scale', 'rotate', 'translate', 'transform']
+      watchedProperties: ['scale', 'rotate', 'translate', 'transform', 'offset-distance', 'offset-path']
     }
   });
 })();
