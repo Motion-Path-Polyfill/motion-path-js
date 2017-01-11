@@ -39,25 +39,22 @@
     },
     applyHook: {
       callback: function (values) {
-        /* TODO: set scale, rotate and translate to none once they are supported.
-                 link to bug: crbug.com/679873 */
         var transformString = internalScope.toTransform(values);
-        if (internalScope.webAnimationsJsTesting) {
-          return {
-            transform: transformString + ' ' + values.transform,
-            scaleForTesting: values.scale,
-            rotateForTesting: values.rotate,
-            translateForTesting: values.translate,
-            scale: '1 1 1',
-            rotate: '0deg',
-            translate: '0px'
-          };
-        }
-        return {
+        var result = {
           transform: transformString + ' ' + values.transform,
+          // TODO: set scale, rotate and translate to none once they are supported. Link to bug: crbug.com/679873
           scale: '1 1 1',
           rotate: '0deg',
-          translate: '0px'};
+          translate: '0px'
+        };
+
+        if (internalScope.webAnimationsJsTesting) {
+          result['scaleForTesting'] = values.scale;
+          result['rotateForTesting'] = values.rotate;
+          result['translateForTesting'] = values.translate;
+        }
+
+        return result;
       },
       watchedProperties: ['scale', 'rotate', 'translate', 'transform']
     }
