@@ -42,7 +42,8 @@
         var transformString = internalScope.toTransform(values);
         var result = {
           transform: transformString + ' ' + values.transform,
-          scale: '1 1 1',   // TODO: set scale, rotate and translate to none once they are supported. Link to bug: crbug.com/679873
+          // TODO: set scale, rotate and translate to none once they are supported. Link to bug: crbug.com/679873
+          scale: '1 1 1',
           rotate: '0deg',
           translate: '0px'
         };
