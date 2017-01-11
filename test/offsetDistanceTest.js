@@ -3,9 +3,9 @@
 (function () {
   suite('transforms', function () {
     test('offsetDistance', function () {
-      var assertInterpolation = internalScope.assertInterpolation;
+      var assertOffsetInterpolation = internalScope.assertOffsetInterpolation;
 
-      assertInterpolation({
+      assertOffsetInterpolation({
         property: 'offset-distance',
         from: '10px',
         to: '50px'
@@ -16,7 +16,7 @@
         {at: 1, is: '50px'}
       ]);
 
-      assertInterpolation({
+      assertOffsetInterpolation({
         property: 'offset-distance',
         from: '10%',
         to: '50%'
@@ -27,7 +27,7 @@
         {at: 1, is: '50%'}
       ]);
 
-      assertInterpolation({
+      assertOffsetInterpolation({
         property: 'offset-distance',
         from: '10%',
         to: '50px'
