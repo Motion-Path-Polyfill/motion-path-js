@@ -1,6 +1,7 @@
 /* global assert internalScope */
 
 (function () {
+  var webAnimationsJsTesting = true;
   var InvalidTransformValue = {};
 
   function checkTransformKeyframes (keyframes) {
@@ -85,6 +86,7 @@
     assertOffsetInterpolation(transformation, expectation);
   }
 
+  internalScope.webAnimationsJsTesting = webAnimationsJsTesting;
   internalScope.isAnimationEqual = isAnimationEqual;
   internalScope.checkTransformKeyframes = checkTransformKeyframes;
   internalScope.InvalidTransformValue = InvalidTransformValue;
