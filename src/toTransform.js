@@ -38,16 +38,27 @@
   function convertOffsetAnchorPosition (properties, element) {
     // clear transform ?
     element.style._style.transform = 'none';
+    
+    var position = 'auto';
+    if ('offset-position' in properties) {
+      position = internalScope.offsetPositionAnchorParse(properties.offset-position);
+    }
 
-    var anchor = internalScope.offsetPositionAnchorParse(properties.'offset-anchor');
-    var position = internalScope.offsetPositionAnchorParse(properties.'offset-position');
+    if (position === 'auto') {
+      return null;
+    }
 
-    if (anchor === 'auto' && position !== 'auto') {
+    var anchor = 'auto';
+    if ('offset-anchor' in properties) {
+      anchor = internalScope.offsetPositionAnchorParse(properties.offset-anchor);
+    }
+
+    if (anchor === 'auto') {
       anchor = position;
     }
 
     var elementProperties = element.getBoundingClientRect();
-    // not sure how this works with negative percentages
+    // not sure how the following works with negative percentages
     var anchorPosX = 0.01 * anchor[0] * elementProperties.width;
     var anchorPosY = 0.01 * anchor[1] * elementProperties.height;
     // need code path for if there is no parent
@@ -56,16 +67,18 @@
     var offsetPosX = 0.01 * position[0] * parentProperties.width;
     var offsetPosY = 0.01 * position[1] * parentProperties.height;
 
-    
+    var desiredPosX = (offsetPosX - anchorPosX) - elementProperties.left;
+    var desiredPosY = (offsetPosY - anchorPosY) - elementProperties.top;
 
+    return 'translate3d(' + desiredPosX + 'px ' + desiredPosY + 'px' + ')';
   }
 
   function toTransform (properties, element) {
-    convertOffsetAnchorPosition(element);
     return [
       convertTranslate(properties.translate),
       convertRotate(properties.rotate),
-      convertScale(properties.scale)
+      convertScale(properties.scale),
+      convertOffsetAnchorPosition(properties, element)
     ].filter(function (result) {
       return result !== null;
     }).join(' ') || 'none';
