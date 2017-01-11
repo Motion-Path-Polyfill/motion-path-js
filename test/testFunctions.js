@@ -1,6 +1,7 @@
 /* global assert internalScope */
 
 (function () {
+  var webAnimationsJsTesting = true;
   var InvalidTransformValue = {};
 
   function checkTransformKeyframes (keyframes) {
@@ -47,7 +48,7 @@
     }
   }
 
-  function assertInterpolation ({property, from, to}, expectation) {
+  function assertInterpolationHelper (keyframes, expectation, propertyToRead) {
     var target = document.createElement('div');
 
     for (var {at, is} of expectation) {
@@ -55,17 +56,26 @@
 
       assert.equal((at > 1 || at < 0), false, "Invalid value for 'at'");
 
-      var animation;
-
-      var keyframes = {[property]: [from, to]};
-      animation = target.animate(keyframes, timing);
+      var animation = target.animate(keyframes, timing);
 
       animation.currentTime = at;
-      var result = target.style._getAnimated(property);
+      var result = target.style._getAnimated(propertyToRead);
       animation.cancel();
 
-      assert.equal(result, is, 'For: ' + JSON.stringify({property, from, to}) + ' at: ' + at + '\n');
+      assert.equal(result, is, 'For: ' + JSON.stringify(keyframes) + ' at: ' + at + '\n');
     }
+  }
+
+  function assertTransformInterpolation (keyframes, expectation) {
+    assertInterpolationHelper(keyframes, expectation, 'transform');
+  }
+
+  function assertInterpolation ({property, from, to}, expectation) {
+    assertInterpolationHelper({[property]: [from, to]}, expectation, property + 'ForTesting');
+  }
+
+  function assertOffsetInterpolation ({property, from, to}, expectation) {
+    assertInterpolationHelper({[property]: [from, to]}, expectation, property);
   }
 
   function assertNoInterpolation (transformation) {
@@ -73,12 +83,15 @@
     for (var i = 0; i <= 1; i += 0.1) {
       expectation.push({at: i, is: i < 0.5 ? transformation.from : transformation.to});
     }
-    assertInterpolation(transformation, expectation);
+    assertOffsetInterpolation(transformation, expectation);
   }
 
+  internalScope.webAnimationsJsTesting = webAnimationsJsTesting;
   internalScope.isAnimationEqual = isAnimationEqual;
   internalScope.checkTransformKeyframes = checkTransformKeyframes;
   internalScope.InvalidTransformValue = InvalidTransformValue;
+  internalScope.assertTransformInterpolation = assertTransformInterpolation;
+  internalScope.assertOffsetInterpolation = assertOffsetInterpolation;
   internalScope.assertInterpolation = assertInterpolation;
   internalScope.assertNoInterpolation = assertNoInterpolation;
 })();

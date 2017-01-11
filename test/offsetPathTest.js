@@ -3,10 +3,10 @@
 (function () {
   suite('offsetPath', function () {
     test('offsetPath', function () {
-      var assertInterpolation = internalScope.assertInterpolation;
+      var assertOffsetInterpolation = internalScope.assertOffsetInterpolation;
       var assertNoInterpolation = internalScope.assertNoInterpolation;
 
-      assertInterpolation({
+      assertOffsetInterpolation({
         property: 'offset-path',
         from: 'ray(100deg)',
         to: 'ray(-100deg)'
