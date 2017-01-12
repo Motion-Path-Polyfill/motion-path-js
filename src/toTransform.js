@@ -36,33 +36,37 @@
   }
 
   function convertOffsetAnchorPosition (properties, element) {
-    // clear transform ?
-    element.style._style.transform = 'none';
-    
     var position = 'auto';
     if ('offset-position' in properties) {
-      position = internalScope.offsetPositionAnchorParse(properties.offset-position);
+      position = internalScope.offsetPositionAnchorParse(properties['offset-position']);
     }
 
-    if (position === 'auto') {
+    if (position === 'auto' || position === undefined || position === null) {
       return null;
     }
 
     var anchor = 'auto';
     if ('offset-anchor' in properties) {
-      anchor = internalScope.offsetPositionAnchorParse(properties.offset-anchor);
+      anchor = internalScope.offsetPositionAnchorParse(properties['offset-anchor']);
     }
 
-    if (anchor === 'auto') {
+    if (anchor === 'auto' || anchor === undefined || anchor === null) {
       anchor = position;
     }
 
+    var savedTransform = element.style._style.transform;
+    element.style._style.transform = 'none';
     var elementProperties = element.getBoundingClientRect();
-    // not sure how the following works with negative percentages
+    element.style._style.transform = savedTransform;
+
     var anchorPosX = 0.01 * anchor[0] * elementProperties.width;
     var anchorPosY = 0.01 * anchor[1] * elementProperties.height;
-    // need code path for if there is no parent
-    var parentProperties = element.parent.getBoundingClientRect();
+
+    if (element.parentElement === null) {
+      return 'translate3d(0px, 0px, 0px)';
+    }
+
+    var parentProperties = element.parentElement.getBoundingClientRect();
 
     var offsetPosX = 0.01 * position[0] * parentProperties.width;
     var offsetPosY = 0.01 * position[1] * parentProperties.height;
@@ -70,7 +74,7 @@
     var desiredPosX = (offsetPosX - anchorPosX) - elementProperties.left;
     var desiredPosY = (offsetPosY - anchorPosY) - elementProperties.top;
 
-    return 'translate3d(' + desiredPosX + 'px ' + desiredPosY + 'px' + ')';
+    return 'translate3d(' + desiredPosX + 'px, ' + desiredPosY + 'px, ' + '0px)';
   }
 
   function toTransform (properties, element) {

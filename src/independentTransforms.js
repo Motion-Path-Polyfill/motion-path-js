@@ -39,7 +39,7 @@
     },
     applyHook: {
       callback: function (values, element) {
-        var transformString = internalScope.toTransform(values);
+        var transformString = internalScope.toTransform(values, element);
         var result = {
           transform: transformString + ' ' + values.transform,
           // TODO: set scale, rotate and translate to none once they are supported. Link to bug: crbug.com/679873
@@ -56,7 +56,7 @@
 
         return result;
       },
-      watchedProperties: ['scale', 'rotate', 'translate', 'transform']
+      watchedProperties: ['scale', 'rotate', 'translate', 'transform', 'offset-position', 'offset-anchor']
     }
   });
 })();

@@ -11,6 +11,10 @@
 
   function offsetPositionAnchorParse (input) {
     // TODO: add support for the full range of <position> values in the grammar.
+    if (input === undefined) {
+      return null;
+    }
+
     if (input === 'auto') {
       return input;
     }

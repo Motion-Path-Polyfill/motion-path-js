@@ -2,7 +2,7 @@
 (function () {
   var toTransform = internalScope.toTransform;
 
-/*  suite('toTransform', function () {
+  suite('toTransform', function () {
     test('convertTranslate', function () {
       assert.equal(toTransform({translate: 'none'}), 'translate3d(0px, 0px, 0px)');
       assert.equal(toTransform({translate: '0.6px'}), 'translate3d(0.6px, 0px, 0px)');
@@ -41,5 +41,5 @@
       assert.equal(toTransform({scale: '2 3'}), 'scale3d(2, 3, 1)');
       assert.equal(toTransform({scale: '2 3 4'}), 'scale3d(2, 3, 4)');
     });
-  });*/
+  });
 })();
