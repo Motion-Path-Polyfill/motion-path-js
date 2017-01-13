@@ -65,12 +65,12 @@
     var offsetTop = element.offsetTop;
 
     var elementProperties = element.getBoundingClientRect();
+    var parentProperties = element.offsetParent ? element.offsetParent.getBoundingClientRect() : null;
+    element.style._style.transform = savedTransform;
 
-    if (element.parentElement === null) {
+    if (!parentProperties) {
       return null;
     }
-
-    var parentProperties = element.offsetParent.getBoundingClientRect();
 
     var anchorPosX = (anchor[0] / 100) * elementProperties.width;
     var anchorPosY = (anchor[1] / 100) * elementProperties.height;
@@ -80,8 +80,6 @@
 
     var desiredPosX = (offsetPosX - anchorPosX) - offsetLeft;
     var desiredPosY = (offsetPosY - anchorPosY) - offsetTop;
-
-    element.style._style.transform = savedTransform;
 
     return 'translate3d(' + desiredPosX + 'px, ' + desiredPosY + 'px, ' + '0px)';
   }
