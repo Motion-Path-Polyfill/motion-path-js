@@ -36,6 +36,8 @@
   }
 
   function convertOffsetAnchorPosition (properties, element) {
+    /* According to spec: https://drafts.fxtf.org/motion-1/#offset-anchor-property
+       If offset-anchor is set to auto then it will compute to the value of offset-position. */
     var position = 'auto';
     if ('offset-position' in properties) {
       position = internalScope.offsetPositionAnchorParse(properties['offset-position']);
@@ -56,9 +58,12 @@
 
     var savedTransform = element.style._style.transform;
     element.style._style.transform = 'none';
-    var elementProperties = element.getBoundingClientRect();
+
+    var offsetLeft = element.offsetLeft;
+    var offsetTop = element.offsetTop;
     element.style._style.transform = savedTransform;
 
+    var elementProperties = element.getBoundingClientRect();
     var anchorPosX = 0.01 * anchor[0] * elementProperties.width;
     var anchorPosY = 0.01 * anchor[1] * elementProperties.height;
 
@@ -66,13 +71,12 @@
       return 'translate3d(0px, 0px, 0px)';
     }
 
-    var parentProperties = element.parentElement.getBoundingClientRect();
-
+    var parentProperties = element.offsetParent.getBoundingClientRect();
     var offsetPosX = 0.01 * position[0] * parentProperties.width;
     var offsetPosY = 0.01 * position[1] * parentProperties.height;
 
-    var desiredPosX = (offsetPosX - anchorPosX) - elementProperties.left;
-    var desiredPosY = (offsetPosY - anchorPosY) - elementProperties.top;
+    var desiredPosX = (offsetPosX - anchorPosX) - offsetLeft;
+    var desiredPosY = (offsetPosY - anchorPosY) - offsetTop;
 
     return 'translate3d(' + desiredPosX + 'px, ' + desiredPosY + 'px, ' + '0px)';
   }
