@@ -48,7 +48,6 @@
         position: 'absolute',
         left: '300px',
         top: '300px',
-        'background-color': 'yellow',
         width: '1000px',
         height: '1000px'
       };
@@ -59,7 +58,6 @@
         position: 'absolute',
         left: '500px',
         top: '500px',
-        'background-color': 'purple',
         'offset-position': '0% 100%',
         'offset-anchor': 'auto'
       };
@@ -83,6 +81,7 @@
       targetStyle['offset-position'] = 'garbage';
       assertTransform(containerStyle, targetStyle, 'none');
 
+      // offset-anchor will be set to auto
       targetStyle['offset-position'] = '55% 72%';
       targetStyle['offset-anchor'] = 'garbage';
       assertTransform(containerStyle, targetStyle, 'translate3d(810px, 424px, 0px)');

@@ -56,27 +56,32 @@
       anchor = position;
     }
 
+    // TODO: find a way of doing this that doesn't involve _style
     var savedTransform = element.style._style.transform;
+    // clear the transform so we can access the starting position of the element.
     element.style._style.transform = 'none';
 
     var offsetLeft = element.offsetLeft;
     var offsetTop = element.offsetTop;
-    element.style._style.transform = savedTransform;
 
     var elementProperties = element.getBoundingClientRect();
-    var anchorPosX = 0.01 * anchor[0] * elementProperties.width;
-    var anchorPosY = 0.01 * anchor[1] * elementProperties.height;
 
     if (element.parentElement === null) {
-      return 'translate3d(0px, 0px, 0px)';
+      return null;
     }
 
     var parentProperties = element.offsetParent.getBoundingClientRect();
-    var offsetPosX = 0.01 * position[0] * parentProperties.width;
-    var offsetPosY = 0.01 * position[1] * parentProperties.height;
+
+    var anchorPosX = (anchor[0] / 100) * elementProperties.width;
+    var anchorPosY = (anchor[1] / 100) * elementProperties.height;
+
+    var offsetPosX = (position[0] / 100) * parentProperties.width;
+    var offsetPosY = (position[1] / 100) * parentProperties.height;
 
     var desiredPosX = (offsetPosX - anchorPosX) - offsetLeft;
     var desiredPosY = (offsetPosY - anchorPosY) - offsetTop;
+
+    element.style._style.transform = savedTransform;
 
     return 'translate3d(' + desiredPosX + 'px, ' + desiredPosY + 'px, ' + '0px)';
   }
