@@ -34,18 +34,33 @@
     }
     return 'scale3d(' + valuesArray.join(', ') + ')';
   }
-  
+
   function convertPath (offsetPath, offsetDistance) {
-    console.log("This is the path: " + offsetPath);
-    console.log("This is the distance: " + offsetDistance);
+    if (offsetPath === undefined || offsetDistance === undefined) {
+      return null;
+    }
+
+    var pathElement = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    pathElement.setAttribute('d', offsetPath);
+
+    var offsetDistanceLength;
+    if (offsetDistance.substring(offsetDistance.length - 1) === '%') {
+      offsetDistanceLength = pathElement.getTotalLength();
+    } else {
+      offsetDistanceLength = Number(offsetDistance.substring(0, offsetDistance.length - 2));
+    }
+
+    var point = pathElement.getPointAtLength(offsetDistanceLength);
+
+    return 'translate3d(' + point.x + 'px, ' + point.y + 'px, 0px)';
   }
 
   function toTransform (properties) {
     return [
-      convertPath(properties['offset-path'], properties['offset-distance']),       
       convertTranslate(properties.translate),
       convertRotate(properties.rotate),
-      convertScale(properties.scale)
+      convertScale(properties.scale),
+      convertPath(properties['offset-path'], properties['offset-distance'])
     ].filter(function (result) {
       return result !== null;
     }).join(' ') || 'none';

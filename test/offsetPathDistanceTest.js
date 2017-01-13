@@ -1,24 +1,20 @@
-/* global assert suite test internalScope */
+/* global suite test internalScope */
 
 (function () {
   suite('transforms', function () {
     test('offsetDistance', function () {
-      var assertInterpolation = internalScope.assertInterpolation;
+      var assertTransformInterpolation = internalScope.assertTransformInterpolation;
 
-      assertInterpolation({
-        property: 'offset-distance',
-        from: '10px',
-        to: '50px'
-      }, {
-        property: 'offset-path',
-        from: 'path(m 0 0 h 0 100 v 0 0)',
-        to: 'path(m 0 0 h 0 200 v 0 0)'
-      }, [
-        {at: 0, is: '10px'},
-        {at: 0.3, is: '22px'},
-        {at: 0.6, is: '34px'},
-        {at: 1, is: '50px'}
-      ]);
+      assertTransformInterpolation([{'offset-path': 'm 0, 0 h 100 v 100 h -100 z', 'offset-distance': '0px'},
+                                    {'offset-path': 'm 0, 0 h 100 v 100 h -100 z', 'offset-distance': '400px'}],
+        [
+                                    {at: 0, is: 'translate3d(0px, 0px, 0px)'},
+                                    {at: 0.25, is: 'translate3d(100px, 0px, 0px)'},
+                                    {at: 0.5, is: 'translate3d(100px, 100px, 0px)'},
+                                    {at: 0.75, is: 'translate3d(0px, 100px, 0px)'},
+                                    {at: 1, is: 'translate3d(0px, 0px, 0px)'}
+        ]
+                                  );
     });
   });
 })();
