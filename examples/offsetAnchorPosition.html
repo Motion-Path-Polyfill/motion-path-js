@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<script src="../third_party/web-animations-js/web-animations.dev.js"></script>
+<script src="../index.min.js"></script>
+
+<div id="container">
+  <div id="target">
+  </div>
+</div>
+
+<style>
+  body {
+    margin: 0px;
+  }
+
+  #container {
+
+    position: absolute;
+    left: 300px;
+    top: 300px;
+    background-color: yellow;
+
+    width: 1000px;
+    height: 1000px;
+    transform: scale(1);
+  }
+
+  #target {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    left: 500px;
+    top: 500px;
+    background-color: purple;
+  }
+</style>
+
+<script>
+  var keyframes = [{'offset-position': '50% 50%', 'offset-anchor': 'auto'}, {'offset-position': '0% 100%', 'offset-anchor': 'auto'}];
+  var timing = {duration: 2000, iterations: 3};
+  target.animate(keyframes, timing);
+</script>

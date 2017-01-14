@@ -1,6 +1,7 @@
 /* global suite test assert internalScope */
 (function () {
   var toTransform = internalScope.toTransform;
+  var assertTransform = internalScope.assertTransform;
 
   suite('toTransform', function () {
     test('convertTranslate', function () {
@@ -40,6 +41,50 @@
       assert.equal(toTransform({scale: '2'}), 'scale3d(2, 1, 1)');
       assert.equal(toTransform({scale: '2 3'}), 'scale3d(2, 3, 1)');
       assert.equal(toTransform({scale: '2 3 4'}), 'scale3d(2, 3, 4)');
+    });
+
+    test('convertOffsetAnchorPosition', function () {
+      var containerStyle = {
+        position: 'absolute',
+        left: '300px',
+        top: '300px',
+        width: '1000px',
+        height: '1000px'
+      };
+
+      var targetStyle = {
+        width: '100px',
+        height: '100px',
+        position: 'absolute',
+        left: '500px',
+        top: '500px',
+        'offset-position': '0% 100%',
+        'offset-anchor': 'auto'
+      };
+      assertTransform(containerStyle, targetStyle, 'translate3d(-500px, 400px, 0px)');
+
+      containerStyle['width'] = '2000px';
+      targetStyle['height'] = '300px';
+      targetStyle['width'] = '400px';
+      targetStyle['left'] = '70px';
+      targetStyle['top'] = '80px';
+      targetStyle['offset-position'] = '100% 0%';
+      assertTransform(containerStyle, targetStyle, 'translate3d(1530px, -80px, 0px)');
+
+      targetStyle['offset-position'] = '60% 40%';
+      targetStyle['offset-anchor'] = '20% 30%';
+      assertTransform(containerStyle, targetStyle, 'translate3d(1050px, 230px, 0px)');
+
+      targetStyle['offset-position'] = 'auto';
+      assertTransform(containerStyle, targetStyle, 'none');
+
+      targetStyle['offset-position'] = 'garbage';
+      assertTransform(containerStyle, targetStyle, 'none');
+
+      // offset-anchor will be set to auto
+      targetStyle['offset-position'] = '55% 72%';
+      targetStyle['offset-anchor'] = 'garbage';
+      assertTransform(containerStyle, targetStyle, 'translate3d(810px, 424px, 0px)');
     });
   });
 })();

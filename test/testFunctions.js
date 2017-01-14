@@ -48,6 +48,30 @@
     }
   }
 
+  function assertTransform (containerStyle, targetStyle, expectedTransform) {
+    var container = document.createElement('div');
+
+    for (var property in containerStyle) {
+      container.style[property] = containerStyle[property];
+    }
+
+    var target = document.createElement('div');
+    container.appendChild(target);
+    document.body.appendChild(container);
+
+    var keyframes = [targetStyle, targetStyle];
+    var timing = {duration: Infinity, fill: 'forwards'};
+    target.animate(keyframes, timing);
+
+    // to force target.style._style to update
+    window.getComputedStyle(target);
+    // TODO: find a way to not use _style.
+    var result = target.style._style.transform;
+    document.body.removeChild(container);
+
+    assert.equal(result, expectedTransform, 'expected: ' + expectedTransform + ' but got: ' + result);
+  }
+
   function assertInterpolationHelper (keyframes, expectation, propertyToRead) {
     var target = document.createElement('div');
 
@@ -94,5 +118,6 @@
   internalScope.assertOffsetInterpolation = assertOffsetInterpolation;
   internalScope.assertInterpolation = assertInterpolation;
   internalScope.assertNoInterpolation = assertNoInterpolation;
+  internalScope.assertTransform = assertTransform;
 })();
 
