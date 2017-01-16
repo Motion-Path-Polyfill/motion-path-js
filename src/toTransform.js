@@ -42,10 +42,10 @@
     if ('offset-position' in properties) {
       position = internalScope.offsetPositionAnchorParse(properties['offset-position']);
     }
-
     if (position === 'auto' || position === undefined || position === null) {
       return null;
     }
+    position = [position[0].value, position[1].value];
 
     var anchor = 'auto';
     if ('offset-anchor' in properties) {
@@ -54,6 +54,8 @@
 
     if (anchor === 'auto' || anchor === undefined || anchor === null) {
       anchor = position;
+    } else {
+      anchor = [anchor[0].value, anchor[1].value];
     }
 
     // TODO: find a way of doing this that doesn't involve _style
