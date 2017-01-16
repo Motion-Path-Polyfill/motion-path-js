@@ -6,7 +6,7 @@
       var assertOffsetInterpolation = internalScope.assertOffsetInterpolation;
       var assertNoInterpolation = internalScope.assertNoInterpolation;
 
-/*      assertOffsetInterpolation({
+      assertOffsetInterpolation({
         property: 'offset-path',
         from: 'ray(100deg)',
         to: 'ray(-100deg)'
@@ -15,7 +15,7 @@
         {at: 0.25, is: 'ray(50deg)'},
         {at: 0.75, is: 'ray(-50deg)'},
         {at: 1, is: 'ray(-100deg)'}
-      ]);*/
+      ]);
 
       assertNoInterpolation({
         property: 'offset-rotate',

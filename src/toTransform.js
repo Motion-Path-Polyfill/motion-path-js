@@ -1,11 +1,6 @@
 /* global internalScope */
 
 (function () {
-
-  function isNumeric (number) {
-    return !isNaN(number);
-  }
-
   function convertTranslate (input) {
     var valuesArray = internalScope.translateParse(input);
 
@@ -39,19 +34,18 @@
     }
     return 'scale3d(' + valuesArray.join(', ') + ')';
   }
-  
+
   function convertPath (properties) {
     var offsetPath = null;
     if ('offset-path' in properties) {
       offsetPath = internalScope.offsetPathParse(properties['offset-path']);
     }
 
-
-    if (offsetPath === undefined || offsetPath === null || offsetPath.type !== 'path'){
+    if (offsetPath === undefined || offsetPath === null || offsetPath.type !== 'path') {
       return null;
     }
 
-    var offsetDistance = undefined;
+    var offsetDistance;
     if (('offset-distance' in properties) && (properties['offset-distance'] !== undefined)) {
       offsetDistance = internalScope.offsetDistanceParse(properties['offset-distance']);
     }

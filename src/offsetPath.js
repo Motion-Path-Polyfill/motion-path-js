@@ -12,7 +12,7 @@
 
     var inputType = '';
     var ray = /^ray\((.*)\)$/.exec(input);
-    var path = /^path\([\'\"](.*)[\'\"]\)$/.exec(input);
+    var path = /^path\(['"](.*)['"]\)$/.exec(input);
     if (ray === null && path === null) {
       return undefined;
     } else if (ray !== null) {
