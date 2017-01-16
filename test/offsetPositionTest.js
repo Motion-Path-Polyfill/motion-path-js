@@ -3,9 +3,9 @@
 (function () {
   suite('transforms', function () {
     test('offsetPosition', function () {
-      var assertInterpolation = internalScope.assertInterpolation;
+      var assertOffsetInterpolation = internalScope.assertOffsetInterpolation;
 
-      assertInterpolation({
+      assertOffsetInterpolation({
         property: 'offset-position',
         from: '10% 20%',
         to: '60% 40%'
@@ -16,7 +16,7 @@
         {at: 1, is: '60% 40%'}
       ]);
 
-      assertInterpolation({
+      assertOffsetInterpolation({
         property: 'offset-position',
         from: 'auto',
         to: '80% 30%'
@@ -27,7 +27,7 @@
         {at: 1, is: '80% 30%'}
       ]);
 
-      assertInterpolation({
+      assertOffsetInterpolation({
         property: 'offset-position',
         from: '15% 73%',
         to: 'auto'
@@ -38,7 +38,7 @@
         {at: 1, is: 'auto'}
       ]);
 
-      assertInterpolation({
+      assertOffsetInterpolation({
         property: 'offset-position',
         from: 'auto',
         to: 'auto'
@@ -47,6 +47,28 @@
         {at: 0.3, is: 'auto'},
         {at: 0.6, is: 'auto'},
         {at: 1, is: 'auto'}
+      ]);
+
+      assertOffsetInterpolation({
+        property: 'offset-position',
+        from: '20px 50%',
+        to: '30% 40px'
+      }, [
+        {at: 0, is: '20px 50%'},
+        {at: 0.3, is: '20px 50%'},
+        {at: 0.6, is: '30% 40px'},
+        {at: 1, is: '30% 40px'}
+      ]);
+
+      assertOffsetInterpolation({
+        property: 'offset-position',
+        from: '20px 50%',
+        to: '30px 40%'
+      }, [
+        {at: 0, is: '20px 50%'},
+        {at: 0.3, is: '23px 47%'},
+        {at: 0.6, is: '26px 44%'},
+        {at: 1, is: '30px 40%'}
       ]);
 
       assert.equal(internalScope.offsetPositionAnchorParse('garbage% pants%'), undefined);
