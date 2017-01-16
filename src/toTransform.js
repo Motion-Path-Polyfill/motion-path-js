@@ -45,7 +45,6 @@
     if (position === 'auto' || position === undefined || position === null) {
       return null;
     }
-    position = [position[0].value, position[1].value];
 
     var anchor = 'auto';
     if ('offset-anchor' in properties) {
@@ -54,8 +53,6 @@
 
     if (anchor === 'auto' || anchor === undefined || anchor === null) {
       anchor = position;
-    } else {
-      anchor = [anchor[0].value, anchor[1].value];
     }
 
     // TODO: find a way of doing this that doesn't involve _style
@@ -74,11 +71,26 @@
       return null;
     }
 
-    var anchorPosX = (anchor[0] / 100) * elementProperties.width;
-    var anchorPosY = (anchor[1] / 100) * elementProperties.height;
+    var anchorPosX = anchor[0].value;
+    var anchorPosY = anchor[1].value;
+    var offsetPosX = position[0].value;
+    var offsetPosY = position[1].value;
 
-    var offsetPosX = (position[0] / 100) * parentProperties.width;
-    var offsetPosY = (position[1] / 100) * parentProperties.height;
+    if (anchor[0].unit === '%') {
+      anchorPosX = (anchorPosX / 100) * elementProperties.width;
+    }
+
+    if (anchor[1].unit === '%') {
+      anchorPosY = (anchorPosY / 100) * elementProperties.height;
+    }
+
+    if (position[0].unit === '%') {
+      offsetPosX = (offsetPosX / 100) * parentProperties.width;
+    }
+
+    if (position[1].unit === '%') {
+      offsetPosY = (offsetPosY / 100) * parentProperties.height;
+    }
 
     var desiredPosX = (offsetPosX - anchorPosX) - offsetLeft;
     var desiredPosY = (offsetPosY - anchorPosY) - offsetTop;
