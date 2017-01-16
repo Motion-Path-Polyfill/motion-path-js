@@ -1,6 +1,11 @@
 /* global internalScope */
 
 (function () {
+
+  function isNumeric (number) {
+    return !isNaN(number);
+  }
+
   function convertTranslate (input) {
     var valuesArray = internalScope.translateParse(input);
 
@@ -44,8 +49,9 @@
     pathElement.setAttribute('d', offsetPath);
 
     var offsetDistanceLength;
+
     if (offsetDistance.substring(offsetDistance.length - 1) === '%') {
-      offsetDistanceLength = pathElement.getTotalLength();
+      offsetDistanceLength = (Number(offsetDistance.substring(0, offsetDistance.length - 1)) / 100) * pathElement.getTotalLength();
     } else {
       offsetDistanceLength = Number(offsetDistance.substring(0, offsetDistance.length - 2));
     }
