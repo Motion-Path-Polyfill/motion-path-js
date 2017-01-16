@@ -99,6 +99,12 @@
   }
 
   function toTransform (properties, element) {
+    /* W3C spec for what syntax toTransform() outputs:
+       https://drafts.csswg.org/css-transforms/#transform-functions
+       W3C spec for what syntax toTransform() parses:
+       https://drafts.csswg.org/css-transforms-2/#individual-transforms
+       https://drafts.fxtf.org/motion-1/#motion-paths-overview
+    */
     return [
       convertTranslate(properties.translate),
       convertRotate(properties.rotate),
