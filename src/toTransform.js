@@ -35,26 +35,21 @@
     return 'scale3d(' + valuesArray.join(', ') + ')';
   }
 
-  function convertPath (properties) {
-    var offsetPath = null;
-    if ('offset-path' in properties) {
-      offsetPath = internalScope.offsetPathParse(properties['offset-path']);
-    }
+  var pathElement = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 
-    if (offsetPath === undefined || offsetPath === null || offsetPath.type !== 'path') {
+  function convertPath (properties) {
+    var offsetPath = internalScope.offsetPathParse(properties['offset-path']);
+    if (!offsetPath || offsetPath.type !== 'path') {
       return null;
     }
 
     var offsetDistance;
-    if (('offset-distance' in properties) && (properties['offset-distance'] !== undefined)) {
+    if (properties['offset-distance'] === undefined) {
+      offsetDistance = {value: 0, unit: 'px'};
+    } else {
       offsetDistance = internalScope.offsetDistanceParse(properties['offset-distance']);
     }
 
-    if (offsetDistance === undefined) {
-      offsetDistance = {value: 0, unit: 'px'};
-    }
-
-    var pathElement = document.createElementNS('http://www.w3.org/2000/svg', 'path');
     pathElement.setAttribute('d', offsetPath.input);
 
     var offsetDistanceLength;
