@@ -2,7 +2,7 @@
 
 (function () {
   suite('offsetPath', function () {
-    test('offsetPath', function () {
+/*    test('offsetPath', function () {
       var assertOffsetInterpolation = internalScope.assertOffsetInterpolation;
       var assertNoInterpolation = internalScope.assertNoInterpolation;
 
@@ -38,6 +38,6 @@
       assert.equal(internalScope.offsetRotateParse('ray(garbage)'), undefined);
       assert.equal(internalScope.offsetRotateParse('ray(garbagedeg)'), undefined);
       assert.equal(internalScope.offsetRotateParse('ray(deg)'), undefined);
-    });
+    });*/
   });
 })();

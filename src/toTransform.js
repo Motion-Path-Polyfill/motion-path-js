@@ -39,21 +39,36 @@
     }
     return 'scale3d(' + valuesArray.join(', ') + ')';
   }
+  
+  function convertPath (properties) {
+    var offsetPath = null;
+    if ('offset-path' in properties) {
+      offsetPath = internalScope.offsetPathParse(properties['offset-path']);
+    }
 
-  function convertPath (offsetPath, offsetDistance) {
-    if (offsetPath === undefined || offsetDistance === undefined) {
+    if (offsetPath === undefined || offsetPath === null || offsetPath.type !== 'path') {
       return null;
     }
 
+    var offsetDistance = undefined;
+
+    if (('offset-distance' in properties) && (properties['offset-distance'] !== undefined)) {
+      offsetDistance = internalScope.offsetDistanceParse(properties['offset-distance']);
+    }
+
+    if (offsetDistance === undefined) {
+      offsetDistance = {value: 0, unit: 'px'};
+    }
+
     var pathElement = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    pathElement.setAttribute('d', offsetPath);
+    pathElement.setAttribute('d', offsetPath.input);
 
     var offsetDistanceLength;
-
-    if (offsetDistance.substring(offsetDistance.length - 1) === '%') {
-      offsetDistanceLength = (Number(offsetDistance.substring(0, offsetDistance.length - 1)) / 100) * pathElement.getTotalLength();
+    
+    if (offsetDistance.unit === '%') {
+      offsetDistanceLength = Number(offsetDistance.value) * pathElement.getTotalLength() / 100;
     } else {
-      offsetDistanceLength = Number(offsetDistance.substring(0, offsetDistance.length - 2));
+      offsetDistanceLength = Number(offsetDistance.value);
     }
 
     var point = pathElement.getPointAtLength(offsetDistanceLength);
@@ -66,7 +81,7 @@
       convertTranslate(properties.translate),
       convertRotate(properties.rotate),
       convertScale(properties.scale),
-      convertPath(properties['offset-path'], properties['offset-distance'])
+      convertPath(properties)
     ].filter(function (result) {
       return result !== null;
     }).join(' ') || 'none';
