@@ -16,8 +16,8 @@
                                   ]
       );
 
-     /* assertTransformInterpolation([{'offset-path': 'm 0, 0 h 100 v 100 h -100 z', 'offset-distance': '0%'},
-                                    {'offset-path': 'm 0, 0 h 100 v 100 h -100 z', 'offset-distance': '100%'}],
+      assertTransformInterpolation([{'offset-path': "path('m 0, 0 h 100 v 100 h -100 z')", 'offset-distance': '0%'},
+                                    {'offset-path': "path('m 0, 0 h 100 v 100 h -100 z')", 'offset-distance': '100%'}],
                                   [
                                     {at: 0, is: 'translate3d(0px, 0px, 0px)'},
                                     {at: 0.25, is: 'translate3d(100px, 0px, 0px)'},
@@ -26,7 +26,7 @@
                                     {at: 1, is: 'translate3d(0px, 0px, 0px)'}
                                   ]
       );
-*/
+
     });
   });
 })();

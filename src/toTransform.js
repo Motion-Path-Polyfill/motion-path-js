@@ -46,12 +46,12 @@
       offsetPath = internalScope.offsetPathParse(properties['offset-path']);
     }
 
-    if (offsetPath === undefined || offsetPath === null || offsetPath.type !== 'path') {
+
+    if (offsetPath === undefined || offsetPath === null || offsetPath.type !== 'path'){
       return null;
     }
 
     var offsetDistance = undefined;
-
     if (('offset-distance' in properties) && (properties['offset-distance'] !== undefined)) {
       offsetDistance = internalScope.offsetDistanceParse(properties['offset-distance']);
     }
@@ -64,7 +64,6 @@
     pathElement.setAttribute('d', offsetPath.input);
 
     var offsetDistanceLength;
-    
     if (offsetDistance.unit === '%') {
       offsetDistanceLength = Number(offsetDistance.value) * pathElement.getTotalLength() / 100;
     } else {

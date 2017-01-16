@@ -11,9 +11,8 @@
     }
 
     var inputType = '';
-    var ray = /^ray\([\'\"](.*)[\'\"]\)$/.exec(input);
+    var ray = /^ray\((.*)\)$/.exec(input);
     var path = /^path\([\'\"](.*)[\'\"]\)$/.exec(input);
-
     if (ray === null && path === null) {
       return undefined;
     } else if (ray !== null) {
@@ -27,7 +26,6 @@
     } else if (path !== null) {
       inputType = 'path';
       var pathInput = path[1];
-      console.log("pathInput: " + pathInput);
       return {type: inputType, input: pathInput};
     }
   }
