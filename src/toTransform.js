@@ -77,19 +77,19 @@
     var offsetPosY = position[1].value;
 
     if (anchor[0].unit === '%') {
-      anchorPosX = (anchorPosX / 100) * elementProperties.width;
+      anchorPosX = (anchorPosX * elementProperties.width) / 100;
     }
 
     if (anchor[1].unit === '%') {
-      anchorPosY = (anchorPosY / 100) * elementProperties.height;
+      anchorPosY = (anchorPosY * elementProperties.height) / 100;
     }
 
     if (position[0].unit === '%') {
-      offsetPosX = (offsetPosX / 100) * parentProperties.width;
+      offsetPosX = (offsetPosX * parentProperties.width) / 100;
     }
 
     if (position[1].unit === '%') {
-      offsetPosY = (offsetPosY / 100) * parentProperties.height;
+      offsetPosY = (offsetPosY * parentProperties.height) / 100;
     }
 
     var desiredPosX = (offsetPosX - anchorPosX) - offsetLeft;
