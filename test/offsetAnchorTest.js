@@ -49,6 +49,28 @@
         {at: 1, is: 'auto'}
       ]);
 
+      assertOffsetInterpolation({
+        property: 'offset-anchor',
+        from: '20px 50%',
+        to: '30% 40px'
+      }, [
+        {at: 0, is: '20px 50%'},
+        {at: 0.3, is: '20px 50%'},
+        {at: 0.6, is: '30% 40px'},
+        {at: 1, is: '30% 40px'}
+      ]);
+
+      assertOffsetInterpolation({
+        property: 'offset-anchor',
+        from: '20px 50%',
+        to: '30px 40%'
+      }, [
+        {at: 0, is: '20px 50%'},
+        {at: 0.3, is: '23px 47%'},
+        {at: 0.6, is: '26px 44%'},
+        {at: 1, is: '30px 40%'}
+      ]);
+
       assert.equal(internalScope.offsetPositionAnchorParse('garbage% pants%'), undefined);
       assert.equal(internalScope.offsetPositionAnchorParse('garbage pants'), undefined);
       assert.equal(internalScope.offsetPositionAnchorParse('30% 40% 60%'), undefined);

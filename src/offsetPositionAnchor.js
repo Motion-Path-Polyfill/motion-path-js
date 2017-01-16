@@ -7,8 +7,6 @@
      spec for the offset-position property:
      https://drafts.fxtf.org/motion-1/#offset-position-property
   */
-  // var isNumeric = internalScope.isNumeric;
-
   function offsetPositionAnchorParse (input) {
     // TODO: add support for the full range of <position> values in the grammar.
     if (input === undefined) {
@@ -34,26 +32,23 @@
   }
 
   function offsetPositionAnchorMerge (start, end) {
-    function serialize (input) {
+    function serializeNonInterpolable (input) {
       if (input === 'auto') {
         return input;
       }
+      return input[0].value + input[0].unit + ' ' + input[1].value + input[1].unit;
+    }
+
+    function serialize (input) {
       return input[0] + start[0].unit + ' ' + input[1] + start[1].unit;
     }
 
-    if (start === 'auto' && end === 'auto') {
-      return internalScope.flip(serialize(start), serialize(end));
-    }
-    if (start === 'auto') {
-      return internalScope.flip(serialize(start), end[0].value + end[0].unit + ' ' + end[1].value + end[1].unit);
-    }
-    if (end === 'auto') {
-      return internalScope.flip(start[0].value + start[0].unit + ' ' + start[1].value + start[1].unit, serialize(end));
+    if (start === 'auto' || end === 'auto') {
+      return internalScope.flip(serializeNonInterpolable(start), serializeNonInterpolable(end));
     }
 
     if ((start[0].unit !== end[0].unit) || (start[1].unit !== end[1].unit)) {
-      return internalScope.flip(start[0].value + start[0].unit + ' ' + end[0].value + end[0].unit,
-                                start[1].value + start[1].unit + ' ' + end[1].value + end[1].unit);
+      return internalScope.flip(serializeNonInterpolable(start), serializeNonInterpolable(end));
     }
 
     return {
