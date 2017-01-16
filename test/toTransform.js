@@ -85,6 +85,14 @@
       targetStyle['offset-position'] = '55% 72%';
       targetStyle['offset-anchor'] = 'garbage';
       assertTransform(containerStyle, targetStyle, 'translate3d(810px, 424px, 0px)');
+
+      targetStyle['offset-position'] = '20% 45px';
+      targetStyle['offset-anchor'] = '15% 30%';
+      assertTransform(containerStyle, targetStyle, 'translate3d(270px, -125px, 0px)');
+
+      targetStyle['offset-position'] = '70% 12px';
+      targetStyle['offset-anchor'] = '15px 60%';
+      assertTransform(containerStyle, targetStyle, 'translate3d(1315px, -248px, 0px)');
     });
   });
 })();

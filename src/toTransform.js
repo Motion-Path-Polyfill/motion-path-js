@@ -42,7 +42,6 @@
     if ('offset-position' in properties) {
       position = internalScope.offsetPositionAnchorParse(properties['offset-position']);
     }
-
     if (position === 'auto' || position === undefined || position === null) {
       return null;
     }
@@ -72,11 +71,26 @@
       return null;
     }
 
-    var anchorPosX = (anchor[0] / 100) * elementProperties.width;
-    var anchorPosY = (anchor[1] / 100) * elementProperties.height;
+    var anchorPosX = anchor[0].value;
+    var anchorPosY = anchor[1].value;
+    var offsetPosX = position[0].value;
+    var offsetPosY = position[1].value;
 
-    var offsetPosX = (position[0] / 100) * parentProperties.width;
-    var offsetPosY = (position[1] / 100) * parentProperties.height;
+    if (anchor[0].unit === '%') {
+      anchorPosX = (anchorPosX * elementProperties.width) / 100;
+    }
+
+    if (anchor[1].unit === '%') {
+      anchorPosY = (anchorPosY * elementProperties.height) / 100;
+    }
+
+    if (position[0].unit === '%') {
+      offsetPosX = (offsetPosX * parentProperties.width) / 100;
+    }
+
+    if (position[1].unit === '%') {
+      offsetPosY = (offsetPosY * parentProperties.height) / 100;
+    }
 
     var desiredPosX = (offsetPosX - anchorPosX) - offsetLeft;
     var desiredPosY = (offsetPosY - anchorPosY) - offsetTop;
