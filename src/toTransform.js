@@ -39,10 +39,23 @@
 
   function convertPath (properties) {
     var offsetPath = internalScope.offsetPathParse(properties['offset-path']);
-    if (!offsetPath || offsetPath.type !== 'path') {
+    
+    if(!offsetPath) {
       return null;
     }
 
+    if(offsetPath.type === 'path') {
+      return convertPathString(properties);
+    }
+
+    if(offsetPath.type === 'ray') {
+      return convertRayString(properties);
+    }
+  }
+
+  function convertPathString (properties) {
+    var offsetPath = internalScope.offsetPathParse(properties['offset-path']);
+    
     var offsetDistance = internalScope.offsetDistanceParse(properties['offset-distance']);
     if (offsetDistance === undefined) {
       offsetDistance = {value: 0, unit: 'px'};
@@ -60,6 +73,12 @@
     var point = pathElement.getPointAtLength(offsetDistanceLength);
 
     return 'translate3d(' + point.x + 'px, ' + point.y + 'px, 0px)';
+  }
+
+
+  function convertRayString (properties) {
+    var offsetPath = internalScope.offsetPathParse(properties['offset-path']);
+    console.log("This is a ray string");
   }
 
   function convertOffsetAnchorPosition (properties, element) {
@@ -150,9 +169,9 @@
       convertTranslate(properties.translate),
       convertRotate(properties.rotate),
       convertScale(properties.scale),
-      convertPath(properties)
-      convertOffsetAnchorPosition(properties, element),
-      convertOffsetRotate(properties, element)
+      convertPath(properties),
+      //convertOffsetAnchorPosition(properties, element),
+      //convertOffsetRotate(properties, element)
     ].filter(function (result) {
       return result !== null;
     }).join(' ') || 'none';
