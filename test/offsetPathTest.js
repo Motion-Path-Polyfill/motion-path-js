@@ -17,6 +17,28 @@
         {at: 1, is: 'ray(-100deg)'}
       ]);
 
+      assertOffsetInterpolation({
+        property: 'offset-path',
+        from: 'ray(100deg contain)',
+        to: 'ray(-100deg contain)'
+      }, [
+        {at: 0, is: 'ray(100deg contain)'},
+        {at: 0.25, is: 'ray(50deg contain)'},
+        {at: 0.75, is: 'ray(-50deg contain)'},
+        {at: 1, is: 'ray(-100deg contain)'}
+      ]);
+
+      assertOffsetInterpolation({
+        property: 'offset-path',
+        from: 'ray(farthest-side 100deg contain)',
+        to: 'ray(farthest-side -100deg contain)'
+      }, [
+        {at: 0, is: 'ray(farthest-side 100deg contain)'},
+        {at: 0.25, is: 'ray(50deg farthest-side contain)'},
+        {at: 0.75, is: 'ray(-50deg farthest-side contain)'},
+        {at: 1, is: 'ray(farthest-side -100deg contain)'}
+      ]);
+
       assertNoInterpolation({
         property: 'offset-rotate',
         from: "path('m 0 0 h 100')",
