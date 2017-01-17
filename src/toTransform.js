@@ -43,11 +43,9 @@
       return null;
     }
 
-    var offsetDistance;
-    if (properties['offset-distance'] === undefined) {
+    var offsetDistance = internalScope.offsetDistanceParse(properties['offset-distance']);
+    if (offsetDistance === undefined) {
       offsetDistance = {value: 0, unit: 'px'};
-    } else {
-      offsetDistance = internalScope.offsetDistanceParse(properties['offset-distance']);
     }
 
     pathElement.setAttribute('d', offsetPath.input);
