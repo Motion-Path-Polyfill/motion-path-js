@@ -3,7 +3,7 @@
 (function () {
   function offsetPathParse (input) {
     var parseAngleAsDegrees = internalScope.parseAngleAsDegrees;
-
+    var isInArray = internalScope.isInArray;
     // https://drafts.fxtf.org/motion-1/#offset-path-property
 
     if (input === 'none') {
@@ -19,29 +19,26 @@
     } else if (ray !== null) {
       inputType = 'ray';
       var rayInput = ray[1].split(/\s+/);
-      var result = {type: inputType,
-                    input: 'none',
-                    contain: false,
-                    size: 'none'
-                   };
+      if (rayInput.length > 3) {
+        return undefined;
+      }
+
+      var result = {type: inputType, input: 'none', contain: false, size: 'none'};
+      var validSizes = ['closest-side', 'farthest-side', 'closest-corner', 'farthest-corner'];
 
       for (var i = 0; i < rayInput.length; i++) {
-        if (rayInput[i] === 'contain') {
+        if (rayInput[i] === 'contain' && !result.contain) {
           result.contain = true;
-        } else if (rayInput[i] === 'closest-side') {
-          result.size = 'closest-side';
-        } else if (rayInput[i] === 'farthest-side') {
-          result.size = 'farthest-side';
-        } else if (rayInput[i] === 'closest-corner') {
-          result.size = 'closest-corner';
-        } else if (rayInput[i] === 'farthest-corner') {
-          result.size = 'farthest-corner';
-        } else {
+        } else if (result.size === 'none' && isInArray(validSizes, rayInput[i])) {
+          result.size = rayInput[i];
+        } else if (result.input === 'none') {
           var rayInputDegrees = parseAngleAsDegrees(rayInput[i]);
           if (rayInputDegrees === null) {
             return undefined;
           }
           result.input = rayInputDegrees;
+        } else {
+          return undefined;
         }
       }
       return result;
@@ -53,50 +50,40 @@
   }
 
   function offsetPathMerge (start, end) {
-    function serializeParsed (input) {
-      if (input.type === 'ray') {
-        var result = 'ray(' + input.input + 'deg';
-        if (input.size !== 'none') {
-          result += ' ' + input.size;
+    function serializeParsed (angle, contain, size, type) {
+      if (type === 'ray') {
+        var result = 'ray(' + angle + 'deg';
+        if (size !== 'none') {
+          result += ' ' + size;
         }
-        if (input.contain) {
+        if (contain) {
           result += ' contain';
         }
         result += ')';
         return result;
       }
-      if (input.type === 'path') {
-        return 'path(' + input.input + ')';
+      if (type === 'path') {
+        return 'path(' + angle + ')';
       }
-      if (input.type === null) {
+      if (type === null) {
         return 'none';
       }
     }
 
     if (start.type !== 'ray' || end.type !== 'ray') {
-      return internalScope.flip(serializeParsed(start), serializeParsed(end));
+      return internalScope.flip(serializeParsed(start.input, start.contain, start.size, start.inputType),
+                                serializeParsed(end.input, end.contain, end.size, end.inputType));
     }
-    if (start.size !== end.size) {
-      return internalScope.flip(serializeParsed(start), serializeParsed(end));
-    }
-    if (start.contain !== end.contain) {
-      return internalScope.flip(serializeParsed(start), serializeParsed(end));
+    if (start.size !== end.size || start.contain !== end.contain) {
+      return internalScope.flip(serializeParsed(start.input, start.contain, start.size, start.inputType),
+                                serializeParsed(end.input, end.contain, end.size, end.inputType));
     }
 
     return {
       start: start.input,
       end: end.input,
       serialize: function (input) {
-        var result = 'ray(' + input + 'deg';
-
-        if (start.size !== 'none') {
-          result += ' ' + start.size;
-        }
-        if (start.contain) {
-          result += ' contain';
-        }
-        result += ')';
-        return result;
+        return serializeParsed(input, start.contain, start.size, start.type);
       }
     };
   }
@@ -104,4 +91,3 @@
   internalScope.offsetPathParse = offsetPathParse;
   internalScope.offsetPathMerge = offsetPathMerge;
 })();
-

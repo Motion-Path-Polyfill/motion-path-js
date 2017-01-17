@@ -36,7 +36,12 @@
     };
   }
 
+  function isInArray (array, value) {
+    return array.indexOf(value) >= 0;
+  }
+
   internalScope.parseAngleAsDegrees = parseAngleAsDegrees;
   internalScope.isNumeric = isNumeric;
   internalScope.flip = flip;
+  internalScope.isInArray = isInArray;
 })();

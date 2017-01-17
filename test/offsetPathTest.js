@@ -102,6 +102,24 @@
         to: 'ray(-100deg closest-corner)'
       });
 
+      assertNoInterpolation({
+        property: 'offset-rotate',
+        from: 'ray(100deg contain)',
+        to: 'ray(-100deg)'
+      });
+
+      assertNoInterpolation({
+        property: 'offset-rotate',
+        from: 'ray(0deg contain contain farthest-side closest-side 50deg 90deg)',
+        to: 'ray(10deg contain contain farthest-side closest-side 60deg 100deg)'
+      });
+
+      assertNoInterpolation({
+        property: 'offset-rotate',
+        from: 'ray(0deg garbage)',
+        to: 'ray(10deg contain)'
+      });
+
       assert.equal(internalScope.offsetRotateParse('ray(garbage)'), undefined);
       assert.equal(internalScope.offsetRotateParse('ray(garbagedeg)'), undefined);
       assert.equal(internalScope.offsetRotateParse('ray(deg)'), undefined);
