@@ -19,13 +19,13 @@
     } else if (ray !== null) {
       inputType = 'ray';
       var rayInput = ray[1].split(/\s+/);
-      result = {type: inputType, 
-                input: 'none',
-                contain: false,
-                size: 'none'
-                };
+      var result = {type: inputType,
+                    input: 'none',
+                    contain: false,
+                    size: 'none'
+                   };
 
-      for (var i=0; i < rayInput.length; i++) {
+      for (var i = 0; i < rayInput.length; i++) {
         if (rayInput[i] === 'contain') {
           result.contain = true;
         } else if (rayInput[i] === 'closest-side') {
@@ -37,7 +37,7 @@
         } else if (rayInput[i] === 'farthest-corner') {
           result.size = 'farthest-corner';
         } else {
-          rayInputDegrees = internalScope.parseAngleAsDegrees(rayInput[i]);
+          var rayInputDegrees = parseAngleAsDegrees(rayInput[i]);
           if (rayInputDegrees === null) {
             return undefined;
           }
@@ -72,29 +72,23 @@
         return 'none';
       }
     }
-    console.log('start: ', start);
-    console.log('end: ', end);
+
     if (start.type !== 'ray' || end.type !== 'ray') {
-      console.log('yo');
       return internalScope.flip(serializeParsed(start), serializeParsed(end));
     }
     if (start.size !== end.size) {
-      console.log('bo');
       return internalScope.flip(serializeParsed(start), serializeParsed(end));
     }
     if (start.contain !== end.contain) {
-      console.log('po');
       return internalScope.flip(serializeParsed(start), serializeParsed(end));
     }
-    console.log('start.input: ' + start.input);
-    console.log('end.input: ' + end.input);
+
     return {
       start: start.input,
       end: end.input,
       serialize: function (input) {
-        console.log('lalalalalalaala');
         var result = 'ray(' + input + 'deg';
-        
+
         if (start.size !== 'none') {
           result += ' ' + start.size;
         }
