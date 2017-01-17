@@ -10,20 +10,18 @@
       return {type: null, input: null};
     }
 
-    var inputType = '';
     var ray = /^ray\((.*)\)$/.exec(input);
     var path = /^path\((.*)\)$/.exec(input);
 
     if (ray === null && path === null) {
       return undefined;
     } else if (ray !== null) {
-      inputType = 'ray';
       var rayInput = ray[1].split(/\s+/);
       if (rayInput.length > 3) {
         return undefined;
       }
 
-      var result = {type: inputType, input: 'none', contain: false, size: 'none'};
+      var result = {type: 'ray', input: 'none', contain: false, size: 'none'};
       var validSizes = ['closest-side', 'farthest-side', 'closest-corner', 'farthest-corner'];
 
       for (var i = 0; i < rayInput.length; i++) {
@@ -43,9 +41,8 @@
       }
       return result;
     } else if (path !== null) {
-      inputType = 'path';
       var pathInput = path[1];
-      return {type: inputType, input: pathInput};
+      return {type: 'path', input: pathInput};
     }
   }
 
@@ -71,12 +68,12 @@
     }
 
     if (start.type !== 'ray' || end.type !== 'ray') {
-      return internalScope.flip(serializeParsed(start.input, start.contain, start.size, start.inputType),
-                                serializeParsed(end.input, end.contain, end.size, end.inputType));
+      return internalScope.flip(serializeParsed(start.input, start.contain, start.size, start.type),
+                                serializeParsed(end.input, end.contain, end.size, end.type));
     }
     if (start.size !== end.size || start.contain !== end.contain) {
-      return internalScope.flip(serializeParsed(start.input, start.contain, start.size, start.inputType),
-                                serializeParsed(end.input, end.contain, end.size, end.inputType));
+      return internalScope.flip(serializeParsed(start.input, start.contain, start.size, start.type),
+                                serializeParsed(end.input, end.contain, end.size, end.type));
     }
 
     return {
