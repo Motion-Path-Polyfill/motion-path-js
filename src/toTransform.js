@@ -98,6 +98,20 @@
     return 'translate3d(' + desiredPosX + 'px, ' + desiredPosY + 'px, ' + '0px)';
   }
 
+  function convertOffsetRotate (properties, element) {
+    if ('offset-rotate' in properties) {
+      var value = internalScope.offsetRotateParse(properties['offset-rotate']);
+    } else {
+      return null;
+    }
+    // TODO: support auto
+    if (value === null || value === undefined || value.auto) {
+      return null;
+    }
+
+    return 'rotate(' + value.angle + 'deg)';
+  }
+
   function toTransform (properties, element) {
     /* W3C spec for what syntax toTransform() outputs:
        https://drafts.csswg.org/css-transforms/#transform-functions
@@ -109,7 +123,8 @@
       convertTranslate(properties.translate),
       convertRotate(properties.rotate),
       convertScale(properties.scale),
-      convertOffsetAnchorPosition(properties, element)
+      convertOffsetAnchorPosition(properties, element),
+      convertOffsetRotate(properties, element)
     ].filter(function (result) {
       return result !== null;
     }).join(' ') || 'none';
