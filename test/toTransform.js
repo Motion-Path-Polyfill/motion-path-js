@@ -94,5 +94,23 @@
       targetStyle['offset-anchor'] = '15px 60%';
       assertTransform(containerStyle, targetStyle, 'translate3d(1315px, -248px, 0px)');
     });
+
+    test('offsetRotate', function () {
+      assert.equal(toTransform({'offset-rotate': '20 10'}), 'none');
+      assert.equal(toTransform({'offset-rotate': ''}), 'none');
+      assert.equal(toTransform({'offset-rotate': 'garbage'}), 'none');
+      assert.equal(toTransform({'offset-rotate': '300degrees'}), 'none');
+      assert.equal(toTransform({'offset-rotate': 'threedegrees'}), 'none');
+      assert.equal(toTransform({'offset-rotate': '10 hello 20 30deg'}), 'none');
+      assert.equal(toTransform({'offset-rotate': 'garbagedeg'}), 'none');
+
+      var expectedDeg = 100 * (180 / Math.PI);
+      assert.equal(toTransform({'offset-rotate': '100rad'}), 'rotate(' + expectedDeg + 'deg)');
+      assert.equal(toTransform({'offset-rotate': '15turn'}), 'rotate(5400deg)');
+      assert.equal(toTransform({'offset-rotate': '200deg'}), 'rotate(200deg)');
+      assert.equal(toTransform({'offset-rotate': '20grad'}), 'rotate(18deg)');
+      expectedDeg = 164 * (180 / Math.PI);
+      assert.equal(toTransform({'offset-rotate': '164rad'}), 'rotate(' + expectedDeg + 'deg)');
+    });
   });
 })();
