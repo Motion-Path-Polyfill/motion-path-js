@@ -120,6 +120,12 @@
         to: 'ray(10deg contain)'
       });
 
+      assertNoInterpolation({
+        property: 'offset-rotate',
+        from: "path('m 0 0 h 100')",
+        to: 'ray(10deg contain)'
+      });
+
       assert.equal(internalScope.offsetRotateParse('ray(garbage)'), undefined);
       assert.equal(internalScope.offsetRotateParse('ray(garbagedeg)'), undefined);
       assert.equal(internalScope.offsetRotateParse('ray(deg)'), undefined);

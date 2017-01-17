@@ -27,8 +27,10 @@
       for (var i = 0; i < rayInput.length; i++) {
         if (rayInput[i] === 'contain' && !result.contain) {
           result.contain = true;
-        } else if (result.size === 'none' && isInArray(validSizes, rayInput[i])) {
-          result.size = rayInput[i];
+        } else if (isInArray(validSizes, rayInput[i])) {
+          if (result.size === 'none') {
+            result.size = rayInput[i];
+          }
         } else if (result.input === 'none') {
           var rayInputDegrees = parseAngleAsDegrees(rayInput[i]);
           if (rayInputDegrees === null) {
