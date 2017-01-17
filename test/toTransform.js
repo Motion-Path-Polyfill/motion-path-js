@@ -1,6 +1,7 @@
 /* global suite test assert internalScope */
 (function () {
   var toTransform = internalScope.toTransform;
+  var assertTransform = internalScope.assertTransform;
 
   suite('toTransform', function () {
     test('convertTranslate', function () {
@@ -40,6 +41,76 @@
       assert.equal(toTransform({scale: '2'}), 'scale3d(2, 1, 1)');
       assert.equal(toTransform({scale: '2 3'}), 'scale3d(2, 3, 1)');
       assert.equal(toTransform({scale: '2 3 4'}), 'scale3d(2, 3, 4)');
+    });
+
+    test('convertOffsetAnchorPosition', function () {
+      var containerStyle = {
+        position: 'absolute',
+        left: '300px',
+        top: '300px',
+        width: '1000px',
+        height: '1000px'
+      };
+
+      var targetStyle = {
+        width: '100px',
+        height: '100px',
+        position: 'absolute',
+        left: '500px',
+        top: '500px',
+        'offset-position': '0% 100%',
+        'offset-anchor': 'auto'
+      };
+      assertTransform(containerStyle, targetStyle, 'translate3d(-500px, 400px, 0px)');
+
+      containerStyle['width'] = '2000px';
+      targetStyle['height'] = '300px';
+      targetStyle['width'] = '400px';
+      targetStyle['left'] = '70px';
+      targetStyle['top'] = '80px';
+      targetStyle['offset-position'] = '100% 0%';
+      assertTransform(containerStyle, targetStyle, 'translate3d(1530px, -80px, 0px)');
+
+      targetStyle['offset-position'] = '60% 40%';
+      targetStyle['offset-anchor'] = '20% 30%';
+      assertTransform(containerStyle, targetStyle, 'translate3d(1050px, 230px, 0px)');
+
+      targetStyle['offset-position'] = 'auto';
+      assertTransform(containerStyle, targetStyle, 'none');
+
+      targetStyle['offset-position'] = 'garbage';
+      assertTransform(containerStyle, targetStyle, 'none');
+
+      // offset-anchor will be set to auto
+      targetStyle['offset-position'] = '55% 72%';
+      targetStyle['offset-anchor'] = 'garbage';
+      assertTransform(containerStyle, targetStyle, 'translate3d(810px, 424px, 0px)');
+
+      targetStyle['offset-position'] = '20% 45px';
+      targetStyle['offset-anchor'] = '15% 30%';
+      assertTransform(containerStyle, targetStyle, 'translate3d(270px, -125px, 0px)');
+
+      targetStyle['offset-position'] = '70% 12px';
+      targetStyle['offset-anchor'] = '15px 60%';
+      assertTransform(containerStyle, targetStyle, 'translate3d(1315px, -248px, 0px)');
+    });
+
+    test('offsetRotate', function () {
+      assert.equal(toTransform({'offset-rotate': '20 10'}), 'none');
+      assert.equal(toTransform({'offset-rotate': ''}), 'none');
+      assert.equal(toTransform({'offset-rotate': 'garbage'}), 'none');
+      assert.equal(toTransform({'offset-rotate': '300degrees'}), 'none');
+      assert.equal(toTransform({'offset-rotate': 'threedegrees'}), 'none');
+      assert.equal(toTransform({'offset-rotate': '10 hello 20 30deg'}), 'none');
+      assert.equal(toTransform({'offset-rotate': 'garbagedeg'}), 'none');
+
+      var expectedDeg = 100 * (180 / Math.PI);
+      assert.equal(toTransform({'offset-rotate': '100rad'}), 'rotate(' + expectedDeg + 'deg)');
+      assert.equal(toTransform({'offset-rotate': '15turn'}), 'rotate(5400deg)');
+      assert.equal(toTransform({'offset-rotate': '200deg'}), 'rotate(200deg)');
+      assert.equal(toTransform({'offset-rotate': '20grad'}), 'rotate(18deg)');
+      expectedDeg = 164 * (180 / Math.PI);
+      assert.equal(toTransform({'offset-rotate': '164rad'}), 'rotate(' + expectedDeg + 'deg)');
     });
   });
 })();
