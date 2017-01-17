@@ -104,7 +104,7 @@
     } else {
       return null;
     }
-
+    // TODO: support auto
     if (value === null || value === undefined || value.auto) {
       return null;
     }
