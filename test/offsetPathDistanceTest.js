@@ -2,7 +2,7 @@
 
 (function () {
   suite('transforms', function () {
-    test('offsetDistance', function () {
+    test('offsetPathDistance', function () {
       var assertTransformInterpolation = internalScope.assertTransformInterpolation;
 
       assertTransformInterpolation([

@@ -53,6 +53,14 @@
     }
   }
 
+  function getOffsetDistanceLength(offsetDistance, pathElement) {
+    if (offsetDistance.unit === '%') {
+      return Number(offsetDistance.value) * pathElement.getTotalLength() / 100;
+    } else {
+      return Number(offsetDistance.value);
+    }
+  }
+
   function convertPathString (properties) {
     var offsetPath = internalScope.offsetPathParse(properties['offset-path']);
     
@@ -63,12 +71,7 @@
 
     pathElement.setAttribute('d', offsetPath.input);
 
-    var offsetDistanceLength;
-    if (offsetDistance.unit === '%') {
-      offsetDistanceLength = Number(offsetDistance.value) * pathElement.getTotalLength() / 100;
-    } else {
-      offsetDistanceLength = Number(offsetDistance.value);
-    }
+    var offsetDistanceLength = getOffsetDistanceLength(offsetDistance, pathElement);
 
     var point = pathElement.getPointAtLength(offsetDistanceLength);
 
@@ -78,16 +81,43 @@
 
   function convertRayString (properties) {
     var offsetPath = internalScope.offsetPathParse(properties['offset-path']);
-    console.log("This is a ray string");
+    console.log("This is a ray string: ", offsetPath);
+
+    var offsetDistance = internalScope.offsetDistanceParse(properties['offset-distance']);
+    if (offsetDistance === undefined) {
+      offsetDistance = {value: 0, unit: 'px'};
+    }
+
+    pathElement.setAttribute('d', offsetPath.input);
+
+    var offsetDistanceLength = getOffsetDistanceLength(offsetDistance, pathElement);
+
+    var deltaX;
+    var deltaY;
+
+    //var currentX;
+    //var currentY;
+    if(offsetPath.input < 90) {
+      deltaX = Math.sin(offsetPath.input) * offsetDistanceLength;
+      deltaY = Math.cos(offsetPath.input) * offsetDistanceLength;
+    }
+    return 'translate3d(' + deltaX + 'px, ' + deltaY + 'px, 0px)';
   }
 
   function convertOffsetAnchorPosition (properties, element) {
-    /* According to spec: https://drafts.fxtf.org/motion-1/#offset-anchor-property
-       If offset-anchor is set to auto then it will compute to the value of offset-position. */
+    //console.log("properties: " , properties + " element: " + element);
+    //According to spec: https://drafts.fxtf.org/motion-1/#offset-anchor-property
+    // If offset-anchor is set to auto then it will compute to the value of offset-position.
     var position = 'auto';
+    
+    if(element === undefined) {
+      return null;
+    }
+
     if ('offset-position' in properties) {
       position = internalScope.offsetPositionAnchorParse(properties['offset-position']);
     }
+
     if (position === 'auto' || position === undefined || position === null) {
       return null;
     }
@@ -170,8 +200,8 @@
       convertRotate(properties.rotate),
       convertScale(properties.scale),
       convertPath(properties),
-      //convertOffsetAnchorPosition(properties, element),
-      //convertOffsetRotate(properties, element)
+      convertOffsetAnchorPosition(properties, element),
+      convertOffsetRotate(properties, element)
     ].filter(function (result) {
       return result !== null;
     }).join(' ') || 'none';
