@@ -99,7 +99,7 @@
     //var currentY;
     if(offsetPath.input < 90) {
       deltaX = Math.sin(offsetPath.input) * offsetDistanceLength;
-      deltaY = Math.cos(offsetPath.input) * offsetDistanceLength;
+      deltaY = (-1) * Math.cos(offsetPath.input) * offsetDistanceLength;
     }
     return 'translate3d(' + deltaX + 'px, ' + deltaY + 'px, 0px)';
   }
