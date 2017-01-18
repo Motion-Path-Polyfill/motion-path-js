@@ -7,6 +7,10 @@
   function offsetDistanceParse (input) {
     var distance = 0;
 
+    if (input === undefined) {
+      return undefined;
+    }
+
     if (input.endsWith('%')) {
       distance = input.substring(0, input.length - 1);
       if (!(isNumeric(distance)) || distance.length === 0) {

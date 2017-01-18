@@ -36,6 +36,33 @@
     return 'scale3d(' + valuesArray.join(', ') + ')';
   }
 
+  var pathElement = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+
+  function convertPath (properties) {
+    var offsetPath = internalScope.offsetPathParse(properties['offset-path']);
+    if (!offsetPath || offsetPath.type !== 'path') {
+      return null;
+    }
+
+    var offsetDistance = internalScope.offsetDistanceParse(properties['offset-distance']);
+    if (offsetDistance === undefined) {
+      offsetDistance = {value: 0, unit: 'px'};
+    }
+
+    pathElement.setAttribute('d', offsetPath.input);
+
+    var offsetDistanceLength;
+    if (offsetDistance.unit === '%') {
+      offsetDistanceLength = Number(offsetDistance.value) * pathElement.getTotalLength() / 100;
+    } else {
+      offsetDistanceLength = Number(offsetDistance.value);
+    }
+
+    var point = pathElement.getPointAtLength(offsetDistanceLength);
+
+    return 'translate3d(' + point.x + 'px, ' + point.y + 'px, 0px)';
+  }
+
   function convertOffsetAnchorPosition (properties, element) {
     /* According to spec: https://drafts.fxtf.org/motion-1/#offset-anchor-property
        If offset-anchor is set to auto then it will compute to the value of offset-position. */
@@ -124,11 +151,13 @@
       convertTranslate(properties.translate),
       convertRotate(properties.rotate),
       convertScale(properties.scale),
+      convertPath(properties),
       convertOffsetAnchorPosition(properties, element),
       convertOffsetRotate(properties, element)
     ].filter(function (result) {
       return result !== null;
     }).join(' ') || 'none';
   }
+
   internalScope.toTransform = toTransform;
 })();

@@ -57,7 +57,7 @@
 
         return result;
       },
-      watchedProperties: ['scale', 'rotate', 'translate', 'transform', 'offset-position', 'offset-anchor']
+      watchedProperties: ['scale', 'rotate', 'translate', 'transform', 'offset-distance', 'offset-path', 'offset-position', 'offset-anchor']
     }
   });
 })();
