@@ -25,7 +25,10 @@
       var validSizes = ['closest-side', 'farthest-side', 'closest-corner', 'farthest-corner'];
 
       for (var i = 0; i < rayInput.length; i++) {
-        if (rayInput[i] === 'contain' && !result.contain) {
+        if (rayInput[i] === 'contain') {
+          if (result.contain) {
+            return undefined;
+          }
           result.contain = true;
         } else if (isInArray(validSizes, rayInput[i])) {
           if (result.size === null) {
