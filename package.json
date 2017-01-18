@@ -6,7 +6,7 @@
   "scripts": {
     "test": "npm run lint && karma start --single-run && npm run build",
     "watchTests": "karma start --reporters nyan",
-    "build": "cat tools/pre.js tools/internal-scope.js $(cat src/fileOrder.txt) tools/post.js | uglifyjs > index.min.js",
+    "build": "cat tools/pre.js tools/internal-scope.js $(cat src/fileOrder.txt) tools/post.js | uglifyjs > motion-path-polyfill.min.js",
     "lint": "semistandard src/*.js test/*.js",
     "format": "semistandard --fix src/*.js test/*.js"
   },
