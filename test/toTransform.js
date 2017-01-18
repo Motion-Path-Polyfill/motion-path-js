@@ -1,4 +1,6 @@
 /* global suite test assert internalScope */
+'use strict';
+
 (function () {
   var toTransform = internalScope.toTransform;
   var assertTransform = internalScope.assertTransform;

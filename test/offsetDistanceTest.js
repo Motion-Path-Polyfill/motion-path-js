@@ -1,4 +1,5 @@
 /* global assert suite test internalScope */
+'use strict';
 
 (function () {
   suite('transforms', function () {

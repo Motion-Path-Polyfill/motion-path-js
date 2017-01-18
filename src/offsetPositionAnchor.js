@@ -1,4 +1,5 @@
 /* global internalScope */
+'use strict';
 
 (function () {
   /* spec for the offset-anchor property:
