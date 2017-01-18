@@ -151,7 +151,7 @@
       convertTranslate(properties.translate),
       convertRotate(properties.rotate),
       convertScale(properties.scale),
-      convertPath(properties)
+      convertPath(properties),
       convertOffsetAnchorPosition(properties, element),
       convertOffsetRotate(properties, element)
     ].filter(function (result) {

@@ -95,6 +95,7 @@
         {at: 1, is: 'ray(20deg farthest-side)'}
       ]);
 
+      // TODO: Make this interpolate
       assertNoInterpolation({
         property: 'offset-path',
         from: "path('m 0 0 h 100')",

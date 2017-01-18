@@ -67,7 +67,7 @@
         return result;
       }
       if (type === 'path') {
-        return 'path(' + angle + ')';
+        return "path('" + angle + "')";
       }
       if (type === null) {
         return 'none';
