@@ -1,4 +1,5 @@
 /* global internalScope */
+'use strict';
 
 (function () {
   var isNumeric = internalScope.isNumeric;

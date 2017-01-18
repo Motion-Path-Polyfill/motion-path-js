@@ -1,4 +1,5 @@
 /* global assert internalScope */
+'use strict';
 
 (function () {
   var webAnimationsJsTesting = true;
