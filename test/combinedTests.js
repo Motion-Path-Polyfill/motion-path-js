@@ -1,4 +1,5 @@
 /* global suite test internalScope */
+'use strict';
 
 suite('transforms', function () {
   test('transform', function () {

@@ -1,4 +1,5 @@
 /* global WebAnimationsPolyfillExtension internalScope */
+'use strict';
 
 (function () {
   WebAnimationsPolyfillExtension.register({
