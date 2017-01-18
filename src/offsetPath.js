@@ -21,17 +21,19 @@
         return undefined;
       }
 
-      var result = {type: 'ray', input: 'none', contain: false, size: 'none'};
+      var result = {type: 'ray', input: null, contain: false, size: null};
       var validSizes = ['closest-side', 'farthest-side', 'closest-corner', 'farthest-corner'];
 
       for (var i = 0; i < rayInput.length; i++) {
         if (rayInput[i] === 'contain' && !result.contain) {
           result.contain = true;
         } else if (isInArray(validSizes, rayInput[i])) {
-          if (result.size === 'none') {
+          if (result.size === null) {
             result.size = rayInput[i];
+          } else {
+            return undefined;
           }
-        } else if (result.input === 'none') {
+        } else if (result.input === null) {
           var rayInputDegrees = parseAngleAsDegrees(rayInput[i]);
           if (rayInputDegrees === null) {
             return undefined;
@@ -52,7 +54,7 @@
     function serializeParsed (angle, contain, size, type) {
       if (type === 'ray') {
         var result = 'ray(' + angle + 'deg';
-        if (size !== 'none') {
+        if (size !== null) {
           result += ' ' + size;
         }
         if (contain) {
