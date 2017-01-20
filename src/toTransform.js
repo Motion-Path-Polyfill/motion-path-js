@@ -42,7 +42,7 @@
     var offsetPath = internalScope.offsetPathParse(properties['offset-path']);
 
     if (!offsetPath) {
-      return null;
+      return null; //{deltaX: 0, deltaY: 0, rotation: 0};
     }
 
     if (offsetPath.type === 'path') {
@@ -75,8 +75,8 @@
     var offsetDistanceLength = getOffsetDistanceLength(offsetDistance, pathElement.getTotalLength());
 
     var point = pathElement.getPointAtLength(offsetDistanceLength);
-
-    return 'translate3d(' + point.x + 'px, ' + point.y + 'px, 0px)';
+    // FIXME: calculate rotation
+    return {deltaX: point.x, deltaY: point.y, rotation: 0};
   }
 
   function convertRayString (properties) {
@@ -94,8 +94,8 @@
 
     var deltaX = Math.sin(offsetPath.input * Math.PI / 180) * offsetDistanceLength;
     var deltaY = (-1) * Math.cos(offsetPath.input * Math.PI / 180) * offsetDistanceLength;
-
-    return 'translate3d(' + Math.round(deltaX * 100) / 100 + 'px, ' + Math.round(deltaY * 100) / 100 + 'px, 0px)';
+    // FIXME: calculate rotation
+    return {deltaX: Math.round(deltaX * 100) / 100, deltaY: Math.round(deltaY * 100) / 100, rotation: 0};
   }
 
   function convertOffsetAnchorPosition (properties, element) {
@@ -165,7 +165,7 @@
     var desiredPosX = (offsetPosX - anchorPosX) - offsetLeft;
     var desiredPosY = (offsetPosY - anchorPosY) - offsetTop;
 
-    return 'translate3d(' + desiredPosX + 'px, ' + desiredPosY + 'px, ' + '0px)';
+    return 'translate3d(' + desiredPosX + 'px, ' + desiredPosY + 'px, 0px)';
   }
 
   function convertOffsetRotate (properties, element) {
@@ -182,6 +182,14 @@
     return 'rotate(' + value.angle + 'deg)';
   }
 
+  function convertPathHelper (properties) {
+    var result = convertPath(properties);
+    if (!result) {
+      return null;
+    }
+    return 'translate3d(' + result.deltaX + 'px, ' + result.deltaY + 'px, 0px)';
+  }
+
   function convertOffsetToTransform (properties, element) {
     /* W3C spec for what syntax toTransform() outputs:
        https://drafts.csswg.org/css-transforms/#transform-functions
@@ -190,7 +198,7 @@
        https://drafts.fxtf.org/motion-1/#motion-paths-overview
     */
     return [
-      convertPath(properties),
+      convertPathHelper(properties),
       convertOffsetAnchorPosition(properties, element),
       convertOffsetRotate(properties, element)
     ].filter(function (result) {
