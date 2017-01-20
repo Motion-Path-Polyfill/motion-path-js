@@ -75,8 +75,8 @@
     var offsetDistanceLength = getOffsetDistanceLength(offsetDistance, pathElement.getTotalLength());
 
     var point = pathElement.getPointAtLength(offsetDistanceLength);
-
-    return 'translate3d(' + point.x + 'px, ' + point.y + 'px, 0px)';
+    // FIXME: calculate rotation
+    return {deltaX: point.x, deltaY: point.y, rotation: 0};
   }
 
   function convertRayString (properties) {
@@ -87,19 +87,18 @@
       offsetDistance = {value: 0, unit: 'px'};
     }
 
-    pathElement.setAttribute('d', offsetPath.input);
-
     // FIXME: Calculate path length of the ray
     var offsetDistanceLength = getOffsetDistanceLength(offsetDistance, 0);
 
     var deltaX = Math.sin(offsetPath.input * Math.PI / 180) * offsetDistanceLength;
     var deltaY = (-1) * Math.cos(offsetPath.input * Math.PI / 180) * offsetDistanceLength;
 
-    return 'translate3d(' + Math.round(deltaX * 100) / 100 + 'px, ' + Math.round(deltaY * 100) / 100 + 'px, 0px)';
+    return {deltaX: Math.round(deltaX * 100) / 100,
+            deltaY: Math.round(deltaY * 100) / 100,
+            rotation: (offsetPath.input - 90)};
   }
 
   function convertOffsetAnchorPosition (properties, element) {
-    // console.log("properties: " , properties + " element: " + element);
     // According to spec: https://drafts.fxtf.org/motion-1/#offset-anchor-property
     // If offset-anchor is set to auto then it will compute to the value of offset-position.
     var position = 'auto';
@@ -162,24 +161,62 @@
       offsetPosY = (offsetPosY * parentProperties.height) / 100;
     }
 
-    var desiredPosX = (offsetPosX - anchorPosX) - offsetLeft;
-    var desiredPosY = (offsetPosY - anchorPosY) - offsetTop;
+    var deltaX = (offsetPosX - anchorPosX) - offsetLeft;
+    var deltaY = (offsetPosY - anchorPosY) - offsetTop;
 
-    return 'translate3d(' + desiredPosX + 'px, ' + desiredPosY + 'px, ' + '0px)';
+    return {deltaX: deltaX, deltaY: deltaY, anchorX: anchorPosX, anchorY: anchorPosY};
   }
 
   function convertOffsetRotate (properties, element) {
+    var value = null;
     if ('offset-rotate' in properties) {
-      var value = internalScope.offsetRotateParse(properties['offset-rotate']);
-    } else {
-      return null;
+      value = internalScope.offsetRotateParse(properties['offset-rotate']);
     }
-    // TODO: support auto
-    if (value === null || value === undefined || value.auto) {
+
+    if (!value) {
+      return {angle: 0, auto: true};
+    }
+
+    return {angle: value.angle, auto: value.auto};
+  }
+
+  function convertOffsetToTransform (properties, element) {
+    /* W3C spec for what syntax toTransform() outputs:
+       https://drafts.csswg.org/css-transforms/#transform-functions
+       W3C spec for what syntax toTransform() parses:
+       https://drafts.csswg.org/css-transforms-2/#individual-transforms
+       https://drafts.fxtf.org/motion-1/#motion-paths-overview
+    */
+    var pathTransform = convertPath(properties);
+    var positionAnchorTransform = convertOffsetAnchorPosition(properties, element);
+    var parsedRotate = convertOffsetRotate(properties);
+    var rotation = parsedRotate.angle;
+
+    if (!pathTransform && !positionAnchorTransform) {
       return null;
     }
 
-    return 'rotate(' + value.angle + 'deg)';
+    if (!pathTransform) {
+      pathTransform = {deltaX: 0, deltaY: 0, rotation: 0};
+    }
+
+    if (parsedRotate.auto) {
+      rotation += pathTransform.rotation;
+    }
+
+    if (!positionAnchorTransform) {
+      positionAnchorTransform = {deltaX: 0, deltaY: 0};
+    }
+
+    var transform = 'translate3d(' +
+        (pathTransform.deltaX + positionAnchorTransform.deltaX) + 'px, ' +
+        (pathTransform.deltaY + positionAnchorTransform.deltaY) + 'px, 0px)';
+
+    if (internalScope.offsetPathParse(properties['offset-path'])) {
+      transform += ' rotate(' + rotation + 'deg)';
+    }
+
+    return transform;
   }
 
   function toTransform (properties, element) {
@@ -193,9 +230,7 @@
       convertTranslate(properties.translate),
       convertRotate(properties.rotate),
       convertScale(properties.scale),
-      convertPath(properties),
-      convertOffsetAnchorPosition(properties, element),
-      convertOffsetRotate(properties, element)
+      convertOffsetToTransform(properties, element)
     ].filter(function (result) {
       return result !== null;
     }).join(' ') || 'none';
