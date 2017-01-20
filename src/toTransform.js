@@ -165,7 +165,7 @@
     var desiredPosX = (offsetPosX - anchorPosX) - offsetLeft;
     var desiredPosY = (offsetPosY - anchorPosY) - offsetTop;
 
-    return 'translate3d(' + desiredPosX + 'px, ' + desiredPosY + 'px, 0px)';
+    return {deltaX: desiredPosX, deltaY: desiredPosY, anchorX: anchorPosX, anchorY: anchorPosY};
   }
 
   function convertOffsetRotate (properties, element) {
@@ -190,6 +190,14 @@
     return 'translate3d(' + result.deltaX + 'px, ' + result.deltaY + 'px, 0px)';
   }
 
+  function convertAnchorPositionHelper (properties, element) {
+    var result = convertOffsetAnchorPosition(properties, element);
+    if (!result) {
+      return null;
+    }
+    return 'translate3d(' + result.deltaX + 'px, ' + result.deltaY + 'px, 0px)';
+  }
+
   function convertOffsetToTransform (properties, element) {
     /* W3C spec for what syntax toTransform() outputs:
        https://drafts.csswg.org/css-transforms/#transform-functions
@@ -199,7 +207,7 @@
     */
     return [
       convertPathHelper(properties),
-      convertOffsetAnchorPosition(properties, element),
+      convertAnchorPositionHelper(properties, element),
       convertOffsetRotate(properties, element)
     ].filter(function (result) {
       return result !== null;
