@@ -76,6 +76,15 @@
                                     {at: 1, is: 'translate3d(-70.71px, -70.71px, 0px)'}
         ]
       );
+
+      assertTransformInterpolation([
+                                    {'offset-path': 'ray(135deg)', 'offset-distance': '0%'},
+                                    {'offset-path': 'ray(135deg)', 'offset-distance': '100%'}],
+        [
+                                    {at: 0, is: 'translate3d(0px, 0px, 0px)'},
+                                    {at: 1, is: 'translate3d(0px, 0px, 0px)'}
+        ]
+      );
     });
   });
 })();

@@ -53,9 +53,9 @@
     }
   }
 
-  function getOffsetDistanceLength (offsetDistance, pathElement) {
+  function getOffsetDistanceLength (offsetDistance, pathLength) {
     if (offsetDistance.unit === '%') {
-      return Number(offsetDistance.value) * pathElement.getTotalLength() / 100;
+      return Number(offsetDistance.value) * pathLength / 100;
     } else {
       return Number(offsetDistance.value);
     }
@@ -71,7 +71,7 @@
 
     pathElement.setAttribute('d', offsetPath.input);
 
-    var offsetDistanceLength = getOffsetDistanceLength(offsetDistance, pathElement);
+    var offsetDistanceLength = getOffsetDistanceLength(offsetDistance, pathElement.getTotalLength());
 
     var point = pathElement.getPointAtLength(offsetDistanceLength);
 
@@ -88,7 +88,8 @@
 
     pathElement.setAttribute('d', offsetPath.input);
 
-    var offsetDistanceLength = getOffsetDistanceLength(offsetDistance, pathElement);
+    // FIXME: Calculate path length of the ray
+    var offsetDistanceLength = getOffsetDistanceLength(offsetDistance, 0);
 
     var deltaX = Math.sin(offsetPath.input * Math.PI / 180) * offsetDistanceLength;
     var deltaY = (-1) * Math.cos(offsetPath.input * Math.PI / 180) * offsetDistanceLength;
