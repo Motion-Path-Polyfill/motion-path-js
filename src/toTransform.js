@@ -42,7 +42,7 @@
     var offsetPath = internalScope.offsetPathParse(properties['offset-path']);
 
     if (!offsetPath) {
-      return null; //{deltaX: 0, deltaY: 0, rotation: 0};
+      return null; // {deltaX: 0, deltaY: 0, rotation: 0};
     }
 
     if (offsetPath.type === 'path') {
@@ -87,19 +87,16 @@
       offsetDistance = {value: 0, unit: 'px'};
     }
 
-    pathElement.setAttribute('d', offsetPath.input);
-
     // FIXME: Calculate path length of the ray
     var offsetDistanceLength = getOffsetDistanceLength(offsetDistance, 0);
 
     var deltaX = Math.sin(offsetPath.input * Math.PI / 180) * offsetDistanceLength;
     var deltaY = (-1) * Math.cos(offsetPath.input * Math.PI / 180) * offsetDistanceLength;
     // FIXME: calculate rotation
-    return {deltaX: Math.round(deltaX * 100) / 100, deltaY: Math.round(deltaY * 100) / 100, rotation: 0};
+    return {deltaX: Math.round(deltaX * 100) / 100, deltaY: Math.round(deltaY * 100) / 100, rotation: offsetPath.input - 90};
   }
 
   function convertOffsetAnchorPosition (properties, element) {
-    // console.log("properties: " , properties + " element: " + element);
     // According to spec: https://drafts.fxtf.org/motion-1/#offset-anchor-property
     // If offset-anchor is set to auto then it will compute to the value of offset-position.
     var position = 'auto';
@@ -162,40 +159,23 @@
       offsetPosY = (offsetPosY * parentProperties.height) / 100;
     }
 
-    var desiredPosX = (offsetPosX - anchorPosX) - offsetLeft;
-    var desiredPosY = (offsetPosY - anchorPosY) - offsetTop;
+    var deltaX = (offsetPosX - anchorPosX) - offsetLeft;
+    var deltaY = (offsetPosY - anchorPosY) - offsetTop;
 
-    return {deltaX: desiredPosX, deltaY: desiredPosY, anchorX: anchorPosX, anchorY: anchorPosY};
+    return {deltaX: deltaX, deltaY: deltaY, anchorX: anchorPosX, anchorY: anchorPosY};
   }
 
   function convertOffsetRotate (properties, element) {
+    var value = null;
     if ('offset-rotate' in properties) {
-      var value = internalScope.offsetRotateParse(properties['offset-rotate']);
-    } else {
-      return null;
-    }
-    // TODO: support auto
-    if (value === null || value === undefined || value.auto) {
-      return null;
+      value = internalScope.offsetRotateParse(properties['offset-rotate']);
     }
 
-    return 'rotate(' + value.angle + 'deg)';
-  }
-
-  function convertPathHelper (properties) {
-    var result = convertPath(properties);
-    if (!result) {
-      return null;
+    if (!value) {
+      return {angle: 0, auto: false};
     }
-    return 'translate3d(' + result.deltaX + 'px, ' + result.deltaY + 'px, 0px)';
-  }
 
-  function convertAnchorPositionHelper (properties, element) {
-    var result = convertOffsetAnchorPosition(properties, element);
-    if (!result) {
-      return null;
-    }
-    return 'translate3d(' + result.deltaX + 'px, ' + result.deltaY + 'px, 0px)';
+    return {angle: value.angle, auto: value.auto};
   }
 
   function convertOffsetToTransform (properties, element) {
@@ -205,13 +185,36 @@
        https://drafts.csswg.org/css-transforms-2/#individual-transforms
        https://drafts.fxtf.org/motion-1/#motion-paths-overview
     */
-    return [
-      convertPathHelper(properties),
-      convertAnchorPositionHelper(properties, element),
-      convertOffsetRotate(properties, element)
-    ].filter(function (result) {
-      return result !== null;
-    }).join(' ') || null;
+    var pathTransform = convertPath(properties);
+    var positionAnchorTransform = convertOffsetAnchorPosition(properties, element);
+    var parsedRotate = convertOffsetRotate(properties);
+    var rotation = parsedRotate.angle;
+
+    if (!pathTransform && !positionAnchorTransform) {
+      return null;
+    }
+
+    if (!pathTransform) {
+      pathTransform = {deltaX: 0, deltaY: 0, rotation: 0};
+    }
+
+    if (parsedRotate.auto) {
+      rotation += pathTransform.rotation;
+    }
+
+    if (!positionAnchorTransform) {
+      positionAnchorTransform = {deltaX: 0, deltaY: 0};
+    }
+
+    var transform = 'translate3d(' +
+        (pathTransform.deltaX + positionAnchorTransform.deltaX) + 'px, ' +
+        (pathTransform.deltaY + positionAnchorTransform.deltaY) + 'px, 0px)';
+
+    if (internalScope.offsetPathParse(properties['offset-path'])) {
+      transform += ' rotate(' + rotation + 'deg)';
+    }
+
+    return transform;
   }
 
   function toTransform (properties, element) {
