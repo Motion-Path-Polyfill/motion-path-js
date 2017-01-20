@@ -39,21 +39,21 @@
 
   function convertPath (properties) {
     var offsetPath = internalScope.offsetPathParse(properties['offset-path']);
-    
-    if(!offsetPath) {
+
+    if (!offsetPath) {
       return null;
     }
 
-    if(offsetPath.type === 'path') {
+    if (offsetPath.type === 'path') {
       return convertPathString(properties);
     }
 
-    if(offsetPath.type === 'ray') {
+    if (offsetPath.type === 'ray') {
       return convertRayString(properties);
     }
   }
 
-  function getOffsetDistanceLength(offsetDistance, pathElement) {
+  function getOffsetDistanceLength (offsetDistance, pathElement) {
     if (offsetDistance.unit === '%') {
       return Number(offsetDistance.value) * pathElement.getTotalLength() / 100;
     } else {
@@ -63,7 +63,7 @@
 
   function convertPathString (properties) {
     var offsetPath = internalScope.offsetPathParse(properties['offset-path']);
-    
+
     var offsetDistance = internalScope.offsetDistanceParse(properties['offset-distance']);
     if (offsetDistance === undefined) {
       offsetDistance = {value: 0, unit: 'px'};
@@ -78,10 +78,8 @@
     return 'translate3d(' + point.x + 'px, ' + point.y + 'px, 0px)';
   }
 
-
   function convertRayString (properties) {
     var offsetPath = internalScope.offsetPathParse(properties['offset-path']);
-    console.log("This is a ray string: ", offsetPath);
 
     var offsetDistance = internalScope.offsetDistanceParse(properties['offset-distance']);
     if (offsetDistance === undefined) {
@@ -92,25 +90,19 @@
 
     var offsetDistanceLength = getOffsetDistanceLength(offsetDistance, pathElement);
 
-    var deltaX;
-    var deltaY;
+    var deltaX = Math.sin(offsetPath.input * Math.PI / 180) * offsetDistanceLength;
+    var deltaY = (-1) * Math.cos(offsetPath.input * Math.PI / 180) * offsetDistanceLength;
 
-    //var currentX;
-    //var currentY;
-    if(offsetPath.input < 90) {
-      deltaX = Math.sin(offsetPath.input) * offsetDistanceLength;
-      deltaY = (-1) * Math.cos(offsetPath.input) * offsetDistanceLength;
-    }
-    return 'translate3d(' + deltaX + 'px, ' + deltaY + 'px, 0px)';
+    return 'translate3d(' + Math.round(deltaX * 100) / 100 + 'px, ' + Math.round(deltaY * 100) / 100 + 'px, 0px)';
   }
 
   function convertOffsetAnchorPosition (properties, element) {
-    //console.log("properties: " , properties + " element: " + element);
-    //According to spec: https://drafts.fxtf.org/motion-1/#offset-anchor-property
+    // console.log("properties: " , properties + " element: " + element);
+    // According to spec: https://drafts.fxtf.org/motion-1/#offset-anchor-property
     // If offset-anchor is set to auto then it will compute to the value of offset-position.
     var position = 'auto';
-    
-    if(element === undefined) {
+
+    if (element === undefined) {
       return null;
     }
 
