@@ -9,8 +9,8 @@
                                     {'offset-path': 'ray(60deg)', 'offset-distance': '0px'},
                                     {'offset-path': 'ray(60deg)', 'offset-distance': '100px'}],
         [
-                                    {at: 0, is: 'translate3d(0px, 0px, 0px) rotate(0deg)'},
-                                    {at: 1, is: 'translate3d(86.6px, -50px, 0px) rotate(0deg)'}
+                                    {at: 0, is: 'translate3d(0px, 0px, 0px) rotate(-30deg)'},
+                                    {at: 1, is: 'translate3d(86.6px, -50px, 0px) rotate(-30deg)'}
         ]
       );
 
@@ -27,8 +27,8 @@
                                     {'offset-path': 'ray(135deg)', 'offset-distance': '0px'},
                                     {'offset-path': 'ray(135deg)', 'offset-distance': '100px'}],
         [
-                                    {at: 0, is: 'translate3d(0px, 0px, 0px) rotate(0deg)'},
-                                    {at: 1, is: 'translate3d(70.71px, 70.71px, 0px) rotate(0deg)'}
+                                    {at: 0, is: 'translate3d(0px, 0px, 0px) rotate(45deg)'},
+                                    {at: 1, is: 'translate3d(70.71px, 70.71px, 0px) rotate(45deg)'}
         ]
       );
 
@@ -36,8 +36,8 @@
                                     {'offset-path': 'ray(225deg)', 'offset-distance': '0px'},
                                     {'offset-path': 'ray(225deg)', 'offset-distance': '100px'}],
         [
-                                    {at: 0, is: 'translate3d(0px, 0px, 0px) rotate(0deg)'},
-                                    {at: 1, is: 'translate3d(-70.71px, 70.71px, 0px) rotate(0deg)'}
+                                    {at: 0, is: 'translate3d(0px, 0px, 0px) rotate(135deg)'},
+                                    {at: 1, is: 'translate3d(-70.71px, 70.71px, 0px) rotate(135deg)'}
         ]
       );
 
@@ -45,8 +45,8 @@
                                     {'offset-path': 'ray(315deg)', 'offset-distance': '0px'},
                                     {'offset-path': 'ray(315deg)', 'offset-distance': '100px'}],
         [
-                                    {at: 0, is: 'translate3d(0px, 0px, 0px) rotate(0deg)'},
-                                    {at: 1, is: 'translate3d(-70.71px, -70.71px, 0px) rotate(0deg)'}
+                                    {at: 0, is: 'translate3d(0px, 0px, 0px) rotate(225deg)'},
+                                    {at: 1, is: 'translate3d(-70.71px, -70.71px, 0px) rotate(225deg)'}
         ]
       );
 
@@ -54,17 +54,8 @@
                                     {'offset-path': 'ray(420deg)', 'offset-distance': '0px'},
                                     {'offset-path': 'ray(420deg)', 'offset-distance': '100px'}],
         [
-                                    {at: 0, is: 'translate3d(0px, 0px, 0px) rotate(0deg)'},
-                                    {at: 1, is: 'translate3d(86.6px, -50px, 0px) rotate(0deg)'}
-        ]
-      );
-
-      assertTransformInterpolation([
-                                    {'offset-path': 'ray(420deg)', 'offset-distance': '0px'},
-                                    {'offset-path': 'ray(420deg)', 'offset-distance': '100px'}],
-        [
-                                    {at: 0, is: 'translate3d(0px, 0px, 0px) rotate(0deg)'},
-                                    {at: 1, is: 'translate3d(86.6px, -50px, 0px) rotate(0deg)'}
+                                    {at: 0, is: 'translate3d(0px, 0px, 0px) rotate(330deg)'},
+                                    {at: 1, is: 'translate3d(86.6px, -50px, 0px) rotate(330deg)'}
         ]
       );
 
@@ -72,8 +63,8 @@
                                     {'offset-path': 'ray(-45deg)', 'offset-distance': '0px'},
                                     {'offset-path': 'ray(-45deg)', 'offset-distance': '100px'}],
         [
-                                    {at: 0, is: 'translate3d(0px, 0px, 0px) rotate(0deg)'},
-                                    {at: 1, is: 'translate3d(-70.71px, -70.71px, 0px) rotate(0deg)'}
+                                    {at: 0, is: 'translate3d(0px, 0px, 0px) rotate(-135deg)'},
+                                    {at: 1, is: 'translate3d(-70.71px, -70.71px, 0px) rotate(-135deg)'}
         ]
       );
 
@@ -81,8 +72,8 @@
                                     {'offset-path': 'ray(135deg)', 'offset-distance': '0%'},
                                     {'offset-path': 'ray(135deg)', 'offset-distance': '100%'}],
         [
-                                    {at: 0, is: 'translate3d(0px, 0px, 0px) rotate(0deg)'},
-                                    {at: 1, is: 'translate3d(0px, 0px, 0px) rotate(0deg)'}
+                                    {at: 0, is: 'translate3d(0px, 0px, 0px) rotate(45deg)'},
+                                    {at: 1, is: 'translate3d(0px, 0px, 0px) rotate(45deg)'}
         ]
       );
     });

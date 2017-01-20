@@ -93,7 +93,9 @@
     var deltaX = Math.sin(offsetPath.input * Math.PI / 180) * offsetDistanceLength;
     var deltaY = (-1) * Math.cos(offsetPath.input * Math.PI / 180) * offsetDistanceLength;
     // FIXME: calculate rotation
-    return {deltaX: Math.round(deltaX * 100) / 100, deltaY: Math.round(deltaY * 100) / 100, rotation: offsetPath.input - 90};
+    return {deltaX: Math.round(deltaX * 100) / 100,
+            deltaY: Math.round(deltaY * 100) / 100,
+            rotation: (offsetPath.input - 90)};
   }
 
   function convertOffsetAnchorPosition (properties, element) {
@@ -172,7 +174,7 @@
     }
 
     if (!value) {
-      return {angle: 0, auto: false};
+      return {angle: 0, auto: true};
     }
 
     return {angle: value.angle, auto: value.auto};
