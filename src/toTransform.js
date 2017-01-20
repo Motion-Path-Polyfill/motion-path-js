@@ -42,7 +42,7 @@
     var offsetPath = internalScope.offsetPathParse(properties['offset-path']);
 
     if (!offsetPath) {
-      return null; // {deltaX: 0, deltaY: 0, rotation: 0};
+      return null;
     }
 
     if (offsetPath.type === 'path') {
@@ -92,7 +92,7 @@
 
     var deltaX = Math.sin(offsetPath.input * Math.PI / 180) * offsetDistanceLength;
     var deltaY = (-1) * Math.cos(offsetPath.input * Math.PI / 180) * offsetDistanceLength;
-    // FIXME: calculate rotation
+
     return {deltaX: Math.round(deltaX * 100) / 100,
             deltaY: Math.round(deltaY * 100) / 100,
             rotation: (offsetPath.input - 90)};
