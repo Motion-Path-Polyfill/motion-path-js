@@ -8,7 +8,7 @@
       var assertNoInterpolation = internalScope.assertNoInterpolation;
 
       assertOffsetInterpolation({
-        property: 'offset-rotate',
+        property: 'offsetRotate',
         from: '10deg',
         to: '50deg'
       }, [
@@ -19,7 +19,7 @@
       ]);
 
       assertOffsetInterpolation({
-        property: 'offset-rotate',
+        property: 'offsetRotate',
         from: 'auto 10deg',
         to: 'auto 50deg'
       }, [
@@ -30,7 +30,7 @@
       ]);
 
       assertOffsetInterpolation({
-        property: 'offset-rotate',
+        property: 'offsetRotate',
         from: 'reverse -170deg',
         to: 'reverse -130deg'
       }, [
@@ -39,7 +39,7 @@
       ]);
 
       assertOffsetInterpolation({
-        property: 'offset-rotate',
+        property: 'offsetRotate',
         from: 'auto 10deg',
         to: 'reverse -130deg'
       }, [
@@ -48,7 +48,7 @@
       ]);
 
       assertOffsetInterpolation({
-        property: 'offset-rotate',
+        property: 'offsetRotate',
         from: 'reverse -170deg',
         to: 'auto 50deg'
       }, [
@@ -57,7 +57,7 @@
       ]);
 
       assertOffsetInterpolation({
-        property: 'offset-rotate',
+        property: 'offsetRotate',
         from: 'auto 10deg',
         to: 'reverse -130deg'
       }, [
@@ -66,7 +66,7 @@
       ]);
 
       assertNoInterpolation({
-        property: 'offset-rotate',
+        property: 'offsetRotate',
         from: 'auto 10deg',
         to: '180deg'
       });

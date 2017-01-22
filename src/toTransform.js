@@ -39,7 +39,7 @@
   var pathElement = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 
   function convertPath (properties) {
-    var offsetPath = internalScope.offsetPathParse(properties['offset-path']);
+    var offsetPath = internalScope.offsetPathParse(properties['offsetPath']);
 
     if (!offsetPath) {
       return null;
@@ -63,9 +63,9 @@
   }
 
   function convertPathString (properties) {
-    var offsetPath = internalScope.offsetPathParse(properties['offset-path']);
+    var offsetPath = internalScope.offsetPathParse(properties['offsetPath']);
 
-    var offsetDistance = internalScope.offsetDistanceParse(properties['offset-distance']);
+    var offsetDistance = internalScope.offsetDistanceParse(properties['offsetDistance']);
     if (offsetDistance === undefined) {
       offsetDistance = {value: 0, unit: 'px'};
     }
@@ -80,9 +80,9 @@
   }
 
   function convertRayString (properties) {
-    var offsetPath = internalScope.offsetPathParse(properties['offset-path']);
+    var offsetPath = internalScope.offsetPathParse(properties['offsetPath']);
 
-    var offsetDistance = internalScope.offsetDistanceParse(properties['offset-distance']);
+    var offsetDistance = internalScope.offsetDistanceParse(properties['offsetDistance']);
     if (offsetDistance === undefined) {
       offsetDistance = {value: 0, unit: 'px'};
     }
@@ -107,8 +107,8 @@
       return null;
     }
 
-    if ('offset-position' in properties) {
-      position = internalScope.offsetPositionAnchorParse(properties['offset-position']);
+    if ('offsetPosition' in properties) {
+      position = internalScope.offsetPositionAnchorParse(properties['offsetPosition']);
     }
 
     if (position === 'auto' || position === undefined || position === null) {
@@ -116,8 +116,8 @@
     }
 
     var anchor = 'auto';
-    if ('offset-anchor' in properties) {
-      anchor = internalScope.offsetPositionAnchorParse(properties['offset-anchor']);
+    if ('offsetAnchor' in properties) {
+      anchor = internalScope.offsetPositionAnchorParse(properties['offsetAnchor']);
     }
 
     if (anchor === 'auto' || anchor === undefined || anchor === null) {
@@ -169,8 +169,8 @@
 
   function convertOffsetRotate (properties, element) {
     var value = null;
-    if ('offset-rotate' in properties) {
-      value = internalScope.offsetRotateParse(properties['offset-rotate']);
+    if ('offsetRotate' in properties) {
+      value = internalScope.offsetRotateParse(properties['offsetRotate']);
     }
 
     if (!value) {
@@ -212,7 +212,7 @@
         (pathTransform.deltaX + positionAnchorTransform.deltaX) + 'px, ' +
         (pathTransform.deltaY + positionAnchorTransform.deltaY) + 'px, 0px)';
 
-    if (internalScope.offsetPathParse(properties['offset-path'])) {
+    if (internalScope.offsetPathParse(properties['offsetPath'])) {
       transform += ' rotate(' + rotation + 'deg)';
     }
 

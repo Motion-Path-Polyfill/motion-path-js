@@ -8,7 +8,7 @@
       var assertNoInterpolation = internalScope.assertNoInterpolation;
 
       assertOffsetInterpolation({
-        property: 'offset-path',
+        property: 'offsetPath',
         from: 'ray(100deg)',
         to: 'ray(-100deg)'
       }, [
@@ -19,7 +19,7 @@
       ]);
 
       assertOffsetInterpolation({
-        property: 'offset-path',
+        property: 'offsetPath',
         from: 'ray(100deg contain)',
         to: 'ray(-100deg contain)'
       }, [
@@ -30,7 +30,7 @@
       ]);
 
       assertOffsetInterpolation({
-        property: 'offset-path',
+        property: 'offsetPath',
         from: 'ray(farthest-side 100deg contain)',
         to: 'ray(farthest-side -100deg contain)'
       }, [
@@ -41,7 +41,7 @@
       ]);
 
       assertOffsetInterpolation({
-        property: 'offset-path',
+        property: 'offsetPath',
         from: 'ray(contain 100deg closest-side)',
         to: 'ray(contain -100deg closest-side)'
       }, [
@@ -52,7 +52,7 @@
       ]);
 
       assertOffsetInterpolation({
-        property: 'offset-path',
+        property: 'offsetPath',
         from: 'ray(100deg closest-corner)',
         to: 'ray(-100deg closest-corner)'
       }, [
@@ -63,7 +63,7 @@
       ]);
 
       assertOffsetInterpolation({
-        property: 'offset-path',
+        property: 'offsetPath',
         from: 'ray(100deg farthest-corner)',
         to: 'ray(-100deg farthest-corner)'
       }, [
@@ -74,7 +74,7 @@
       ]);
 
       assertOffsetInterpolation({
-        property: 'offset-path',
+        property: 'offsetPath',
         from: 'ray(0deg farthest-side)',
         to: 'ray(20deg farthest-side)'
       }, [
@@ -85,7 +85,7 @@
       ]);
 
       assertOffsetInterpolation({
-        property: 'offset-path',
+        property: 'offsetPath',
         from: 'ray(0deg farthest-side)',
         to: 'ray(20deg farthest-side)'
       }, [
@@ -97,61 +97,61 @@
 
       // TODO: Make this interpolate
       assertNoInterpolation({
-        property: 'offset-path',
+        property: 'offsetPath',
         from: "path('m 0 0 h 100')",
         to: "path('m 0 0 h 200')"
       });
 
       assertNoInterpolation({
-        property: 'offset-path',
+        property: 'offsetPath',
         from: 'none',
         to: 'ray(180deg)'
       });
 
       assertNoInterpolation({
-        property: 'offset-path',
+        property: 'offsetPath',
         from: 'ray(180deg)',
         to: 'none'
       });
 
       assertNoInterpolation({
-        property: 'offset-path',
+        property: 'offsetPath',
         from: 'ray(100deg farthest-corner)',
         to: 'ray(-100deg closest-corner)'
       });
 
       assertNoInterpolation({
-        property: 'offset-path',
+        property: 'offsetPath',
         from: 'ray(100deg farthest-side contain)',
         to: 'ray(-100deg closest-corner)'
       });
 
       assertNoInterpolation({
-        property: 'offset-path',
+        property: 'offsetPath',
         from: 'ray(100deg contain)',
         to: 'ray(-100deg)'
       });
 
       assertNoInterpolation({
-        property: 'offset-path',
+        property: 'offsetPath',
         from: 'ray(0deg contain contain farthest-side closest-side 50deg 90deg)',
         to: 'ray(10deg contain contain farthest-side closest-side 60deg 100deg)'
       });
 
       assertNoInterpolation({
-        property: 'offset-path',
+        property: 'offsetPath',
         from: 'ray(0deg garbage)',
         to: 'ray(10deg contain)'
       });
 
       assertNoInterpolation({
-        property: 'offset-path',
+        property: 'offsetPath',
         from: "path('m 0 0 h 100')",
         to: 'ray(10deg contain)'
       });
 
       assertNoInterpolation({
-        property: 'offset-path',
+        property: 'offsetPath',
         from: 'ray(farthest-side closest-side 0deg)',
         to: 'ray(farthest-side closest-side 20deg)'
       });
