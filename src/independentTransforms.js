@@ -17,23 +17,23 @@
         parse: internalScope.rotateParse,
         merge: internalScope.rotateMerge
       },
-      'offset-rotate': {
+      offsetRotate: {
         parse: internalScope.offsetRotateParse,
         merge: internalScope.offsetRotateMerge
       },
-      'offset-distance': {
+      offsetDistance: {
         parse: internalScope.offsetDistanceParse,
         merge: internalScope.offsetDistanceMerge
       },
-      'offset-path': {
+      offsetPath: {
         parse: internalScope.offsetPathParse,
         merge: internalScope.offsetPathMerge
       },
-      'offset-anchor': {
+      offsetAnchor: {
         parse: internalScope.offsetPositionAnchorParse,
         merge: internalScope.offsetPositionAnchorMerge
       },
-      'offset-position': {
+      offsetPosition: {
         parse: internalScope.offsetPositionAnchorParse,
         merge: internalScope.offsetPositionAnchorMerge
       }
@@ -57,7 +57,7 @@
 
         return result;
       },
-      watchedProperties: ['scale', 'rotate', 'translate', 'transform', 'offset-distance', 'offset-path', 'offset-position', 'offset-anchor']
+      watchedProperties: ['scale', 'rotate', 'translate', 'transform', 'offsetDistance', 'offsetPath', 'offsetPosition', 'offsetAnchor']
     }
   });
 })();

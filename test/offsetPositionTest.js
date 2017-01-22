@@ -7,7 +7,7 @@
       var assertOffsetInterpolation = internalScope.assertOffsetInterpolation;
 
       assertOffsetInterpolation({
-        property: 'offset-position',
+        property: 'offsetPosition',
         from: '10% 20%',
         to: '60% 40%'
       }, [
@@ -18,7 +18,7 @@
       ]);
 
       assertOffsetInterpolation({
-        property: 'offset-position',
+        property: 'offsetPosition',
         from: 'auto',
         to: '80% 30%'
       }, [
@@ -29,7 +29,7 @@
       ]);
 
       assertOffsetInterpolation({
-        property: 'offset-position',
+        property: 'offsetPosition',
         from: '15% 73%',
         to: 'auto'
       }, [
@@ -40,7 +40,7 @@
       ]);
 
       assertOffsetInterpolation({
-        property: 'offset-position',
+        property: 'offsetPosition',
         from: 'auto',
         to: 'auto'
       }, [
@@ -51,7 +51,7 @@
       ]);
 
       assertOffsetInterpolation({
-        property: 'offset-position',
+        property: 'offsetPosition',
         from: '20px 50%',
         to: '30% 40px'
       }, [
@@ -62,7 +62,7 @@
       ]);
 
       assertOffsetInterpolation({
-        property: 'offset-position',
+        property: 'offsetPosition',
         from: '20px 50%',
         to: '30px 40%'
       }, [
