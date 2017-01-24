@@ -129,11 +129,11 @@
 
     if (position === 'auto' || position === undefined || position === null) {
       var result = {
-                    deltaX: 0,
-                    deltaY: 0,
-                    transformOriginX: transformOrigin[0].value,
-                    transformOriginY: transformOrigin[1].value
-                   };
+        deltaX: 0,
+        deltaY: 0,
+        transformOriginX: transformOrigin[0].value,
+        transformOriginY: transformOrigin[1].value
+      };
       if (anchor === transformOrigin || anchor === 'auto' || anchor === undefined || anchor === null) {
         result['anchorX'] = transformOrigin[0].value;
         result['anchorY'] = transformOrigin[1].value;
@@ -162,7 +162,7 @@
     var offsetLeft = element.offsetLeft;
     var offsetTop = element.offsetTop;
 
-    var elementProperties = element.getBoundingClientRect();
+    elementProperties = element.getBoundingClientRect();
     var parentProperties = element.offsetParent ? element.offsetParent.getBoundingClientRect() : null;
     element.style._style.transform = savedTransform;
 
@@ -195,13 +195,13 @@
     var deltaY = (offsetPosY - anchorPosY) - offsetTop;
 
     return {
-            deltaX: deltaX,
-            deltaY: deltaY, 
-            anchorX: anchorPosX,
-            anchorY: anchorPosY,
-            transformOriginX: transformOrigin[0].value,
-            transformOriginY: transformOrigin[1].value
-           };
+      deltaX: deltaX,
+      deltaY: deltaY,
+      anchorX: anchorPosX,
+      anchorY: anchorPosY,
+      transformOriginX: transformOrigin[0].value,
+      transformOriginY: transformOrigin[1].value
+    };
   }
 
   function convertOffsetRotate (properties, element) {
@@ -263,7 +263,7 @@
           var beforeShiftStr = 'translate3d(' + beforeShiftX + 'px, ' + beforeShiftY + 'px, 0px)';
           var afterShiftX = (-1) * beforeShiftX;
           var afterShiftY = (-1) * beforeShiftY;
-          var afterShiftStr = 'translate3d(' + afterShiftX + 'px, ' + afterShiftY + 'px, 0px)'
+          var afterShiftStr = 'translate3d(' + afterShiftX + 'px, ' + afterShiftY + 'px, 0px)';
           transform += ' ' + beforeShiftStr + ' rotate(' + rotation + 'deg) ' + afterShiftStr;
           return transform;
         }
