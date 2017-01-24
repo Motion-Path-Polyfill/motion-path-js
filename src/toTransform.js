@@ -62,17 +62,17 @@
     }
   }
 
-  function isClosedLoop (path) { 
+  function isClosedLoop (path) {
     var pathInput = path.input.replace(/[,\s]+$/g, '');
     var lastPathInput = pathInput[pathInput.length - 1];
 
-    return (lastPathInput === 'z' || lastPathInput ==='Z');
+    return (lastPathInput === 'z' || lastPathInput === 'Z');
   }
 
   function convertPathString (properties) {
     var offsetPath = internalScope.offsetPathParse(properties['offsetPath']);
     var closedLoop = isClosedLoop(offsetPath);
-   
+
     var offsetDistance = internalScope.offsetDistanceParse(properties['offsetDistance']);
     if (offsetDistance === undefined) {
       offsetDistance = {value: 0, unit: 'px'};
@@ -82,18 +82,18 @@
 
     var offsetDistanceLength = getOffsetDistanceLength(offsetDistance, pathElement.getTotalLength());
 
-    if(closedLoop) {
-      if(offsetDistanceLength < 0) {
-      offsetDistanceLength = (offsetDistanceLength % pathElement.getTotalLength()) + pathElement.getTotalLength();
+    if (closedLoop) {
+      if (offsetDistanceLength < 0) {
+        offsetDistanceLength = (offsetDistanceLength % pathElement.getTotalLength()) + pathElement.getTotalLength();
       } else {
         offsetDistanceLength = offsetDistanceLength % pathElement.getTotalLength();
       }
-    } else if(offsetDistanceLength > pathElement.getTotalLength()) {
+    } else if (offsetDistanceLength > pathElement.getTotalLength()) {
       offsetDistanceLength = pathElement.getTotalLength();
     }
 
     var point = pathElement.getPointAtLength(offsetDistanceLength);
-    
+
     // FIXME: calculate rotation
     return {deltaX: point.x, deltaY: point.y, rotation: 0};
   }
