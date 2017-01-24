@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <!--
+    Illustrates how offset-rotate could be used to rotate around the offset-anchor,
+    if offset-position and offset-anchor were specified as identical percentage pairs,
+    and offset-path was 'path("m 0 0")'.
+
+    If Option A or B are taken in https://github.com/w3c/fxtf-drafts/issues/64
+    then offset-path can be none and then offset-anchor can be auto.
+  -->
+  <script src="../third_party/web-animations-js/web-animations.dev.js"></script>
+  <script src="../motion-path-polyfill.min.js"></script>
+  <style>
+
+  * {
+    margin: 0;
+    border: 0;
+    padding: 0;
+  }
+
+  body {
+    background-color: blue;
+  }
+
+  .board {
+    background-color: red;
+    position: absolute;
+    left: 300px;
+    width: 600px;
+    height: 600px;
+    transform: scale(1);
+  }
+
+  .white {
+    background-color: yellow;
+  }
+
+  .black {
+    background-color: green;
+  }
+
+  .square {
+    position: absolute;
+    /*animation: anim 3s infinite;*/
+  }
+
+  /*
+  Each square's rotation origin depends on its position, e.g.
+
+  .topLeft {
+    offset-position: 0% 0%; offset-anchor: 0% 0%;
+  }
+  .topRight {
+    offset-position: 100% 0%; offset-anchor: 100% 0%;
+  }
+  .bottomRight {
+    offset-position: 100% 100%; offset-anchor: 100% 100%;
+  }
+  .bottomLeft {
+    offset-position: 0% 100%; offset-anchor: 0% 100%;
+  }
+  */
+
+  @keyframes anim {
+    0% { rotate: 0deg; }
+    100% { rotate: 360deg; }
+  }
+
+  </style>
+  <script>
+  'use strict';
+
+  function setup() {
+    for (var side = 1; side <= 8; ++side) {
+      var board = document.createElement('div');
+      board.classList = 'board';
+      board.style.top = (side * 1200 - 900) + 'px';
+
+
+      for (var right = 0; right < side; ++right) {
+        for (var bottom = 0; bottom < side; ++bottom) {
+          var square = document.createElement('div');
+          var parity = (side - right + side - bottom) % 2;
+          square.classList = parity ? 'black square' : 'white square';
+          square.style.width = (600 / side) + 'px';
+          square.style.height = (600 / side) + 'px';
+
+          // offset-position and offset-anchor would replace left/top/transformOrigin
+          square.style.left = ((side - right - 1) * 600 / side) + 'px';
+          square.style.top = ((side - bottom - 1) * 600 / side) + 'px';
+
+          if (side > 1) {
+            square.style.transformOrigin = ((side - right - 1) * 600 / (side - 1) / side) + 'px ' + ((side - bottom - 1) * 600 / (side - 1) / side) + 'px';
+          }
+
+          board.appendChild(square);
+          square.animate([{rotate: '0deg'}, {rotate: '360deg'}], {duration: 3000, iterations: Infinity});
+        }
+      }
+
+      document.body.appendChild(board);
+    }
+  }
+
+  window.onload = setup;
+  </script>
+</head>
+<body>
+</body>
+</html>
