@@ -62,8 +62,16 @@
     }
   }
 
+  function isClosedLoop (path) {
+    var pathInput = path.input.replace(/[,\s]+$/g, '');
+    var lastPathInput = pathInput[pathInput.length - 1];
+
+    return (lastPathInput === 'z' || lastPathInput === 'Z');
+  }
+
   function convertPathString (properties) {
     var offsetPath = internalScope.offsetPathParse(properties['offsetPath']);
+    var closedLoop = isClosedLoop(offsetPath);
 
     var offsetDistance = internalScope.offsetDistanceParse(properties['offsetDistance']);
     if (offsetDistance === undefined) {
@@ -72,9 +80,21 @@
 
     pathElement.setAttribute('d', offsetPath.input);
 
-    var offsetDistanceLength = getOffsetDistanceLength(offsetDistance, pathElement.getTotalLength());
+    var totalPathLength = pathElement.getTotalLength();
+    var offsetDistanceLength = getOffsetDistanceLength(offsetDistance, totalPathLength);
+
+    if (closedLoop) {
+      if (offsetDistanceLength < 0) {
+        offsetDistanceLength = (offsetDistanceLength % totalPathLength) + totalPathLength;
+      } else {
+        offsetDistanceLength = offsetDistanceLength % totalPathLength;
+      }
+    } else if (offsetDistanceLength > totalPathLength) {
+      offsetDistanceLength = totalPathLength;
+    }
 
     var point = pathElement.getPointAtLength(offsetDistanceLength);
+
     // FIXME: calculate rotation
     return {deltaX: point.x, deltaY: point.y, rotation: 0};
   }
