@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <script src="../third_party/web-animations-js/web-animations.dev.js"></script>
+  <script src="../motion-path-polyfill.min.js"></script>
+  <style>
+
+  * {
+    margin: 0;
+    border: 0;
+    padding: 0;
+  }
+
+  body {
+    background-color: black;
+  }
+
+  .board {
+    background-color: blue;
+    position: absolute;
+    left: 300px;
+    width: 600px;
+    height: 600px;
+    transform: scale(1);
+  }
+
+  .white {
+    background-color: lime;
+  }
+
+  .black {
+    background-color: fuchsia;
+  }
+
+  </style>
+  <script>
+  'use strict';
+
+  function setup() {
+    for (var side = 1; side <= 8; ++side) {
+      var board = document.createElement('div');
+      board.classList = 'board';
+      board.style.top = (side * 1200 - 900) + 'px';
+
+
+      for (var right = 0; right < side; ++right) {
+        for (var bottom = 0; bottom < side; ++bottom) {
+          var square = document.createElement('div');
+          var parity = (side - right + side - bottom) % 2;
+          square.classList = parity ? 'black square' : 'white square';
+          square.style.width = (600 / side) + 'px';
+          square.style.height = (600 / side) + 'px';
+
+          var position = '50% 50%';
+          if (side > 1) {
+            position = ((side - right - 1) * 100 / (side - 1)) + '% ' + ((side - bottom - 1) * 100 / (side - 1)) + '%';
+          }
+
+          board.appendChild(square);
+          square.animate([
+            {offsetRotate: '0deg', offsetAnchor: position, offsetPath: 'path("m 0 0")', offsetPosition: position}, 
+            {offsetRotate: '360deg', offsetAnchor: position, offsetPath: 'path("m 0 0")', offsetPosition: position}
+          ], {duration: 3000, iterations: Infinity});
+        }
+      }
+
+      document.body.appendChild(board);
+    }
+  }
+
+  window.onload = setup;
+  </script>
+</head>
+<body>
+</body>
+</html>
