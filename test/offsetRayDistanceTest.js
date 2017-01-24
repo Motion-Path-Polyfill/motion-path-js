@@ -18,8 +18,8 @@
                                     {'offsetPath': 'ray(90deg)', 'offsetDistance': '0px'},
                                     {'offsetPath': 'ray(90deg)', 'offsetDistance': '100px'}],
         [
-                                    {at: 0, is: 'translate3d(0px, 0px, 0px) rotate(0deg)'},
-                                    {at: 1, is: 'translate3d(100px, 0px, 0px) rotate(0deg)'}
+                                    {at: 0, is: 'translate3d(0px, 0px, 0px)'},
+                                    {at: 1, is: 'translate3d(100px, 0px, 0px)'}
         ]
       );
 

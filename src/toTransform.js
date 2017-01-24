@@ -121,18 +121,13 @@
   function convertOffsetAnchorPosition (properties, element) {
     // According to spec: https://drafts.fxtf.org/motion-1/#offset-anchor-property
     // If offset-anchor is set to auto then it will compute to the value of offset-position.
-    var position = 'auto';
-
     if (element === undefined) {
       return null;
     }
 
+    var position = 'auto';
     if ('offsetPosition' in properties) {
       position = internalScope.offsetPositionAnchorParse(properties['offsetPosition']);
-    }
-
-    if (position === 'auto' || position === undefined || position === null) {
-      return null;
     }
 
     var anchor = 'auto';
@@ -140,8 +135,42 @@
       anchor = internalScope.offsetPositionAnchorParse(properties['offsetAnchor']);
     }
 
-    if (anchor === 'auto' || anchor === undefined || anchor === null) {
-      anchor = position;
+    var transformOrigin = window.getComputedStyle(element).transformOrigin;
+    transformOrigin = transformOrigin.split(/\s+/).map(internalScope.offsetDistanceParse);
+
+    if (anchor === 'auto' || !anchor) {
+      if (!properties['offsetPath'] || properties['offsetPath'] === 'none') {
+        anchor = position;
+      } else {
+        anchor = transformOrigin;
+      }
+    }
+
+    if (position === 'auto' || !position) {
+      var result = {
+        deltaX: 0,
+        deltaY: 0,
+        transformOriginX: transformOrigin[0].value,
+        transformOriginY: transformOrigin[1].value
+      };
+      if (anchor === transformOrigin || anchor === 'auto' || !anchor) {
+        result['anchorX'] = transformOrigin[0].value;
+        result['anchorY'] = transformOrigin[1].value;
+        return result;
+      }
+      var elementProperties = element.getBoundingClientRect();
+      if (anchor[0].unit === '%') {
+        result['anchorX'] = (anchor[0].value * elementProperties.width) / 100;
+      } else {
+        result['anchorX'] = anchor[0].value;
+      }
+
+      if (anchor[1].unit === '%') {
+        result['anchorY'] = (anchor[1].value * elementProperties.height) / 100;
+      } else {
+        result['anchorY'] = anchor[1].value;
+      }
+      return result;
     }
 
     // TODO: find a way of doing this that doesn't involve _style
@@ -152,7 +181,7 @@
     var offsetLeft = element.offsetLeft;
     var offsetTop = element.offsetTop;
 
-    var elementProperties = element.getBoundingClientRect();
+    elementProperties = element.getBoundingClientRect();
     var parentProperties = element.offsetParent ? element.offsetParent.getBoundingClientRect() : null;
     element.style._style.transform = savedTransform;
 
@@ -184,7 +213,14 @@
     var deltaX = (offsetPosX - anchorPosX) - offsetLeft;
     var deltaY = (offsetPosY - anchorPosY) - offsetTop;
 
-    return {deltaX: deltaX, deltaY: deltaY, anchorX: anchorPosX, anchorY: anchorPosY};
+    return {
+      deltaX: deltaX,
+      deltaY: deltaY,
+      anchorX: anchorPosX,
+      anchorY: anchorPosY,
+      transformOriginX: transformOrigin[0].value,
+      transformOriginY: transformOrigin[1].value
+    };
   }
 
   function convertOffsetRotate (properties, element) {
@@ -197,7 +233,7 @@
       return {angle: 0, auto: true};
     }
 
-    return {angle: value.angle, auto: value.auto};
+    return value;
   }
 
   function convertOffsetToTransform (properties, element) {
@@ -211,8 +247,9 @@
     var positionAnchorTransform = convertOffsetAnchorPosition(properties, element);
     var parsedRotate = convertOffsetRotate(properties);
     var rotation = parsedRotate.angle;
+    var path = internalScope.offsetPathParse(properties['offsetPath']);
 
-    if (!pathTransform && !positionAnchorTransform) {
+    if (!pathTransform && !('offsetPosition' in properties)) {
       return null;
     }
 
@@ -228,14 +265,30 @@
       positionAnchorTransform = {deltaX: 0, deltaY: 0};
     }
 
+    var anchorX = positionAnchorTransform.anchorX;
+    var anchorY = positionAnchorTransform.anchorY;
+    var transformOriginX = positionAnchorTransform.transformOriginX;
+    var transformOriginY = positionAnchorTransform.transformOriginY;
+
     var transform = 'translate3d(' +
         (pathTransform.deltaX + positionAnchorTransform.deltaX) + 'px, ' +
         (pathTransform.deltaY + positionAnchorTransform.deltaY) + 'px, 0px)';
 
-    if (internalScope.offsetPathParse(properties['offsetPath'])) {
-      transform += ' rotate(' + rotation + 'deg)';
+    if (path !== undefined) {
+      if (rotation !== undefined && rotation !== 0) {
+        if (anchorX !== transformOriginX && anchorY !== transformOriginY) {
+          var beforeShiftX = anchorX - transformOriginX;
+          var beforeShiftY = anchorY - transformOriginY;
+          var beforeShiftStr = 'translate3d(' + beforeShiftX + 'px, ' + beforeShiftY + 'px, 0px)';
+          var afterShiftX = (-1) * beforeShiftX;
+          var afterShiftY = (-1) * beforeShiftY;
+          var afterShiftStr = 'translate3d(' + afterShiftX + 'px, ' + afterShiftY + 'px, 0px)';
+          transform += ' ' + beforeShiftStr + ' rotate(' + rotation + 'deg) ' + afterShiftStr;
+          return transform;
+        }
+        transform += ' rotate(' + rotation + 'deg)';
+      }
     }
-
     return transform;
   }
 
