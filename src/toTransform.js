@@ -80,16 +80,17 @@
 
     pathElement.setAttribute('d', offsetPath.input);
 
-    var offsetDistanceLength = getOffsetDistanceLength(offsetDistance, pathElement.getTotalLength());
+    var totalPathLength = pathElement.getTotalLength();
+    var offsetDistanceLength = getOffsetDistanceLength(offsetDistance, totalPathLength);
 
     if (closedLoop) {
       if (offsetDistanceLength < 0) {
-        offsetDistanceLength = (offsetDistanceLength % pathElement.getTotalLength()) + pathElement.getTotalLength();
+        offsetDistanceLength = (offsetDistanceLength % totalPathLength) + totalPathLength;
       } else {
-        offsetDistanceLength = offsetDistanceLength % pathElement.getTotalLength();
+        offsetDistanceLength = offsetDistanceLength % totalPathLength;
       }
-    } else if (offsetDistanceLength > pathElement.getTotalLength()) {
-      offsetDistanceLength = pathElement.getTotalLength();
+    } else if (offsetDistanceLength > totalPathLength) {
+      offsetDistanceLength = totalPathLength;
     }
 
     var point = pathElement.getPointAtLength(offsetDistanceLength);
