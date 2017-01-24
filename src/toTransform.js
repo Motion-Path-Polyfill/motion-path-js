@@ -116,25 +116,24 @@
     }
 
     var transformOrigin = window.getComputedStyle(element).transformOrigin;
-    transformOrigin = transformOrigin.split(/\s+/);
-    transformOrigin = transformOrigin.map(internalScope.offsetDistanceParse);
+    transformOrigin = transformOrigin.split(/\s+/).map(internalScope.offsetDistanceParse);
 
-    if (anchor === 'auto' || anchor === undefined || anchor === null) {
-      if ('offsetPath' in properties && properties['offsetPath'] === 'none') {
+    if (anchor === 'auto' || !anchor) {
+      if (!properties['offsetPath'] || properties['offsetPath'] === 'none') {
         anchor = position;
       } else {
         anchor = transformOrigin;
       }
     }
 
-    if (position === 'auto' || position === undefined || position === null) {
+    if (position === 'auto' || !position) {
       var result = {
         deltaX: 0,
         deltaY: 0,
         transformOriginX: transformOrigin[0].value,
         transformOriginY: transformOrigin[1].value
       };
-      if (anchor === transformOrigin || anchor === 'auto' || anchor === undefined || anchor === null) {
+      if (anchor === transformOrigin || anchor === 'auto' || !anchor) {
         result['anchorX'] = transformOrigin[0].value;
         result['anchorY'] = transformOrigin[1].value;
         return result;
@@ -230,7 +229,7 @@
     var rotation = parsedRotate.angle;
     var path = internalScope.offsetPathParse(properties['offsetPath']);
 
-    if (!pathTransform && !positionAnchorTransform) {
+    if (!pathTransform && !('offsetPosition' in properties)) {
       return null;
     }
 
