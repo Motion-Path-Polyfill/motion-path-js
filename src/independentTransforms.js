@@ -47,6 +47,11 @@
           scale: '1 1 1',
           rotate: '0deg',
           translate: '0px'
+         /* offsetPath: 'none',
+          offsetDistance: '0px',
+          offsetRotate: 'auto',
+          offsetPosition: 'auto',
+          offsetAnchor: 'auto' */
         };
 
         if (internalScope.webAnimationsJsTesting) {

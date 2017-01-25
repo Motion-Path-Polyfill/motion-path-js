@@ -69,8 +69,7 @@
     return (lastPathInput === 'z' || lastPathInput === 'Z');
   }
 
-  
-  function getPathStringOffsetDistance(offsetPath, pathElement, offsetDistance) {
+  function getPathStringOffsetDistance (offsetPath, pathElement, offsetDistance) {
     var closedLoop = isClosedLoop(offsetPath);
     var pathLength = pathElement.getTotalLength();
 
@@ -89,35 +88,9 @@
     return offsetDistanceLength;
   }
 
-  function getPathStringRotation(currentPoint, nextPoint) {
-    var deltaX = nextPoint.x - currentPoint.x;
-    var deltaY = nextPoint.y - currentPoint.y;
-
-    if(deltaX === 0) {
-      if(deltaY > 0) {
-        // console.log("1. deltaX: " + deltaX + " deltaY: " + deltaY);
-        return 90;
-      } else if(deltaY < 0) {
-        // console.log("2. deltaX: " + deltaX + " deltaY: " + deltaY);
-        return -90;
-      }
-      // console.log("3. deltaX: " + deltaX + " deltaY: " + deltaY);
-      return 0;
-    }
-
-    if(deltaY === 0) {
-      if(deltaX > 0) {
-        return 0;
-      } 
-      return 180;
-    }
-
-    return (-1) * Math.atan(deltaY / deltaX) * 180 / Math.PI;
-  }
-
   function convertPathString (properties) {
     var offsetPath = internalScope.offsetPathParse(properties['offsetPath']);
-    
+
     var offsetDistance = internalScope.offsetDistanceParse(properties['offsetDistance']);
     if (offsetDistance === undefined) {
       offsetDistance = {value: 0, unit: 'px'};
@@ -127,14 +100,28 @@
 
     var epsilon = 0.001;
     var currentOffsetDistance = getPathStringOffsetDistance(offsetPath, pathElement, offsetDistance);
-    var nextOffsetDistance = getPathStringOffsetDistance(offsetPath, pathElement, {value: offsetDistance.value + epsilon, unit: 'px'});
+
+    var closedLoop = isClosedLoop(offsetPath);
+    var totalPathLength = pathElement.getTotalLength();
+    var nextOffsetDistanceValue = offsetDistance.value + epsilon;
+    if (!closedLoop && (currentOffsetDistance + epsilon) > totalPathLength) {
+      nextOffsetDistanceValue = offsetDistance.value - epsilon;
+    }
+
+    var nextOffsetDistance = getPathStringOffsetDistance(offsetPath, pathElement, {value: nextOffsetDistanceValue, unit: offsetDistance.unit});
 
     var currentPoint = pathElement.getPointAtLength(currentOffsetDistance);
     var nextPoint = pathElement.getPointAtLength(nextOffsetDistance);
 
-    var rotation = getPathStringRotation(currentPoint, nextPoint);
-/*    console.log(rotation);
-*/    // FIXME: calculate rotation
+    var deltaX = nextPoint.x - currentPoint.x;
+    var deltaY = nextPoint.y - currentPoint.y;
+
+    var rotation = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
+
+    if ((nextOffsetDistanceValue + epsilon) === offsetDistance.value) {
+      rotation += 180;
+    }
+
     return {deltaX: currentPoint.x, deltaY: currentPoint.y, rotation: rotation};
   }
 
