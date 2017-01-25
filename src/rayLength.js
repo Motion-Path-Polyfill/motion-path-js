@@ -2,7 +2,7 @@
 'use strict';
 
 (function () {
-  function pythagoreanTheorem (a, b) {
+  function hypotenuseLength (a, b) {
     return Math.sqrt(a * a + b * b);
   }
 
@@ -12,16 +12,18 @@
     var distLeft = Math.abs(offsetPosX);
     var distTop = Math.abs(offsetPosY);
 
-    if (size === 'closest-side') {
+    /* If size is omitted it defaults to closest-side.
+       https://drafts.fxtf.org/motion-1/#offset-path-property */
+    if (!size || size === 'closest-side') {
       return Math.min(distLeft, distTop, distRight, distBottom);
     } else if (size === 'farthest-side') {
       return Math.max(distLeft, distTop, distRight, distBottom);
     }
 
-    var distTopLeft = pythagoreanTheorem(distLeft, distTop);
-    var distTopRightCorner = pythagoreanTheorem(distRight, distTop);
-    var distBottomLeftCorner = pythagoreanTheorem(distLeft, distBottom);
-    var distBottomRightCorner = pythagoreanTheorem(distRight, distBottom);
+    var distTopLeft = hypotenuseLength(distLeft, distTop);
+    var distTopRightCorner = hypotenuseLength(distRight, distTop);
+    var distBottomLeftCorner = hypotenuseLength(distLeft, distBottom);
+    var distBottomRightCorner = hypotenuseLength(distRight, distBottom);
 
     if (size === 'closest-corner') {
       return Math.min(distTopLeft, distTopRightCorner, distBottomLeftCorner, distBottomRightCorner);
