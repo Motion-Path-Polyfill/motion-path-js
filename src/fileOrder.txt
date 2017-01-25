@@ -8,3 +8,4 @@ src/offsetDistance.js
 src/offsetPositionAnchor.js
 src/toTransform.js
 src/independentTransforms.js
+src/rayLength.js
