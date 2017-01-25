@@ -38,7 +38,7 @@
 
   var pathElement = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 
-  function convertPath (properties) {
+  function convertPath (properties, positionAnchor) {
     var offsetPath = internalScope.offsetPathParse(properties['offsetPath']);
 
     if (!offsetPath) {
@@ -50,7 +50,7 @@
     }
 
     if (offsetPath.type === 'ray') {
-      return convertRayString(properties);
+      return convertRayString(properties, positionAnchor);
     }
   }
 
@@ -99,16 +99,30 @@
     return {deltaX: point.x, deltaY: point.y, rotation: 0};
   }
 
-  function convertRayString (properties) {
+  function convertRayString (properties, positionAnchor) {
     var offsetPath = internalScope.offsetPathParse(properties['offsetPath']);
+    var rayLength = 0;
+    if (positionAnchor) {
+/*      console.log('size ' + offsetPath.size +
+        ', width ' + positionAnchor.containerWidth +
+        ', height ' + positionAnchor.containerHeight +
+        ', x ' + positionAnchor.offsetPosX +
+        ', y ' + positionAnchor.offsetPosY
+        );*/
+      rayLength = internalScope.getRayLength(offsetPath.size, 
+                                             positionAnchor.containerWidth,
+                                             positionAnchor.containerHeight,
+                                             positionAnchor.offsetPosX,
+                                             positionAnchor.offsetPosY);
+      //console.log(rayLength);
+    }
 
     var offsetDistance = internalScope.offsetDistanceParse(properties['offsetDistance']);
     if (offsetDistance === undefined) {
       offsetDistance = {value: 0, unit: 'px'};
     }
 
-    // FIXME: Calculate path length of the ray
-    var offsetDistanceLength = getOffsetDistanceLength(offsetDistance, 0);
+    var offsetDistanceLength = getOffsetDistanceLength(offsetDistance, rayLength);
 
     var deltaX = Math.sin(offsetPath.input * Math.PI / 180) * offsetDistanceLength;
     var deltaY = (-1) * Math.cos(offsetPath.input * Math.PI / 180) * offsetDistanceLength;
@@ -146,12 +160,32 @@
       }
     }
 
+    // TODO: find a way of doing this that doesn't involve _style
+    var savedTransform = element.style._style.transform;
+    // clear the transform so we can access the starting position of the element.
+    element.style._style.transform = 'none';
+
+    var offsetLeft = element.offsetLeft;
+    var offsetTop = element.offsetTop;
+
+    elementProperties = element.getBoundingClientRect();
+    var parentProperties = element.offsetParent ? element.offsetParent.getBoundingClientRect() : null;
+    element.style._style.transform = savedTransform;
+
+    if (!parentProperties) {
+      return null;
+    }
+
     if (position === 'auto' || !position) {
       var result = {
         deltaX: 0,
         deltaY: 0,
         transformOriginX: transformOrigin[0].value,
-        transformOriginY: transformOrigin[1].value
+        transformOriginY: transformOrigin[1].value,
+        offsetPosX: offsetPosX,
+        offsetPosY: offsetPosY,
+        containerWidth: parentProperties.width,
+        containerHeight: parentProperties.height
       };
       if (anchor === transformOrigin || anchor === 'auto' || !anchor) {
         result['anchorX'] = transformOrigin[0].value;
@@ -171,22 +205,6 @@
         result['anchorY'] = anchor[1].value;
       }
       return result;
-    }
-
-    // TODO: find a way of doing this that doesn't involve _style
-    var savedTransform = element.style._style.transform;
-    // clear the transform so we can access the starting position of the element.
-    element.style._style.transform = 'none';
-
-    var offsetLeft = element.offsetLeft;
-    var offsetTop = element.offsetTop;
-
-    elementProperties = element.getBoundingClientRect();
-    var parentProperties = element.offsetParent ? element.offsetParent.getBoundingClientRect() : null;
-    element.style._style.transform = savedTransform;
-
-    if (!parentProperties) {
-      return null;
     }
 
     var anchorPosX = anchor[0].value;
@@ -219,7 +237,11 @@
       anchorX: anchorPosX,
       anchorY: anchorPosY,
       transformOriginX: transformOrigin[0].value,
-      transformOriginY: transformOrigin[1].value
+      transformOriginY: transformOrigin[1].value,
+      offsetPosX: offsetPosX,
+      offsetPosY: offsetPosY,
+      containerWidth: parentProperties.width,
+      containerHeight: parentProperties.height
     };
   }
 
@@ -243,8 +265,8 @@
        https://drafts.csswg.org/css-transforms-2/#individual-transforms
        https://drafts.fxtf.org/motion-1/#motion-paths-overview
     */
-    var pathTransform = convertPath(properties);
-    var positionAnchorTransform = convertOffsetAnchorPosition(properties, element);
+    var positionAnchor = convertOffsetAnchorPosition(properties, element);
+    var pathTransform = convertPath(properties, positionAnchor);
     var parsedRotate = convertOffsetRotate(properties);
     var rotation = parsedRotate.angle;
     var path = internalScope.offsetPathParse(properties['offsetPath']);
@@ -261,18 +283,18 @@
       rotation += pathTransform.rotation;
     }
 
-    if (!positionAnchorTransform) {
-      positionAnchorTransform = {deltaX: 0, deltaY: 0};
+    if (!positionAnchor) {
+      positionAnchor = {deltaX: 0, deltaY: 0};
     }
 
-    var anchorX = positionAnchorTransform.anchorX;
-    var anchorY = positionAnchorTransform.anchorY;
-    var transformOriginX = positionAnchorTransform.transformOriginX;
-    var transformOriginY = positionAnchorTransform.transformOriginY;
+    var anchorX = positionAnchor.anchorX;
+    var anchorY = positionAnchor.anchorY;
+    var transformOriginX = positionAnchor.transformOriginX;
+    var transformOriginY = positionAnchor.transformOriginY;
 
     var transform = 'translate3d(' +
-        (pathTransform.deltaX + positionAnchorTransform.deltaX) + 'px, ' +
-        (pathTransform.deltaY + positionAnchorTransform.deltaY) + 'px, 0px)';
+        (pathTransform.deltaX + positionAnchor.deltaX) + 'px, ' +
+        (pathTransform.deltaY + positionAnchor.deltaY) + 'px, 0px)';
 
     if (path !== undefined) {
       if (rotation !== undefined && rotation !== 0) {
