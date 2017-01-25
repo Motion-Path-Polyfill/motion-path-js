@@ -3,13 +3,20 @@
 <script src="../motion-path-polyfill.min.js"></script>
 
 <div id="container">
-  <div id="target">
+  <div id="targetA">
+  </div>
+  <div id="targetB">
+  </div>
+  <div id="targetC">
+  </div>
+  <div id="targetD">
   </div>
 </div>
 
 <style>
   body {
     margin: 0px;
+    background-color: black;
   }
 
   #container {
@@ -17,25 +24,65 @@
     position: absolute;
     left: 300px;
     top: 300px;
-    background-color: yellow;
+    background-color: white;
 
-    width: 1000px;
-    height: 1000px;
+    width: 500px;
+    height: 500px;
     transform: scale(1);
   }
 
-  #target {
+  #targetA {
     width: 100px;
     height: 100px;
+    background-color: lime;
     position: absolute;
-    left: 500px;
-    top: 500px;
-    background-color: purple;
+    left: 300px;
+    top: 300px;
   }
+
+  #targetB {
+    width: 160px;
+    height: 100px;
+    background-color: yellow;
+    position: absolute;
+    left: 300px;
+    top: 300px;
+  }
+
+  #targetC {
+    width: 160px;
+    height: 160px;
+    background-color: blue;
+    position: absolute;
+    left: 300px;
+    top: 300px;
+  }
+
+  #targetD {
+    width: 100px;
+    height: 160px;
+    background-color: red;
+    position: absolute;
+    left: 300px;
+    top: 300px;
+  }
+
 </style>
 
 <script>
-  var keyframes = [{offsetPosition: '50% 50%', offsetAnchor: 'auto'}, {offsetPosition: '0% 100%', offsetAnchor: 'auto'}];
-  var timing = {duration: 2000, iterations: 3};
-  target.animate(keyframes, timing);
+  var keyframes = [
+                   {offsetPosition: '0% 0%', offsetAnchor: 'auto'},
+                   {offsetPosition: '100% 0%', offsetAnchor: 'auto'},
+                   {offsetPosition: '100% 100%', offsetAnchor: 'auto'},
+                   {offsetPosition: '0% 100%', offsetAnchor: 'auto'},
+                   {offsetPosition: '0% 0%', offsetAnchor: 'auto'}
+                  ];
+  var timingA = {duration: 4000, iterations: Infinity, iterationStart: 0};
+  var timingB = {duration: 4000, iterations: Infinity, iterationStart: 0.25};
+  var timingC = {duration: 4000, iterations: Infinity, iterationStart: 0.50};
+  var timingD = {duration: 4000, iterations: Infinity, iterationStart: 0.75};
+  targetA.animate(keyframes, timingA);
+  targetB.animate(keyframes, timingB);
+  targetC.animate(keyframes, timingC);
+  targetD.animate(keyframes, timingD);
 </script>
