@@ -88,8 +88,14 @@
     return offsetDistanceLength;
   }
 
+  function roundToHundredth (number) {
+    return Math.round(number * 100) / 100;
+  }
+
   function convertPathString (properties) {
     var offsetPath = internalScope.offsetPathParse(properties['offsetPath']);
+    var totalPathLength = pathElement.getTotalLength();
+    var closedLoop = isClosedLoop(offsetPath);
 
     var offsetDistance = internalScope.offsetDistanceParse(properties['offsetDistance']);
     if (offsetDistance === undefined) {
@@ -98,16 +104,13 @@
 
     pathElement.setAttribute('d', offsetPath.input);
 
-    var epsilon = 0.001;
     var currentOffsetDistance = getPathStringOffsetDistance(offsetPath, pathElement, offsetDistance);
 
-    var closedLoop = isClosedLoop(offsetPath);
-    var totalPathLength = pathElement.getTotalLength();
+    var epsilon = 0.001;
     var nextOffsetDistanceValue = offsetDistance.value + epsilon;
     if (!closedLoop && (currentOffsetDistance + epsilon) > totalPathLength) {
       nextOffsetDistanceValue = offsetDistance.value - epsilon;
     }
-
     var nextOffsetDistance = getPathStringOffsetDistance(offsetPath, pathElement, {value: nextOffsetDistanceValue, unit: offsetDistance.unit});
 
     var currentPoint = pathElement.getPointAtLength(currentOffsetDistance);
@@ -122,7 +125,7 @@
       rotation += 180;
     }
 
-    return {deltaX: currentPoint.x, deltaY: currentPoint.y, rotation: rotation};
+    return {deltaX: roundToHundredth(currentPoint.x), deltaY: roundToHundredth(currentPoint.y), rotation: roundToHundredth(rotation)};
   }
 
   function convertRayString (properties) {
@@ -139,8 +142,8 @@
     var deltaX = Math.sin(offsetPath.input * Math.PI / 180) * offsetDistanceLength;
     var deltaY = (-1) * Math.cos(offsetPath.input * Math.PI / 180) * offsetDistanceLength;
 
-    return {deltaX: Math.round(deltaX * 100) / 100,
-            deltaY: Math.round(deltaY * 100) / 100,
+    return {deltaX: roundToHundredth(deltaX),
+            deltaY: roundToHundredth(deltaY),
             rotation: (offsetPath.input - 90)};
   }
 

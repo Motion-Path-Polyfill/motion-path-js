@@ -147,6 +147,36 @@
                                     {at: 1, is: 'translate3d(0px, 100px, 0px) rotate(180deg)'}
         ]
       );
+
+      assertTransformInterpolation([{'offsetPath': "path('m 0, 0 h 100 v 100 h -100')", 'offsetDistance': '0%'},
+                                    {'offsetPath': "path('m 0, 0 h 100 v 100 h -100')", 'offsetDistance': '100%'}],
+        [
+                                    {at: 0, is: 'translate3d(0px, 0px, 0px) rotate(0deg)'},
+                                    {at: 1 / 3, is: 'translate3d(100px, 0px, 0px) rotate(90deg)'},
+                                    {at: 2 / 3, is: 'translate3d(100px, 100px, 0px) rotate(180deg)'},
+                                    {at: 1, is: 'translate3d(0px, 100px, 0px) rotate(180deg)'}
+        ]
+      );
+
+      assertTransformInterpolation([{'offsetPath': "path('M 0, 0 L 50, 50 L -50, 50 L 0, 0 z')", 'offsetDistance': '0%'},
+                                    {'offsetPath': "path('M 0, 0 L 50, 50 L -50, 50 L 0, 0 z')", 'offsetDistance': '100%'}],
+        [
+                                    {at: 0, is: 'translate3d(0px, 0px, 0px) rotate(45deg)'},
+                                    {at: 1 / 3, is: 'translate3d(40.24px, 50px, 0px) rotate(180deg)'},
+                                    {at: 2 / 3, is: 'translate3d(-40.24px, 50px, 0px) rotate(180deg)'},
+                                    {at: 1, is: 'translate3d(0px, 0px, 0px) rotate(45deg)'}
+        ]
+      );
+
+      assertTransformInterpolation([{'offsetPath': "path('M 0, 100 L 50, 150 L -50, 150 L 0, 100')", 'offsetDistance': '0%'},
+                                    {'offsetPath': "path('M 0, 100 L 50, 150 L -50, 150 L 0, 100')", 'offsetDistance': '100%'}],
+        [
+                                    {at: 0, is: 'translate3d(0px, 100px, 0px) rotate(45.03deg)'},
+                                    {at: 1 / 3, is: 'translate3d(40.24px, 150px, 0px) rotate(180deg)'},
+                                    {at: 2 / 3, is: 'translate3d(-40.24px, 150px, 0px) rotate(180deg)'},
+                                    {at: 1, is: 'translate3d(0px, 100px, 0px) rotate(314.94deg)'}
+        ]
+      );
     });
   });
 })();
