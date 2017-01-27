@@ -6,6 +6,6 @@ src/offsetPath.js
 src/offsetRotate.js
 src/offsetDistance.js
 src/offsetPositionAnchor.js
+src/rayLength.js
 src/toTransform.js
 src/independentTransforms.js
-src/rayLength.js
