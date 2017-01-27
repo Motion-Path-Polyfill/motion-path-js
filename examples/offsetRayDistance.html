@@ -24,7 +24,7 @@
 </style>
 
 <script>
-  var keyframes = [{'offset-path': "path('M 0, 0 L 50, 50 L -50, 50 L 0, 0')", 'offset-distance': '0%'}, {'offset-path': "path('M 0, 0 L 50, 50 L -50, 50 L 0, 0')", 'offset-distance': '100%'}];
+  var keyframes = [{offsetPath: "path('m 0, 0 h 100 v 100 h -100')", offsetDistance: '0%'}, {offsetPath: "path('m 0, 0 h 100 v 100 h -100')", offsetDistance: '100%'}];
   var timing = {duration: 6000, iterations: 3};
   target.animate(keyframes, timing);
 </script>

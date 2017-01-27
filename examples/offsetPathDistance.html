@@ -23,7 +23,7 @@
 </style>
 
 <script>
-  var keyframes = [{offsetPath: "path('m 0, 0 h 100 v 100 h -100 z')", offsetDistance: '0px'}, {offsetPath: "path('m 0, 0 h 100 v 100 h -100 z')", offsetDistance: '200px'}];
+  var keyframes = [{'offset-path': 'ray(60deg)', 'offset-distance': '0px'}, {'offset-path': 'ray(60deg)', 'offset-distance': '200px'}];
   var timing = {duration: 2000, iterations: 3};
   target.animate(keyframes, timing);
 </script>

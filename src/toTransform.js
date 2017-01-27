@@ -54,11 +54,11 @@
     }
   }
 
-  function getOffsetDistanceLength (offsetDistance, pathLength) {
+  function getOffsetDistanceLength (offsetDistance, pathLength, epsilon) {
     if (offsetDistance.unit === '%') {
-      return Number(offsetDistance.value) * pathLength / 100;
+      return Number(offsetDistance.value) * pathLength / 100 + epsilon;
     } else {
-      return Number(offsetDistance.value);
+      return Number(offsetDistance.value) + epsilon;
     }
   }
 
@@ -69,11 +69,11 @@
     return (lastPathInput === 'z' || lastPathInput === 'Z');
   }
 
-  function getPathStringOffsetDistance (offsetPath, pathElement, offsetDistance) {
+  function getPathStringOffsetDistance (offsetPath, pathElement, offsetDistance, epsilon) {
     var closedLoop = isClosedLoop(offsetPath);
     var pathLength = pathElement.getTotalLength();
 
-    var offsetDistanceLength = getOffsetDistanceLength(offsetDistance, pathLength);
+    var offsetDistanceLength = getOffsetDistanceLength(offsetDistance, pathLength, epsilon);
 
     if (closedLoop) {
       if (offsetDistanceLength < 0) {
@@ -104,19 +104,15 @@
     pathElement.setAttribute('d', offsetPath.input);
     var totalPathLength = pathElement.getTotalLength();
 
-    var currentOffsetDistanceLength = getOffsetDistanceLength(offsetDistance, totalPathLength);
-    var currentOffsetDistance = getPathStringOffsetDistance(offsetPath, pathElement, {value: currentOffsetDistanceLength, unit: 'px'});
+    var currentOffsetDistance = getPathStringOffsetDistance(offsetPath, pathElement, offsetDistance, 0);
 
     var epsilon = 0.001;
-
-    var nextOffsetDistanceValue = currentOffsetDistance + epsilon;
     var rotateFlip = false;
     if (!closedLoop && (currentOffsetDistance + epsilon) > totalPathLength) {
-      nextOffsetDistanceValue = currentOffsetDistance - epsilon;
+      epsilon *= -1;
       rotateFlip = true;
     }
-
-    var nextOffsetDistance = getPathStringOffsetDistance(offsetPath, pathElement, {value: nextOffsetDistanceValue, unit: 'px'});
+    var nextOffsetDistance = getPathStringOffsetDistance(offsetPath, pathElement, offsetDistance, epsilon);
 
     var currentPoint = pathElement.getPointAtLength(currentOffsetDistance);
     var nextPoint = pathElement.getPointAtLength(nextOffsetDistance);
@@ -142,7 +138,7 @@
     }
 
     // FIXME: Calculate path length of the ray
-    var offsetDistanceLength = getOffsetDistanceLength(offsetDistance, 0);
+    var offsetDistanceLength = getOffsetDistanceLength(offsetDistance, 0, 0);
 
     var deltaX = Math.sin(offsetPath.input * Math.PI / 180) * offsetDistanceLength;
     var deltaY = (-1) * Math.cos(offsetPath.input * Math.PI / 180) * offsetDistanceLength;
