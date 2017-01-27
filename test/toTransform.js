@@ -135,5 +135,41 @@
       expectedDeg = 164 * (180 / Math.PI);
       assert.equal(toTransform({offsetRotate: '164rad', offsetPath: 'ray(90deg)'}), 'translate3d(0px, 0px, 0px) rotate(' + expectedDeg + 'deg)');
     });
+
+    test('rayLength', function () {
+      var containerStyle = {
+        position: 'absolute',
+        left: '300px',
+        top: '300px',
+        width: '500px',
+        height: '500px'
+      };
+
+      var targetStyle = {
+        width: '100px',
+        height: '100px',
+        position: 'absolute',
+        left: '350px',
+        top: '200px',
+        offsetPosition: '80% 50%',
+        offsetPath: 'ray(90deg closest-side)',
+        offsetDistance: '100%'
+      };
+      assertTransform(containerStyle, targetStyle, 'translate3d(100px, 0px, 0px)');
+
+      targetStyle['offsetPosition'] = '0% 100%';
+      targetStyle['offsetAnchor'] = 'auto';
+      targetStyle['offsetPath'] = 'ray(farthest-corner 45deg)';
+      assertTransform(containerStyle, targetStyle, 'translate3d(100px, -250px, 0px) rotate(-45deg)');
+
+      targetStyle['offsetPosition'] = '60% 40%';
+      targetStyle['offsetAnchor'] = '20% 30%';
+      targetStyle['offsetPath'] = 'ray(farthest-side 30deg)';
+      assertTransform(containerStyle, targetStyle, 'translate3d(80px, -289.81px, 0px) translate3d(-30px, -20px, 0px) rotate(-60deg) translate3d(30px, 20px, 0px)');
+
+      targetStyle['offsetPath'] = 'ray(closest-corner 135deg)';
+      targetStyle['offsetAnchor'] = 'auto';
+      assertTransform(containerStyle, targetStyle, 'translate3d(100px, 150px, 0px) rotate(45deg)');
+    });
   });
 })();

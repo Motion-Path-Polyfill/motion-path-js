@@ -291,7 +291,6 @@
     var anchorY = positionAnchor.anchorY;
     var transformOriginX = positionAnchor.transformOriginX;
     var transformOriginY = positionAnchor.transformOriginY;
-
     var transform = 'translate3d(' +
         (pathTransform.deltaX + positionAnchor.deltaX) + 'px, ' +
         (pathTransform.deltaY + positionAnchor.deltaY) + 'px, 0px)';
