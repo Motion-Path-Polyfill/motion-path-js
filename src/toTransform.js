@@ -54,11 +54,11 @@
     }
   }
 
-  function getOffsetDistanceLength (offsetDistance, pathLength) {
+  function getOffsetDistanceLength (offsetDistance, pathLength, epsilon) {
     if (offsetDistance.unit === '%') {
-      return Number(offsetDistance.value) * pathLength / 100;
+      return Number(offsetDistance.value) * pathLength / 100 + epsilon;
     } else {
-      return Number(offsetDistance.value);
+      return Number(offsetDistance.value) + epsilon;
     }
   }
 
@@ -67,6 +67,29 @@
     var lastPathInput = pathInput[pathInput.length - 1];
 
     return (lastPathInput === 'z' || lastPathInput === 'Z');
+  }
+
+  function getPathStringOffsetDistance (offsetPath, pathElement, offsetDistance, epsilon) {
+    var closedLoop = isClosedLoop(offsetPath);
+    var pathLength = pathElement.getTotalLength();
+
+    var offsetDistanceLength = getOffsetDistanceLength(offsetDistance, pathLength, epsilon);
+
+    if (closedLoop) {
+      if (offsetDistanceLength < 0) {
+        offsetDistanceLength = offsetDistanceLength % pathLength + pathLength;
+      } else {
+        offsetDistanceLength = offsetDistanceLength % pathLength;
+      }
+    } else if (offsetDistanceLength > pathLength) {
+      offsetDistanceLength = pathLength;
+    }
+
+    return offsetDistanceLength;
+  }
+
+  function roundToHundredth (number) {
+    return Math.round(number * 100) / 100;
   }
 
   function convertPathString (properties) {
@@ -79,24 +102,31 @@
     }
 
     pathElement.setAttribute('d', offsetPath.input);
-
     var totalPathLength = pathElement.getTotalLength();
-    var offsetDistanceLength = getOffsetDistanceLength(offsetDistance, totalPathLength);
 
-    if (closedLoop) {
-      if (offsetDistanceLength < 0) {
-        offsetDistanceLength = (offsetDistanceLength % totalPathLength) + totalPathLength;
-      } else {
-        offsetDistanceLength = offsetDistanceLength % totalPathLength;
-      }
-    } else if (offsetDistanceLength > totalPathLength) {
-      offsetDistanceLength = totalPathLength;
+    var currentOffsetDistance = getPathStringOffsetDistance(offsetPath, pathElement, offsetDistance, 0);
+
+    var epsilon = 0.001;
+    var rotateFlip = false;
+    if (!closedLoop && (currentOffsetDistance + epsilon) > totalPathLength) {
+      epsilon *= -1;
+      rotateFlip = true;
+    }
+    var nextOffsetDistance = getPathStringOffsetDistance(offsetPath, pathElement, offsetDistance, epsilon);
+
+    var currentPoint = pathElement.getPointAtLength(currentOffsetDistance);
+    var nextPoint = pathElement.getPointAtLength(nextOffsetDistance);
+
+    var deltaX = nextPoint.x - currentPoint.x;
+    var deltaY = nextPoint.y - currentPoint.y;
+
+    var rotation = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
+
+    if (rotateFlip) {
+      rotation += 180;
     }
 
-    var point = pathElement.getPointAtLength(offsetDistanceLength);
-
-    // FIXME: calculate rotation
-    return {deltaX: point.x, deltaY: point.y, rotation: 0};
+    return {deltaX: roundToHundredth(currentPoint.x), deltaY: roundToHundredth(currentPoint.y), rotation: roundToHundredth(rotation)};
   }
 
   function convertRayString (properties, positionAnchor) {
@@ -115,13 +145,13 @@
       offsetDistance = {value: 0, unit: 'px'};
     }
 
-    var offsetDistanceLength = getOffsetDistanceLength(offsetDistance, rayLength);
+    var offsetDistanceLength = getOffsetDistanceLength(offsetDistance, rayLength, 0);
 
     var deltaX = Math.sin(offsetPath.input * Math.PI / 180) * offsetDistanceLength;
     var deltaY = (-1) * Math.cos(offsetPath.input * Math.PI / 180) * offsetDistanceLength;
 
-    return {deltaX: Math.round(deltaX * 100) / 100,
-            deltaY: Math.round(deltaY * 100) / 100,
+    return {deltaX: roundToHundredth(deltaX),
+            deltaY: roundToHundredth(deltaY),
             rotation: (offsetPath.input - 90)};
   }
 
