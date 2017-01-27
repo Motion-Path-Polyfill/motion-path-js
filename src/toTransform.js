@@ -137,8 +137,7 @@
       offsetDistance = {value: 0, unit: 'px'};
     }
 
-    // FIXME: Calculate path length of the ray
-    var offsetDistanceLength = getOffsetDistanceLength(offsetDistance, 0, 0);
+    var offsetDistanceLength = getOffsetDistanceLength(offsetDistance, rayLength, 0);
 
     var deltaX = Math.sin(offsetPath.input * Math.PI / 180) * offsetDistanceLength;
     var deltaY = (-1) * Math.cos(offsetPath.input * Math.PI / 180) * offsetDistanceLength;
