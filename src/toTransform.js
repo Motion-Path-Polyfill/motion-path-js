@@ -94,7 +94,6 @@
 
   function convertPathString (properties) {
     var offsetPath = internalScope.offsetPathParse(properties['offsetPath']);
-    var totalPathLength = pathElement.getTotalLength();
     var closedLoop = isClosedLoop(offsetPath);
 
     var offsetDistance = internalScope.offsetDistanceParse(properties['offsetDistance']);
@@ -103,15 +102,21 @@
     }
 
     pathElement.setAttribute('d', offsetPath.input);
+    var totalPathLength = pathElement.getTotalLength();
 
-    var currentOffsetDistance = getPathStringOffsetDistance(offsetPath, pathElement, offsetDistance);
+    var currentOffsetDistanceLength = getOffsetDistanceLength(offsetDistance, totalPathLength);
+    var currentOffsetDistance = getPathStringOffsetDistance(offsetPath, pathElement, {value: currentOffsetDistanceLength, unit: 'px'});
 
     var epsilon = 0.001;
-    var nextOffsetDistanceValue = offsetDistance.value + epsilon;
+
+    var nextOffsetDistanceValue = currentOffsetDistance + epsilon;
+    var rotateFlip = false;
     if (!closedLoop && (currentOffsetDistance + epsilon) > totalPathLength) {
-      nextOffsetDistanceValue = offsetDistance.value - epsilon;
+      nextOffsetDistanceValue = currentOffsetDistance - epsilon;
+      rotateFlip = true;
     }
-    var nextOffsetDistance = getPathStringOffsetDistance(offsetPath, pathElement, {value: nextOffsetDistanceValue, unit: offsetDistance.unit});
+
+    var nextOffsetDistance = getPathStringOffsetDistance(offsetPath, pathElement, {value: nextOffsetDistanceValue, unit: 'px'});
 
     var currentPoint = pathElement.getPointAtLength(currentOffsetDistance);
     var nextPoint = pathElement.getPointAtLength(nextOffsetDistance);
@@ -121,7 +126,7 @@
 
     var rotation = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
 
-    if ((nextOffsetDistanceValue + epsilon) === offsetDistance.value) {
+    if (rotateFlip) {
       rotation += 180;
     }
 
