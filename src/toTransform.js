@@ -103,18 +103,11 @@
     var offsetPath = internalScope.offsetPathParse(properties['offsetPath']);
     var rayLength = 0;
     if (positionAnchor) {
-/*      console.log('size ' + offsetPath.size +
-        ', width ' + positionAnchor.containerWidth +
-        ', height ' + positionAnchor.containerHeight +
-        ', x ' + positionAnchor.offsetPosX +
-        ', y ' + positionAnchor.offsetPosY
-        );*/
-      rayLength = internalScope.getRayLength(offsetPath.size, 
+      rayLength = internalScope.getRayLength(offsetPath.size,
                                              positionAnchor.containerWidth,
                                              positionAnchor.containerHeight,
                                              positionAnchor.offsetPosX,
                                              positionAnchor.offsetPosY);
-      //console.log(rayLength);
     }
 
     var offsetDistance = internalScope.offsetDistanceParse(properties['offsetDistance']);
