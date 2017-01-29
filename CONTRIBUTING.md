@@ -11,7 +11,6 @@ $ cd motion-path-js
 **Get dependencies and build tools**  
 $ git submodule update --init --recursive  
 $ npm install  
-$ npm install -g grunt grunt-cli  
 
 **Build and run tests**  
 $ npm test  
@@ -20,4 +19,4 @@ $ npm run watchTests
 
 **Use the polyfill**  
 Add third_party/web-animations-js/web-animations.dev.js and motion-path-polyfill.min.js to your web page.  
-Include offset-position, offset-path, offset-distance, offset-rotate and offset-anchor in your keyframes when calling element.animate. [Example.](examples/offsetAnchorPosition.html)
+Include offsetPosition, offsetPath, offsetDistance, offsetRotate and offsetAnchor in your keyframes when calling element.animate. [Example.](examples/offsetAnchorPosition.html)
