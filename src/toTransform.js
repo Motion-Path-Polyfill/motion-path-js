@@ -63,7 +63,7 @@
   }
 
   function isClosedLoop (path) {
-    var pathInput = path.input.replace(/[,\s]+$/g, '');
+    var pathInput = path.path.replace(/[,\s]+$/g, '');
     var lastPathInput = pathInput[pathInput.length - 1];
 
     return (lastPathInput === 'z' || lastPathInput === 'Z');
@@ -101,7 +101,7 @@
       offsetDistance = {value: 0, unit: 'px'};
     }
 
-    pathElement.setAttribute('d', offsetPath.input);
+    pathElement.setAttribute('d', offsetPath.path);
     var totalPathLength = pathElement.getTotalLength();
 
     var currentOffsetDistance = getPathStringOffsetDistance(offsetPath, pathElement, offsetDistance, 0);
@@ -147,12 +147,12 @@
 
     var offsetDistanceLength = getOffsetDistanceLength(offsetDistance, rayLength, 0);
 
-    var deltaX = Math.sin(offsetPath.input * Math.PI / 180) * offsetDistanceLength;
-    var deltaY = (-1) * Math.cos(offsetPath.input * Math.PI / 180) * offsetDistanceLength;
+    var deltaX = Math.sin(offsetPath.angle * Math.PI / 180) * offsetDistanceLength;
+    var deltaY = (-1) * Math.cos(offsetPath.angle * Math.PI / 180) * offsetDistanceLength;
 
     return {deltaX: roundToHundredth(deltaX),
             deltaY: roundToHundredth(deltaY),
-            rotation: (offsetPath.input - 90)};
+            rotation: (offsetPath.angle - 90)};
   }
 
   function convertOffsetAnchorPosition (properties, element) {

@@ -8,7 +8,7 @@
     // https://drafts.fxtf.org/motion-1/#offset-path-property
 
     if (input === 'none') {
-      return {type: null, input: null};
+      return {type: null, angle: null, path: null};
     }
 
     var ray = /^ray\((.*)\)$/.exec(input);
@@ -21,7 +21,7 @@
         return undefined;
       }
 
-      var result = {type: 'ray', input: null, contain: false, size: null};
+      var result = {type: 'ray', angle: null, path: null, contain: false, size: null};
       var validSizes = ['closest-side', 'farthest-side', 'closest-corner', 'farthest-corner'];
 
       for (var i = 0; i < rayInput.length; i++) {
@@ -36,58 +36,57 @@
           }
           result.size = rayInput[i];
         } else {
-          if (result.input) {
+          if (result.angle) {
             return undefined;
           }
           var rayInputDegrees = parseAngleAsDegrees(rayInput[i]);
           if (rayInputDegrees === null) {
             return undefined;
           }
-          result.input = rayInputDegrees;
+          result.angle = rayInputDegrees;
         }
       }
       return result;
     } else if (path !== null) {
       var pathInput = path[1];
-      return {type: 'path', input: pathInput};
+      return {type: 'path', path: pathInput};
     }
   }
 
   function offsetPathMerge (start, end) {
-    function serializeParsed (angle, contain, size, type) {
-      if (type === 'ray') {
-        var result = 'ray(' + angle + 'deg';
-        if (size !== null) {
-          result += ' ' + size;
+    function serializeParsed (input) {
+      if (input.type === 'ray') {
+        var result = 'ray(' + input.angle + 'deg';
+        if (input.size !== null) {
+          result += ' ' + input.size;
         }
-        if (contain) {
+        if (input.contain) {
           result += ' contain';
         }
         result += ')';
         return result;
       }
-      if (type === 'path') {
-        return "path('" + angle + "')";
+      if (input.type === 'path') {
+        return "path('" + input.path + "')";
       }
-      if (type === null) {
+      if (input.type === null) {
         return 'none';
       }
     }
 
     if (start.type !== 'ray' || end.type !== 'ray') {
-      return internalScope.flip(serializeParsed(start.input, start.contain, start.size, start.type),
-                                serializeParsed(end.input, end.contain, end.size, end.type));
+      return internalScope.flip(serializeParsed(start), serializeParsed(end));
     }
     if (start.size !== end.size || start.contain !== end.contain) {
-      return internalScope.flip(serializeParsed(start.input, start.contain, start.size, start.type),
-                                serializeParsed(end.input, end.contain, end.size, end.type));
+      return internalScope.flip(serializeParsed(start), serializeParsed(end));
     }
 
     return {
-      start: start.input,
-      end: end.input,
+      start: start.angle,
+      end: end.angle,
       serialize: function (input) {
-        return serializeParsed(input, start.contain, start.size, start.type);
+        var values = {angle: input, contain: start.contain, size: start.size, type: start.type};
+        return serializeParsed(values);
       }
     };
   }
