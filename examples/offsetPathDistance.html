@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <script src="../third_party/web-animations-js/web-animations.dev.js"></script>
-<script src="../index.min.js"></script>
+<script src="../motion-path-polyfill.min.js"></script>
 
 <div id="container">
   <div id="target">
@@ -23,7 +23,8 @@
 </style>
 
 <script>
-  var keyframes = [{'offset-path': 'ray(60deg)', 'offset-distance': '0px'}, {'offset-path': 'ray(60deg)', 'offset-distance': '200px'}];
+  var keyframes = [ {offsetPath: "path('m 0, 0 h 100 v 100 h -100')", offsetDistance: '0px'},
+                    {offsetPath: "path('m 0, 0 h 100 v 100 h -100')", offsetDistance: '600px'}];
   var timing = {duration: 2000, iterations: 3};
   target.animate(keyframes, timing);
 </script>

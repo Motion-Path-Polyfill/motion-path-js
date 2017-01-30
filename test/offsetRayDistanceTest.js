@@ -69,10 +69,10 @@
       );
 
       assertTransformInterpolation([
-                                    {'offsetPath': 'ray(135deg)', 'offsetDistance': '0%'},
-                                    {'offsetPath': 'ray(135deg)', 'offsetDistance': '100%'}],
+                                    {'offsetPath': 'ray(closest-side 135deg )', 'offsetDistance': '0%'},
+                                    {'offsetPath': 'ray(closest-side 135deg)', 'offsetDistance': '90%'}],
         [
-                                    {at: 0, is: 'translate3d(0px, 0px, 0px) rotate(45deg)'},
+                                    {at: 0, is: 'translate3d(0px, 0px, 0px)'},
                                     {at: 1, is: 'translate3d(0px, 0px, 0px) rotate(45deg)'}
         ]
       );
