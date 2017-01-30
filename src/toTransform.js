@@ -5,7 +5,7 @@
   function convertTranslate (input) {
     var valuesArray = internalScope.translateParse(input);
 
-    if (valuesArray === null || valuesArray === undefined) {
+    if (!valuesArray) {
       return null;
     }
 
@@ -18,7 +18,7 @@
 
   function convertRotate (input) {
     var valuesArray = internalScope.rotateParse(input);
-    if (valuesArray === null || valuesArray === undefined) {
+    if (!valuesArray) {
       return null;
     }
 
@@ -30,7 +30,7 @@
 
   function convertScale (input) {
     var valuesArray = internalScope.scaleParse(input);
-    if (valuesArray === null || valuesArray === undefined) {
+    if (!valuesArray) {
       return null;
     }
     return 'scale3d(' + valuesArray.join(', ') + ')';
@@ -158,7 +158,7 @@
   function convertOffsetAnchorPosition (properties, element) {
     // According to spec: https://drafts.fxtf.org/motion-1/#offset-anchor-property
     // If offset-anchor is set to auto then it will compute to the value of offset-position.
-    if (element === undefined) {
+    if (!element) {
       return null;
     }
 
@@ -175,7 +175,7 @@
     var transformOrigin = window.getComputedStyle(element).transformOrigin;
     transformOrigin = transformOrigin.split(/\s+/).map(internalScope.offsetDistanceParse);
 
-    if (anchor === 'auto' || !anchor) {
+    if (!anchor || anchor === 'auto') {
       if (!properties['offsetPath'] || properties['offsetPath'] === 'none') {
         anchor = position;
       } else {
@@ -199,7 +199,7 @@
       return null;
     }
 
-    if (position === 'auto' || !position) {
+    if (!position || position === 'auto') {
       var result = {
         deltaX: 0,
         deltaY: 0,
@@ -210,7 +210,7 @@
         containerWidth: parentProperties.width,
         containerHeight: parentProperties.height
       };
-      if (anchor === transformOrigin || anchor === 'auto' || !anchor) {
+      if (!anchor || anchor === transformOrigin || anchor === 'auto') {
         result['anchorX'] = transformOrigin[0].value;
         result['anchorY'] = transformOrigin[1].value;
         return result;

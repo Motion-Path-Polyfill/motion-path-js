@@ -31,19 +31,19 @@
           }
           result.contain = true;
         } else if (isInArray(validSizes, rayInput[i])) {
-          if (result.size === null) {
-            result.size = rayInput[i];
-          } else {
+          if (result.size) {
             return undefined;
           }
-        } else if (result.input === null) {
+          result.size = rayInput[i];
+        } else {
+          if (result.input) {
+            return undefined;
+          }
           var rayInputDegrees = parseAngleAsDegrees(rayInput[i]);
           if (rayInputDegrees === null) {
             return undefined;
           }
           result.input = rayInputDegrees;
-        } else {
-          return undefined;
         }
       }
       return result;
