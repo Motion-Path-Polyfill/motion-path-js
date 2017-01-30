@@ -47,7 +47,7 @@
           scale: '1 1 1',
           rotate: '0deg',
           translate: '0px'
-         /* offsetPath: 'none',
+/*          offsetPath: 'none',
           offsetDistance: '0px',
           offsetRotate: 'auto',
           offsetPosition: 'auto',

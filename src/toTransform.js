@@ -132,6 +132,7 @@
   function convertRayString (properties, positionAnchor) {
     var offsetPath = internalScope.offsetPathParse(properties['offsetPath']);
     var rayLength = 0;
+
     if (positionAnchor) {
       rayLength = internalScope.getRayLength(offsetPath.size,
                                              positionAnchor.containerWidth,
@@ -141,6 +142,7 @@
     }
 
     var offsetDistance = internalScope.offsetDistanceParse(properties['offsetDistance']);
+
     if (offsetDistance === undefined) {
       offsetDistance = {value: 0, unit: 'px'};
     }
