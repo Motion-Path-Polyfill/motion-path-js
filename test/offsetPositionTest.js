@@ -4,9 +4,9 @@
 (function () {
   suite('transforms', function () {
     test('offsetPosition', function () {
-      var assertOffsetInterpolation = internalScope.assertOffsetInterpolation;
+      var assertInterpolation = internalScope.assertInterpolation;
 
-      assertOffsetInterpolation({
+      assertInterpolation({
         property: 'offsetPosition',
         from: '10% 20%',
         to: '60% 40%'
@@ -17,7 +17,7 @@
         {at: 1, is: '60% 40%'}
       ]);
 
-      assertOffsetInterpolation({
+      assertInterpolation({
         property: 'offsetPosition',
         from: 'auto',
         to: '80% 30%'
@@ -28,7 +28,7 @@
         {at: 1, is: '80% 30%'}
       ]);
 
-      assertOffsetInterpolation({
+      assertInterpolation({
         property: 'offsetPosition',
         from: '15% 73%',
         to: 'auto'
@@ -39,7 +39,7 @@
         {at: 1, is: 'auto'}
       ]);
 
-      assertOffsetInterpolation({
+      assertInterpolation({
         property: 'offsetPosition',
         from: 'auto',
         to: 'auto'
@@ -50,7 +50,7 @@
         {at: 1, is: 'auto'}
       ]);
 
-      assertOffsetInterpolation({
+      assertInterpolation({
         property: 'offsetPosition',
         from: '20px 50%',
         to: '30% 40px'
@@ -61,7 +61,7 @@
         {at: 1, is: '30% 40px'}
       ]);
 
-      assertOffsetInterpolation({
+      assertInterpolation({
         property: 'offsetPosition',
         from: '20px 50%',
         to: '30px 40%'

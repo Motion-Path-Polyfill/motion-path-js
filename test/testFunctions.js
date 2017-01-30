@@ -99,16 +99,12 @@
     assertInterpolationHelper({[property]: [from, to]}, expectation, property + 'ForTesting');
   }
 
-  function assertOffsetInterpolation ({property, from, to}, expectation) {
-    assertInterpolationHelper({[property]: [from, to]}, expectation, property);
-  }
-
   function assertNoInterpolation (transformation) {
     var expectation = [];
     for (var i = 0; i <= 1; i += 0.1) {
       expectation.push({at: i, is: i < 0.5 ? transformation.from : transformation.to});
     }
-    assertOffsetInterpolation(transformation, expectation);
+    assertInterpolation(transformation, expectation);
   }
 
   internalScope.webAnimationsJsTesting = webAnimationsJsTesting;
@@ -116,7 +112,6 @@
   internalScope.checkTransformKeyframes = checkTransformKeyframes;
   internalScope.InvalidTransformValue = InvalidTransformValue;
   internalScope.assertTransformInterpolation = assertTransformInterpolation;
-  internalScope.assertOffsetInterpolation = assertOffsetInterpolation;
   internalScope.assertInterpolation = assertInterpolation;
   internalScope.assertNoInterpolation = assertNoInterpolation;
   internalScope.assertTransform = assertTransform;

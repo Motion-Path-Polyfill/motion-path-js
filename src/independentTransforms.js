@@ -46,18 +46,23 @@
           // TODO: set scale, rotate and translate to none once they are supported. Link to bug: crbug.com/679873
           scale: '1 1 1',
           rotate: '0deg',
-          translate: '0px'
-/*          offsetPath: 'none',
+          translate: '0px',
+          offsetPath: 'none',
           offsetDistance: '0px',
           offsetRotate: 'auto',
           offsetPosition: 'auto',
-          offsetAnchor: 'auto' */
+          offsetAnchor: 'auto'
         };
 
         if (internalScope.webAnimationsJsTesting) {
           result['scaleForTesting'] = values.scale;
           result['rotateForTesting'] = values.rotate;
           result['translateForTesting'] = values.translate;
+          result['offsetPathForTesting'] = values.offsetPath;
+          result['offsetDistanceForTesting'] = values.offsetDistance;
+          result['offsetRotateForTesting'] = values.offsetRotate;
+          result['offsetPositionForTesting'] = values.offsetPosition;
+          result['offsetAnchorForTesting'] = values.offsetAnchor;
         }
 
         return result;

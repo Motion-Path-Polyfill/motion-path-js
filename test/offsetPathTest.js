@@ -4,10 +4,10 @@
 (function () {
   suite('offsetPath', function () {
     test('offsetPath', function () {
-      var assertOffsetInterpolation = internalScope.assertOffsetInterpolation;
+      var assertInterpolation = internalScope.assertInterpolation;
       var assertNoInterpolation = internalScope.assertNoInterpolation;
 
-      assertOffsetInterpolation({
+      assertInterpolation({
         property: 'offsetPath',
         from: 'ray(100deg)',
         to: 'ray(-100deg)'
@@ -18,7 +18,7 @@
         {at: 1, is: 'ray(-100deg)'}
       ]);
 
-      assertOffsetInterpolation({
+      assertInterpolation({
         property: 'offsetPath',
         from: 'ray(100deg contain)',
         to: 'ray(-100deg contain)'
@@ -29,7 +29,7 @@
         {at: 1, is: 'ray(-100deg contain)'}
       ]);
 
-      assertOffsetInterpolation({
+      assertInterpolation({
         property: 'offsetPath',
         from: 'ray(farthest-side 100deg contain)',
         to: 'ray(farthest-side -100deg contain)'
@@ -40,7 +40,7 @@
         {at: 1, is: 'ray(farthest-side -100deg contain)'}
       ]);
 
-      assertOffsetInterpolation({
+      assertInterpolation({
         property: 'offsetPath',
         from: 'ray(contain 100deg closest-side)',
         to: 'ray(contain -100deg closest-side)'
@@ -51,7 +51,7 @@
         {at: 1, is: 'ray(contain -100deg closest-side)'}
       ]);
 
-      assertOffsetInterpolation({
+      assertInterpolation({
         property: 'offsetPath',
         from: 'ray(100deg closest-corner)',
         to: 'ray(-100deg closest-corner)'
@@ -62,7 +62,7 @@
         {at: 1, is: 'ray(-100deg closest-corner)'}
       ]);
 
-      assertOffsetInterpolation({
+      assertInterpolation({
         property: 'offsetPath',
         from: 'ray(100deg farthest-corner)',
         to: 'ray(-100deg farthest-corner)'
@@ -73,7 +73,7 @@
         {at: 1, is: 'ray(-100deg farthest-corner)'}
       ]);
 
-      assertOffsetInterpolation({
+      assertInterpolation({
         property: 'offsetPath',
         from: 'ray(0deg farthest-side)',
         to: 'ray(20deg farthest-side)'
@@ -84,7 +84,7 @@
         {at: 1, is: 'ray(20deg farthest-side)'}
       ]);
 
-      assertOffsetInterpolation({
+      assertInterpolation({
         property: 'offsetPath',
         from: 'ray(0deg farthest-side)',
         to: 'ray(20deg farthest-side)'
