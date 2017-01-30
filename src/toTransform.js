@@ -5,7 +5,7 @@
   function convertTranslate (input) {
     var valuesArray = internalScope.translateParse(input);
 
-    if (valuesArray === null || valuesArray === undefined) {
+    if (!valuesArray) {
       return null;
     }
 
@@ -18,7 +18,7 @@
 
   function convertRotate (input) {
     var valuesArray = internalScope.rotateParse(input);
-    if (valuesArray === null || valuesArray === undefined) {
+    if (!valuesArray) {
       return null;
     }
 
@@ -30,7 +30,7 @@
 
   function convertScale (input) {
     var valuesArray = internalScope.scaleParse(input);
-    if (valuesArray === null || valuesArray === undefined) {
+    if (!valuesArray) {
       return null;
     }
     return 'scale3d(' + valuesArray.join(', ') + ')';
@@ -63,7 +63,7 @@
   }
 
   function isClosedLoop (path) {
-    var pathInput = path.input.replace(/[,\s]+$/g, '');
+    var pathInput = path.path.replace(/[,\s]+$/g, '');
     var lastPathInput = pathInput[pathInput.length - 1];
 
     return (lastPathInput === 'z' || lastPathInput === 'Z');
@@ -101,7 +101,7 @@
       offsetDistance = {value: 0, unit: 'px'};
     }
 
-    pathElement.setAttribute('d', offsetPath.input);
+    pathElement.setAttribute('d', offsetPath.path);
     var totalPathLength = pathElement.getTotalLength();
 
     var currentOffsetDistance = getPathStringOffsetDistance(offsetPath, pathElement, offsetDistance, 0);
@@ -147,18 +147,18 @@
 
     var offsetDistanceLength = getOffsetDistanceLength(offsetDistance, rayLength, 0);
 
-    var deltaX = Math.sin(offsetPath.input * Math.PI / 180) * offsetDistanceLength;
-    var deltaY = (-1) * Math.cos(offsetPath.input * Math.PI / 180) * offsetDistanceLength;
+    var deltaX = Math.sin(offsetPath.angle * Math.PI / 180) * offsetDistanceLength;
+    var deltaY = (-1) * Math.cos(offsetPath.angle * Math.PI / 180) * offsetDistanceLength;
 
     return {deltaX: roundToHundredth(deltaX),
             deltaY: roundToHundredth(deltaY),
-            rotation: (offsetPath.input - 90)};
+            rotation: (offsetPath.angle - 90)};
   }
 
   function convertOffsetAnchorPosition (properties, element) {
     // According to spec: https://drafts.fxtf.org/motion-1/#offset-anchor-property
     // If offset-anchor is set to auto then it will compute to the value of offset-position.
-    if (element === undefined) {
+    if (!element) {
       return null;
     }
 
@@ -175,7 +175,7 @@
     var transformOrigin = window.getComputedStyle(element).transformOrigin;
     transformOrigin = transformOrigin.split(/\s+/).map(internalScope.offsetDistanceParse);
 
-    if (anchor === 'auto' || !anchor) {
+    if (!anchor || anchor === 'auto') {
       if (!properties['offsetPath'] || properties['offsetPath'] === 'none') {
         anchor = position;
       } else {
@@ -199,7 +199,7 @@
       return null;
     }
 
-    if (position === 'auto' || !position) {
+    if (!position || position === 'auto') {
       var result = {
         deltaX: 0,
         deltaY: 0,
@@ -210,7 +210,7 @@
         containerWidth: parentProperties.width,
         containerHeight: parentProperties.height
       };
-      if (anchor === transformOrigin || anchor === 'auto' || !anchor) {
+      if (!anchor || anchor === transformOrigin || anchor === 'auto') {
         result['anchorX'] = transformOrigin[0].value;
         result['anchorY'] = transformOrigin[1].value;
         return result;
