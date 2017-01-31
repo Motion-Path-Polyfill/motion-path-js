@@ -2,32 +2,6 @@
 'use strict';
 
 (function () {
-  function basicShapeInset(arguments) {
-    // WIP
-    return null;
-  }
-
-  function basicShapeCircle(arguments) {
-    var isNumeric = internalScope.isNumeric;
-    var argumentList = arguments.split(/\s+/);
-
-    var radius = argumentList[0];
-    // Negative radius is invalid
-    // Radius defaults to closest side 
-
-    return null;
-  }
-
-  function basicShapeEllipse(arguments) {
-    // WIP
-    return null;
-  }
-
-  function basicShapePolygon(arguments) {
-    // WIP
-    return null;
-  }
-
   function offsetPathParse (input) {
     var parseAngleAsDegrees = internalScope.parseAngleAsDegrees;
     var isInArray = internalScope.isInArray;
@@ -37,13 +11,11 @@
       return {type: null, angle: null, path: null};
     }
 
-    // TODO: Check if need to handle trailing spaces
     var ray = /^ray\((.*)\)$/.exec(input);
     var path = /^path\(['"](.*)['"]\)$/.exec(input);
-    // TODO: For basic shape check for closing brackets
-    var shapeType = /^[^\(]*/.exec(input);
-
-    if (ray !== null) {
+    if (ray === null && path === null) {
+      return undefined;
+    } else if (ray !== null) {
       var rayInput = ray[1].split(/\s+/);
       if (rayInput.length > 3) {
         return undefined;
@@ -78,19 +50,6 @@
     } else if (path !== null) {
       var pathInput = path[1];
       return {type: 'path', path: pathInput};
-    } else {
-      var basicShapes = ['inset', 'circle', 'ellipse', 'polygon'];
-      if (!isInArray(basicShapes, shapeType[0])) {
-        return undefined;
-      }
-
-      var shapeArguments = /\(([^)]+)\)/.exec(input);
-      
-      if(shapeType[0] === 'circle') {
-        return basicShapeCircle(shapeArguments[1]);
-      }
-
-      // return {type: shapeType[0], path: shapeArguments[1]};
     }
   }
 
