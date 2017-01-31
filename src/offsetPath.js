@@ -34,6 +34,40 @@
     return {type: 'path', path: path};
   }
 
+  function basicShapeInset(input) {
+    // WIP
+    return null;
+  }
+
+  function basicShapeCircle(input) {
+    var radius;
+    var position = /at (.*?)$/.exec(input);
+
+    if(position === null) {
+      position = ['0px', '0px'];
+      if(input !== '') {
+        radius = input; 
+      }
+    } else {
+      position = position[1].split(/\s+/);
+      radius = (/^(.*?) at/.exec(input));
+      if(radius === null) {
+        radius = 'closest-side';
+      } else { 
+        radius = radius[1];
+      }
+    }
+
+    radius = Number(radius.substring(0, radius.length - 2));
+    //console.log("radius: " + radius + '\n\tpostion: ' + position);
+    return {type: 'circle', path: {radius: {value: radius, unit: 'px'}, position: position}};
+  }
+
+  function basicShapeEllipse(input) {
+    // WIP
+    return null;
+  }
+
   function offsetPathParse (input) {
     var parseAngleAsDegrees = internalScope.parseAngleAsDegrees;
     var isInArray = internalScope.isInArray;
@@ -90,8 +124,13 @@
       }
 
       var shapeArguments = /\(([^)]+)\)/.exec(input);
+
       if (shapeType[0] === 'polygon') {
         return basicShapePolygon(shapeArguments[1]);
+      }
+
+      if(shapeType[0] === 'circle') {
+        return basicShapeCircle(shapeArguments[1]);
       }
     }
   }

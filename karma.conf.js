@@ -23,7 +23,8 @@ module.exports = function(config) {
         'tools/internal-scope.js',
       ],
       require('fs').readFileSync('src/fileOrder.txt', 'utf8').split('\n'),
-      ['test/*.js']
+      //['test/*.js']
+      ['test/testFunctions.js', 'test/pathBasicShapeCircleTest.js']
     ),
 
     // list of files to exclude

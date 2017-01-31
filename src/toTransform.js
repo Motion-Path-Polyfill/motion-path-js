@@ -52,6 +52,10 @@
     if (offsetPath.type === 'ray') {
       return convertRayString(properties, positionAnchor);
     }
+
+    if (offsetPath.type === 'circle') {
+      return convertCircleString(properties);
+    }
   }
 
   function getOffsetDistanceLength (offsetDistance, pathLength, epsilon) {
@@ -155,6 +159,33 @@
     return {deltaX: roundToHundredth(deltaX),
             deltaY: roundToHundredth(deltaY),
             rotation: (offsetPath.angle - 90)};
+  }
+
+
+  function convertCircleString(properties) {
+    var offsetPath = internalScope.offsetPathParse(properties['offsetPath']);
+    var offsetDistance = internalScope.offsetDistanceParse(properties['offsetDistance']);
+    
+    var radius = offsetPath.path.radius.value;
+    var pathTotalLength = 2 * Math.PI * radius;
+    if (offsetDistance === undefined) {
+      offsetDistance = {value: 0, unit: 'px'};
+    }
+    
+    var angle;
+    if(offsetDistance.unit === 'px') {
+      angle = 360 * (offsetDistance.value / pathTotalLength) * Math.PI / 180;
+    } else if(offsetDistance.unit === '%') {
+      angle = 360 * (offsetDistance.value / 100) * Math.PI / 180;
+    }
+    // console.log("Angle: "  + (angle * 180/Math.PI));
+    
+    var deltaX = Math.sin(angle) * radius;
+    var deltaY = (-1) * Math.cos(angle) * radius;
+
+    return {deltaX: roundToHundredth(deltaX),
+            deltaY: roundToHundredth(deltaY),
+            rotation: 0}; // Rotation tangent to the circle?? 
   }
 
   function convertOffsetAnchorPosition (properties, element) {
