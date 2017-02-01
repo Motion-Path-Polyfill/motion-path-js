@@ -2,7 +2,7 @@
 'use strict';
 
 (function () {
-  function basicShapePolygon (input) {
+  function basicShapePolygonParse (input) {
     // TODO: Support the fill-rule option and %
     var argumentList = input.split(',');
     var coordinate = null;
@@ -53,7 +53,6 @@
       if (rayInput.length > 3) {
         return undefined;
       }
-
       var result = {type: 'ray', angle: null, path: null, contain: false, size: null};
       var validSizes = ['closest-side', 'farthest-side', 'closest-corner', 'farthest-corner'];
 
@@ -83,17 +82,20 @@
     } else if (path !== null) {
       var pathInput = path[1];
       return {type: 'path', path: pathInput};
-    } else {
+    } else if (shapeType !== null) {
       var basicShapes = ['inset', 'circle', 'ellipse', 'polygon'];
       if (!isInArray(basicShapes, shapeType[0])) {
         return undefined;
       }
-
       var shapeArguments = /\(([^)]+)\)/.exec(input);
+      if (shapeArguments === null) {
+        return undefined;
+      }
       if (shapeType[0] === 'polygon') {
-        return basicShapePolygon(shapeArguments[1]);
+        return basicShapePolygonParse(shapeArguments[1]);
       }
     }
+    return undefined;
   }
 
   function offsetPathMerge (start, end) {
