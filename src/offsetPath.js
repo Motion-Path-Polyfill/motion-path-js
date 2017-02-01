@@ -2,7 +2,7 @@
 'use strict';
 
 (function () {
-  function basicShapePolygon (input) {
+  function basicShapePolygonParse (input) {
     // TODO: Support the fill-rule option and %
     var argumentList = input.split(',');
     var coordinate = null;
@@ -34,12 +34,7 @@
     return {type: 'path', path: path};
   }
 
-  function basicShapeInset (input) {
-    // WIP
-    return null;
-  }
-
-  function basicShapeCircle (input) {
+  function basicShapeCircleParse (input) {
     // TODO: Need element as an argument to this function
     var radius;
     var position = /at (.*?)$/.exec(input);
@@ -74,84 +69,105 @@
     return {type: 'path', path: pathString};
   }
 
-  function basicShapeEllipse (input) {
+  function basicShapeInsetParse (input) {
     // WIP
     return null;
   }
 
-  function offsetPathParse (input) {
-    var parseAngleAsDegrees = internalScope.parseAngleAsDegrees;
-    var isInArray = internalScope.isInArray;
-    // https://drafts.fxtf.org/motion-1/#offset-path-property
+  function basicShapeEllipseParse (input) {
+    // WIP
+    return null;
+  }
 
+  function parseNone (input) {
     if (input === 'none') {
       return {type: null, angle: null, path: null};
     }
+  }
 
+  function parseRay (input) {
+    var isInArray = internalScope.isInArray;
+    var parseAngleAsDegrees = internalScope.parseAngleAsDegrees;
     var ray = /^ray\((.*)\)$/.exec(input);
-    var path = /^path\(['"](.*)['"]\)$/.exec(input);
-    // TODO: For basic shape check for closing brackets
-    var shapeType = /^[^\(]*/.exec(input);
+    if (ray === null) {
+      return undefined;
+    }
+    var rayInput = ray[1].split(/\s+/);
+    if (rayInput.length > 3) {
+      return undefined;
+    }
+    var result = {type: 'ray', angle: null, path: null, contain: false, size: null};
+    var validSizes = ['closest-side', 'farthest-side', 'closest-corner', 'farthest-corner'];
 
-    if (ray !== null) {
-      var rayInput = ray[1].split(/\s+/);
-      if (rayInput.length > 3) {
-        return undefined;
-      }
-
-      var result = {type: 'ray', angle: null, path: null, contain: false, size: null};
-      var validSizes = ['closest-side', 'farthest-side', 'closest-corner', 'farthest-corner'];
-
-      for (var i = 0; i < rayInput.length; i++) {
-        if (rayInput[i] === 'contain') {
-          if (result.contain) {
-            return undefined;
-          }
-          result.contain = true;
-        } else if (isInArray(validSizes, rayInput[i])) {
-          if (result.size) {
-            return undefined;
-          }
-          result.size = rayInput[i];
-        } else {
-          if (result.angle) {
-            return undefined;
-          }
-          var rayInputDegrees = parseAngleAsDegrees(rayInput[i]);
-          if (rayInputDegrees === null) {
-            return undefined;
-          }
-          result.angle = rayInputDegrees;
+    for (var i = 0; i < rayInput.length; i++) {
+      if (rayInput[i] === 'contain') {
+        if (result.contain) {
+          return undefined;
         }
-      }
-      return result;
-    } else if (path !== null) {
-      var pathInput = path[1];
-      return {type: 'path', path: pathInput};
-    } else {
-      var basicShapes = ['inset', 'circle', 'ellipse', 'polygon'];
-      if (!isInArray(basicShapes, shapeType[0])) {
-        return undefined;
-      }
-
-      var shapeArguments = /\(([^)]+)\)/.exec(input);
-
-      if (shapeType[0] === 'inset') {
-        return basicShapeInset(shapeArguments[1]);
-      }
-
-      if (shapeType[0] === 'circle') {
-        return basicShapeCircle(shapeArguments[1]);
-      }
-
-      if (shapeType[0] === 'ellipse') {
-        return basicShapeEllipse(shapeArguments[1]);
-      }
-
-      if (shapeType[0] === 'polygon') {
-        return basicShapePolygon(shapeArguments[1]);
+        result.contain = true;
+      } else if (isInArray(validSizes, rayInput[i])) {
+        if (result.size) {
+          return undefined;
+        }
+        result.size = rayInput[i];
+      } else {
+        if (result.angle) {
+          return undefined;
+        }
+        var rayInputDegrees = parseAngleAsDegrees(rayInput[i]);
+        if (rayInputDegrees === null) {
+          return undefined;
+        }
+        result.angle = rayInputDegrees;
       }
     }
+    return result;
+  }
+
+  function parsePath (input) {
+    var path = /^path\(['"](.*)['"]\)$/.exec(input);
+    if (path === null) {
+      return undefined;
+    }
+    var pathInput = path[1];
+    return {type: 'path', path: pathInput};
+  }
+
+  function parseShape (input) {
+    var isInArray = internalScope.isInArray;
+    var shapeType = /^[^\(]*/.exec(input);
+    if (shapeType == null) {
+      return undefined;
+    }
+    var basicShapes = ['inset', 'circle', 'ellipse', 'polygon'];
+    if (!isInArray(basicShapes, shapeType[0])) {
+      return undefined;
+    }
+    // TODO: For basic shape check for closing brackets
+    var shapeArguments = /\(([^)]+)\)/.exec(input);
+    if (shapeArguments === null) {
+      return undefined;
+    }
+    var toParse = [basicShapePolygonParse, basicShapeCircleParse, basicShapeInsetParse, basicShapeEllipseParse];
+    for (var i = 0; i < toParse.length; i++) {
+      var result = toParse[i](shapeArguments[1]);
+      if (result) {
+        return result;
+      }
+    }
+    return undefined;
+  }
+
+  function offsetPathParse (input) {
+    // https://drafts.fxtf.org/motion-1/#offset-path-property
+    var toParse = [parseNone, parseRay, parsePath, parseShape];
+    for (var i = 0; i < toParse.length; i++) {
+      var result = toParse[i](input);
+      if (result) {
+        return result;
+      }
+    }
+    return undefined;
   }
 
   function offsetPathMerge (start, end) {
