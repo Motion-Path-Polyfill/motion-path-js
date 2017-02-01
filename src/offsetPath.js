@@ -34,6 +34,51 @@
     return {type: 'path', path: path};
   }
 
+  function basicShapeCircle (input) {
+    // TODO: Need element as an argument to this function
+    var radius;
+    var position = /at (.*?)$/.exec(input);
+
+    // TODO: Need to support other positions as currently this only supports positions in which both x and y are specified and are in px
+    if (position === null) {
+      // TODO: Set default position to the center of the reference box
+      position = [0, 0];
+      if (input !== '') {
+        radius = input;
+      }
+    } else {
+      position = position[1].split(/\s+/);
+      radius = (/^(.*?) at/.exec(input));
+      if (radius === null) {
+        radius = 'closest-side';
+      } else {
+        radius = radius[1];
+      }
+    }
+
+    radius = Number(radius.substring(0, radius.length - 2));
+
+    var positionX = Number(position[0].substring(0, position[0].length - 2));
+    var positionY = Number(position[1].substring(0, position[1].length - 2));
+
+    var pathString = 'M ' + positionX + ' ' + positionY +
+                      ' m 0,' + (-radius) +
+                      ' a ' + radius + ',' + radius + ' 0 0,1 ' + radius + ',' + radius +
+                      ' a ' + radius + ',' + radius + ' 0 1,1 ' + (-radius) + ',' + (-radius) + ' z';
+
+    return {type: 'path', path: pathString};
+  }
+
+  function basicShapeInset (input) {
+    // WIP
+    return null;
+  }
+
+  function basicShapeEllipse (input) {
+    // WIP
+    return null;
+  }
+
   function parseNone (input) {
     if (input === 'none') {
       return {type: null, angle: null, path: null};
@@ -103,7 +148,7 @@
     if (shapeArguments === null) {
       return undefined;
     }
-    for (var parse of [basicShapePolygonParse]) {
+    for (var parse of [basicShapePolygonParse, basicShapeCircleParse, basicShapeInsetParse, basicShapeEllipseParse]) {
       var result = parse(shapeArguments[1]);
       if (result) {
         return result;
@@ -114,12 +159,13 @@
 
   function offsetPathParse (input) {
     // https://drafts.fxtf.org/motion-1/#offset-path-property
-    for (var parse of [parseNone, parseRay, parsePath, parseShape]) {
+    for (parse of [parseNone, parseRay, parsePath, parseShape]) {
       var result = parse(input);
       if (result) {
         return result;
       }
     }
+    return undefined;
   }
 
   function offsetPathMerge (start, end) {
@@ -138,6 +184,7 @@
       if (input.type === 'path') {
         return "path('" + input.path + "')";
       }
+
       if (input.type === null) {
         return 'none';
       }

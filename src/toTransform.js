@@ -106,7 +106,7 @@
 
     var currentOffsetDistance = getPathStringOffsetDistance(offsetPath, pathElement, offsetDistance, 0);
 
-    var epsilon = 0.001;
+    var epsilon = 0.0001;
     var rotateFlip = false;
     if (!closedLoop && (currentOffsetDistance + epsilon) > totalPathLength) {
       epsilon *= -1;
