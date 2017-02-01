@@ -2,6 +2,38 @@
 'use strict';
 
 (function () {
+  function basicShapePolygon (input) {
+    // TODO: Support the fill-rule option and %
+    var argumentList = input.split(',');
+    var coordinate = null;
+    var x = null;
+    var y = null;
+    var previousX = 0;
+    var previousY = 0;
+    var path = '';
+    // Do something here if not at least 3 vertices?
+    for (var i = 0; i < argumentList.length; i++) {
+      coordinate = argumentList[i].trim().split(/\s+/);
+      if (coordinate.length !== 2) {
+        return undefined;
+      }
+      x = internalScope.offsetDistanceParse(coordinate[0]);
+      y = internalScope.offsetDistanceParse(coordinate[1]);
+      if (!x || !y || x.unit === '%' || y.unit === '%') {
+        return undefined;
+      }
+      if (i === 0) {
+        path += 'm ' + x.value + ' ' + y.value;
+      } else {
+        path += ' l ' + (x.value - previousX) + ' ' + (y.value - previousY);
+      }
+      previousX = x.value;
+      previousY = y.value;
+    }
+    path += ' z';
+    return {type: 'path', path: path};
+  }
+
   function offsetPathParse (input) {
     var parseAngleAsDegrees = internalScope.parseAngleAsDegrees;
     var isInArray = internalScope.isInArray;
@@ -13,9 +45,10 @@
 
     var ray = /^ray\((.*)\)$/.exec(input);
     var path = /^path\(['"](.*)['"]\)$/.exec(input);
-    if (ray === null && path === null) {
-      return undefined;
-    } else if (ray !== null) {
+    // TODO: For basic shape check for closing brackets
+    var shapeType = /^[^\(]*/.exec(input);
+
+    if (ray !== null) {
       var rayInput = ray[1].split(/\s+/);
       if (rayInput.length > 3) {
         return undefined;
@@ -50,6 +83,16 @@
     } else if (path !== null) {
       var pathInput = path[1];
       return {type: 'path', path: pathInput};
+    } else {
+      var basicShapes = ['inset', 'circle', 'ellipse', 'polygon'];
+      if (!isInArray(basicShapes, shapeType[0])) {
+        return undefined;
+      }
+
+      var shapeArguments = /\(([^)]+)\)/.exec(input);
+      if (shapeType[0] === 'polygon') {
+        return basicShapePolygon(shapeArguments[1]);
+      }
     }
   }
 
