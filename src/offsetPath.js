@@ -148,8 +148,9 @@
     if (shapeArguments === null) {
       return undefined;
     }
-    for (var parse of [basicShapePolygonParse, basicShapeCircleParse, basicShapeInsetParse, basicShapeEllipseParse]) {
-      var result = parse(shapeArguments[1]);
+    var toParse = [basicShapePolygonParse, basicShapeCircleParse, basicShapeInsetParse, basicShapeEllipseParse];
+    for (var i = 0; i < toParse.length; i++) {
+      var result = toParse[i](shapeArguments[1]);
       if (result) {
         return result;
       }
@@ -159,8 +160,9 @@
 
   function offsetPathParse (input) {
     // https://drafts.fxtf.org/motion-1/#offset-path-property
-    for (var parse of [parseNone, parseRay, parsePath, parseShape]) {
-      var result = parse(input);
+    var toParse = [parseNone, parseRay, parsePath, parseShape];
+    for (var i = 0; i < toParse.length; i++) {
+      var result = toParse[i](input);
       if (result) {
         return result;
       }
