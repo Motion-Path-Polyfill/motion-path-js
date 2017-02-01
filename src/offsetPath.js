@@ -10,7 +10,7 @@
     var y = null;
     var previousX = 0;
     var previousY = 0;
-    var path = 'm 0 0';
+    var path = '';
     // Do something here if not at least 3 vertices?
     for (var i = 0; i < argumentList.length; i++) {
       coordinate = argumentList[i].trim().split(/\s+/);
@@ -22,7 +22,11 @@
       if (!x || !y || x.unit === '%' || y.unit === '%') {
         return undefined;
       }
-      path += ' l ' + (x.value - previousX) + ' ' + (y.value - previousY);
+      if (i === 0) {
+        path += 'm ' + x.value + ' ' + y.value;
+      } else {
+        path += ' l ' + (x.value - previousX) + ' ' + (y.value - previousY);
+      }
       previousX = x.value;
       previousY = y.value;
     }
