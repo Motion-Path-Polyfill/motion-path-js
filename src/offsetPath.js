@@ -2,30 +2,32 @@
 'use strict';
 
 (function () {
-  function basicShapeInset(arguments) {
-    // WIP
-    return null;
-  }
-
-  function basicShapeCircle(arguments) {
-    var isNumeric = internalScope.isNumeric;
-    var argumentList = arguments.split(/\s+/);
-
-    var radius = argumentList[0];
-    // Negative radius is invalid
-    // Radius defaults to closest side 
-
-    return null;
-  }
-
-  function basicShapeEllipse(arguments) {
-    // WIP
-    return null;
-  }
-
-  function basicShapePolygon(arguments) {
-    // WIP
-    return null;
+  function basicShapePolygon (input) {
+    // TODO: Support the fill-rule option and %
+    var argumentList = input.split(',');
+    var coordinate = null;
+    var x = null;
+    var y = null;
+    var previousX = 0;
+    var previousY = 0;
+    var path = 'm 0 0';
+    // Do something here if not at least 3 vertices?
+    for (var i = 0; i < argumentList.length; i++) {
+      coordinate = argumentList[i].trim().split(/\s+/);
+      if (coordinate.length !== 2) {
+        return undefined;
+      }
+      x = internalScope.offsetDistanceParse(coordinate[0]);
+      y = internalScope.offsetDistanceParse(coordinate[1]);
+      if (!x || !y || x.unit === '%' || y.unit === '%') {
+        return undefined;
+      }
+      path += ' h ' + (x.value - previousX) + ' v ' + (y.value - previousY);
+      previousX = x.value;
+      previousY = y.value;
+    }
+    path += ' z';
+    return {type: 'path', path: path};
   }
 
   function offsetPathParse (input) {
@@ -85,12 +87,9 @@
       }
 
       var shapeArguments = /\(([^)]+)\)/.exec(input);
-      
-      if(shapeType[0] === 'circle') {
-        return basicShapeCircle(shapeArguments[1]);
+      if (shapeType[0] === 'polygon') {
+        return basicShapePolygon(shapeArguments[1]);
       }
-
-      // return {type: shapeType[0], path: shapeArguments[1]};
     }
   }
 
