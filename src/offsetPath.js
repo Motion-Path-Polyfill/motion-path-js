@@ -34,7 +34,7 @@
     return {type: 'path', path: path};
   }
 
-  function basicShapeCircle (input) {
+  function basicShapeCircleParse (input) {
     // TODO: Need element as an argument to this function
     var radius;
     var position = /at (.*?)$/.exec(input);
@@ -69,12 +69,12 @@
     return {type: 'path', path: pathString};
   }
 
-  function basicShapeInset (input) {
+  function basicShapeInsetParse (input) {
     // WIP
     return null;
   }
 
-  function basicShapeEllipse (input) {
+  function basicShapeEllipseParse (input) {
     // WIP
     return null;
   }
@@ -159,7 +159,7 @@
 
   function offsetPathParse (input) {
     // https://drafts.fxtf.org/motion-1/#offset-path-property
-    for (parse of [parseNone, parseRay, parsePath, parseShape]) {
+    for (var parse of [parseNone, parseRay, parsePath, parseShape]) {
       var result = parse(input);
       if (result) {
         return result;
