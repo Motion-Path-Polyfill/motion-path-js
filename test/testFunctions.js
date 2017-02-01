@@ -86,6 +86,7 @@
       animation.currentTime = at;
       var result = target.style._getAnimated(propertyToRead);
       animation.cancel();
+
       assert.equal(result, is, 'For: ' + JSON.stringify(keyframes) + ' at: ' + at + '\n');
     }
   }

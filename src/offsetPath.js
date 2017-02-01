@@ -22,7 +22,7 @@
       if (!x || !y || x.unit === '%' || y.unit === '%') {
         return undefined;
       }
-      path += ' h ' + (x.value - previousX) + ' v ' + (y.value - previousY);
+      path += ' l ' + (x.value - previousX) + ' ' + (y.value - previousY);
       previousX = x.value;
       previousY = y.value;
     }
