@@ -33,9 +33,9 @@
                                     {'offsetPath': 'polygon(0px 0px, 250px 0px, 400px 200px, 250px 400px, 0px 400px, -150px 200px)', 'offsetDistance': '100%'}],
         [
                                     {at: 0, is: 'translate3d(0px, 0px, 0px)'},
-                                    {at: 1 / 3, is: 'translate3d(400px, 200px, 0px) rotate(127.04deg)'},
+                                    {at: 1 / 3, is: 'translate3d(400px, 200px, 0px) rotate(128.66deg)'},
                                     {at: 0.5, is: 'translate3d(250px, 400px, 0px) rotate(180deg)'},
-                                    {at: 2 / 3, is: 'translate3d(0px, 400px, 0px) rotate(-126.44deg)'},
+                                    {at: 2 / 3, is: 'translate3d(0px, 400px, 0px) rotate(-128.66deg)'},
                                     {at: 1, is: 'translate3d(0px, 0px, 0px)'}
         ]
       );

@@ -1,7 +1,7 @@
 /* global suite test internalScope */
 
 (function () {
-  suite('transforms', function () {
+  suite('offsetPath', function () {
     test('offsetPathDistance', function () {
       var assertTransformInterpolation = internalScope.assertTransformInterpolation;
 
@@ -170,10 +170,10 @@
                                     {'offsetPath': "path('M 0, 100 L 50, 150 L -50, 150 L 0, 100')", 'offsetDistance': '0%'},
                                     {'offsetPath': "path('M 0, 100 L 50, 150 L -50, 150 L 0, 100')", 'offsetDistance': '100%'}],
         [
-                                    {at: 0, is: 'translate3d(0px, 100px, 0px) rotate(45.1deg)'},
+                                    {at: 0, is: 'translate3d(0px, 100px, 0px) rotate(44.16deg)'},
                                     {at: 1 / 3, is: 'translate3d(40.24px, 150px, 0px) rotate(180deg)'},
                                     {at: 2 / 3, is: 'translate3d(-40.24px, 150px, 0px) rotate(180deg)'},
-                                    {at: 1, is: 'translate3d(0px, 100px, 0px) rotate(314.85deg)'}
+                                    {at: 1, is: 'translate3d(0px, 100px, 0px) rotate(315deg)'}
         ]
       );
 
@@ -182,9 +182,9 @@
                                     {'offsetPath': "path('M 0, 0 L -50, 86.6 150 L 50, 86.6 L 0, 0')", 'offsetDistance': '100%'}],
         [
                                     {at: 0, is: 'translate3d(0px, 0px, 0px) rotate(120deg)'},
-                                    {at: 1 / 3, is: 'translate3d(-16.67px, 28.87px, 0px) rotate(119.99deg)'},
-                                    {at: 2 / 3, is: 'translate3d(-33.33px, 57.73px, 0px) rotate(119.99deg)'},
-                                    {at: 1, is: 'translate3d(-50px, 86.6px, 0px) rotate(119.88deg)'}
+                                    {at: 1 / 3, is: 'translate3d(-16.67px, 28.87px, 0px) rotate(120.02deg)'},
+                                    {at: 2 / 3, is: 'translate3d(-33.33px, 57.73px, 0px) rotate(119.48deg)'},
+                                    {at: 1, is: 'translate3d(-50px, 86.6px, 0px) rotate(120.58deg)'}
         ]
       );
 
