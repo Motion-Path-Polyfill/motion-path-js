@@ -41,9 +41,10 @@
 
     var ray = /^ray\((.*)\)$/.exec(input);
     var path = /^path\(['"](.*)['"]\)$/.exec(input);
-    if (ray === null && path === null) {
-      return undefined;
-    } else if (ray !== null) {
+    // TODO: For basic shape check for closing brackets
+    var shapeType = /^[^\(]*/.exec(input);
+
+    if (ray !== null) {
       var rayInput = ray[1].split(/\s+/);
       if (rayInput.length > 3) {
         return undefined;
