@@ -10,10 +10,10 @@
       var result = offsetPathParse('polygon(0px 0px, 150px 200px, 250px 150px, 200px -150px)');
       assert.equal(offsetPathParse(result.path, 'm 0 0 l 150 200 l 100 -50 l -50 -300 z'));
 
-      var result = offsetPathParse('polygon(0px 0px, 50px 0px, 50px -50px, 0px -50px)');
+      result = offsetPathParse('polygon(0px 0px, 50px 0px, 50px -50px, 0px -50px)');
       assert.equal(offsetPathParse(result.path, 'm 0 0 l 50 0 l 0 -50 l -50 0 z'));
 
-      var result = offsetPathParse('polygon(50px 0px, 50px -50px, 0px -50px)');
+      result = offsetPathParse('polygon(50px 0px, 50px -50px, 0px -50px)');
       assert.equal(offsetPathParse(result.path, 'm 50 0 l 0 -50 l -50 0 z'));
 
       assertTransformInterpolation([
