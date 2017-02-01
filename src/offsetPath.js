@@ -34,36 +34,47 @@
     return {type: 'path', path: path};
   }
 
-  function basicShapeInset(input) {
+  function basicShapeInset (input) {
     // WIP
     return null;
   }
 
-  function basicShapeCircle(input) {
+  function basicShapeCircle (input) {
+    // TODO: Need element as an argument to this function
     var radius;
     var position = /at (.*?)$/.exec(input);
 
-    if(position === null) {
-      position = ['0px', '0px'];
-      if(input !== '') {
-        radius = input; 
+    // TODO: Need to support other positions as currently this only supports positions in which both x and y are specified and are in px
+    if (position === null) {
+      // TODO: Set default position to the center of the reference box
+      position = [0, 0];
+      if (input !== '') {
+        radius = input;
       }
     } else {
       position = position[1].split(/\s+/);
       radius = (/^(.*?) at/.exec(input));
-      if(radius === null) {
+      if (radius === null) {
         radius = 'closest-side';
-      } else { 
+      } else {
         radius = radius[1];
       }
     }
 
     radius = Number(radius.substring(0, radius.length - 2));
-    //console.log("radius: " + radius + '\n\tpostion: ' + position);
-    return {type: 'circle', path: {radius: {value: radius, unit: 'px'}, position: position}};
+
+    var positionX = Number(position[0].substring(0, position[0].length - 2));
+    var positionY = Number(position[1].substring(0, position[1].length - 2));
+
+    var pathString = 'M ' + positionX + ' ' + positionY +
+                      ' m 0,' + (-radius) +
+                      ' a ' + radius + ',' + radius + ' 0 0,1 ' + radius + ',' + radius +
+                      ' a ' + radius + ',' + radius + ' 0 1,1 ' + (-radius) + ',' + (-radius) + ' z';
+
+    return {type: 'path', path: pathString};
   }
 
-  function basicShapeEllipse(input) {
+  function basicShapeEllipse (input) {
     // WIP
     return null;
   }
@@ -125,12 +136,20 @@
 
       var shapeArguments = /\(([^)]+)\)/.exec(input);
 
-      if (shapeType[0] === 'polygon') {
-        return basicShapePolygon(shapeArguments[1]);
+      if (shapeType[0] === 'inset') {
+        return basicShapeInset(shapeArguments[1]);
       }
 
-      if(shapeType[0] === 'circle') {
+      if (shapeType[0] === 'circle') {
         return basicShapeCircle(shapeArguments[1]);
+      }
+
+      if (shapeType[0] === 'ellipse') {
+        return basicShapeEllipse(shapeArguments[1]);
+      }
+
+      if (shapeType[0] === 'polygon') {
+        return basicShapePolygon(shapeArguments[1]);
       }
     }
   }
@@ -151,6 +170,7 @@
       if (input.type === 'path') {
         return "path('" + input.path + "')";
       }
+
       if (input.type === null) {
         return 'none';
       }
