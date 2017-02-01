@@ -39,13 +39,11 @@
       return {type: null, angle: null, path: null};
     }
 
-    // TODO: Check if need to handle trailing spaces
     var ray = /^ray\((.*)\)$/.exec(input);
     var path = /^path\(['"](.*)['"]\)$/.exec(input);
-    // TODO: For basic shape check for closing brackets
-    var shapeType = /^[^\(]*/.exec(input);
-
-    if (ray !== null) {
+    if (ray === null && path === null) {
+      return undefined;
+    } else if (ray !== null) {
       var rayInput = ray[1].split(/\s+/);
       if (rayInput.length > 3) {
         return undefined;
