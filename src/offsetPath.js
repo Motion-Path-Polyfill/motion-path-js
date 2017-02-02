@@ -83,7 +83,7 @@
                       ' a ' + radius + ',' + radius + ' 0 1,1 ' + (-radius) + ',' + (-radius) + ' z';
 
     return {type: 'path', path: pathString};
-  } 
+  }
 
   function basicShapeInsetParse (input, element) {
     // WIP
@@ -165,7 +165,7 @@
     if (shapeArguments === null) {
       return undefined;
     }
-    var toParse = [basicShapePolygonParse,  basicShapeCircleParse,  basicShapeInsetParse, basicShapeEllipseParse];
+    var toParse = [basicShapePolygonParse, basicShapeCircleParse, basicShapeInsetParse, basicShapeEllipseParse];
     for (var i = 0; i < toParse.length; i++) {
       var result = toParse[i](shapeArguments[1], element);
       if (result) {
