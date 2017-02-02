@@ -42,7 +42,7 @@
     // TODO: Need to support other positions as currently this only supports positions in which both x and y are specified and are in px
     if (position === null) {
       // TODO: Set default position to the center of the reference box
-      position = [0, 0];
+      position = '0px 0px';
       if (input !== '') {
         radius = input;
       }
@@ -89,6 +89,7 @@
     var isInArray = internalScope.isInArray;
     var parseAngleAsDegrees = internalScope.parseAngleAsDegrees;
     var ray = /^ray\((.*)\)$/.exec(input);
+
     if (ray === null) {
       return undefined;
     }

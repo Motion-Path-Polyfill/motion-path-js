@@ -16,6 +16,18 @@
       result = offsetPathParse('polygon(50px 0px, 50px -50px, 0px -50px)');
       assert.equal(offsetPathParse(result.path, 'm 50 0 l 0 -50 l -50 0 z'));
 
+      result = offsetPathParse('garbage');
+      assert.equal(offsetPathParse(result, undefined));
+
+      result = offsetPathParse('polygon');
+      assert.equal(offsetPathParse(result, undefined));
+
+      result = offsetPathParse('polygon()');
+      assert.equal(offsetPathParse(result, undefined));
+
+      result = offsetPathParse('polygon(garbage)');
+      assert.equal(offsetPathParse(result, undefined));
+
       assertTransformInterpolation([
                                     {'offsetPath': 'polygon(0px 0px, 50px 0px, 50px -50px, 0px -50px)', 'offsetDistance': '0%'},
                                     {'offsetPath': 'polygon(0px 0px, 50px 0px, 50px -50px, 0px -50px)', 'offsetDistance': '100%'}],
