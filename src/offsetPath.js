@@ -2,7 +2,7 @@
 'use strict';
 
 (function () {
-  function basicShapePolygonParse (input) {
+  function basicShapePolygonParse (input, element) {
     // TODO: Support the fill-rule option and %
     var argumentList = input.split(',');
     var coordinate = null;
@@ -34,7 +34,7 @@
     return {type: 'path', path: path};
   }
 
-  function basicShapeCircleParse (input) {
+  function basicShapeCircleParse (input, element) {
     // TODO: Need element as an argument to this function
     var radius;
     var position = /at (.*?)$/.exec(input);
@@ -69,23 +69,23 @@
     return {type: 'path', path: pathString};
   }
 
-  function basicShapeInsetParse (input) {
+  function basicShapeInsetParse (input, element) {
     // WIP
     return null;
   }
 
-  function basicShapeEllipseParse (input) {
+  function basicShapeEllipseParse (input, element) {
     // WIP
     return null;
   }
 
-  function parseNone (input) {
+  function parseNone (input, element) {
     if (input === 'none') {
       return {type: null, angle: null, path: null};
     }
   }
 
-  function parseRay (input) {
+  function parseRay (input, element) {
     var isInArray = internalScope.isInArray;
     var parseAngleAsDegrees = internalScope.parseAngleAsDegrees;
     var ray = /^ray\((.*)\)$/.exec(input);
@@ -125,7 +125,7 @@
     return result;
   }
 
-  function parsePath (input) {
+  function parsePath (input, element) {
     var path = /^path\(['"](.*)['"]\)$/.exec(input);
     if (path === null) {
       return undefined;
@@ -134,7 +134,7 @@
     return {type: 'path', path: pathInput};
   }
 
-  function parseShape (input) {
+  function parseShape (input, element) {
     var isInArray = internalScope.isInArray;
     var shapeType = /^[^\(]*/.exec(input);
     if (shapeType == null) {
@@ -151,7 +151,7 @@
     }
     var toParse = [basicShapePolygonParse, basicShapeCircleParse, basicShapeInsetParse, basicShapeEllipseParse];
     for (var i = 0; i < toParse.length; i++) {
-      var result = toParse[i](shapeArguments[1]);
+      var result = toParse[i](shapeArguments[1], element);
       if (result) {
         return result;
       }
@@ -159,11 +159,11 @@
     return undefined;
   }
 
-  function offsetPathParse (input) {
+  function offsetPathParse (input, element) {
     // https://drafts.fxtf.org/motion-1/#offset-path-property
     var toParse = [parseNone, parseRay, parsePath, parseShape];
     for (var i = 0; i < toParse.length; i++) {
-      var result = toParse[i](input);
+      var result = toParse[i](input, element);
       if (result) {
         return result;
       }
