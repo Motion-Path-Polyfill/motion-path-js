@@ -11,6 +11,7 @@
     var previousX = 0;
     var previousY = 0;
     var path = '';
+    var parentProperties = null;
     // Do something here if not at least 3 vertices?
     for (var i = 0; i < argumentList.length; i++) {
       coordinate = argumentList[i].trim().split(/\s+/);
@@ -19,9 +20,24 @@
       }
       x = internalScope.offsetDistanceParse(coordinate[0]);
       y = internalScope.offsetDistanceParse(coordinate[1]);
-      if (!x || !y || x.unit === '%' || y.unit === '%') {
+      if (!x || !y) {
         return undefined;
       }
+
+      if (x.unit === '%' || y.unit === '%') {
+        parentProperties = element.offsetParent ? element.offsetParent.getBoundingClientRect() : null;
+        if (!parentProperties) {
+          return null;
+        }
+
+        if (x.unit === '%') {
+          x.value = (x.value * parentProperties.width) / 100;
+        }
+        if (y.unit === '%') {
+          y.value = (y.value * parentProperties.height) / 100;
+        }
+      }
+
       if (i === 0) {
         path += 'm ' + x.value + ' ' + y.value;
       } else {
@@ -34,7 +50,7 @@
     return {type: 'path', path: path};
   }
 
-  function basicShapeCircleParse (input, element) {
+/*  function basicShapeCircleParse (input, element) {
     // TODO: Need element as an argument to this function
     var radius;
     var position = /at (.*?)$/.exec(input);
@@ -67,7 +83,7 @@
                       ' a ' + radius + ',' + radius + ' 0 1,1 ' + (-radius) + ',' + (-radius) + ' z';
 
     return {type: 'path', path: pathString};
-  }
+  } */
 
   function basicShapeInsetParse (input, element) {
     // WIP
@@ -149,7 +165,7 @@
     if (shapeArguments === null) {
       return undefined;
     }
-    var toParse = [basicShapePolygonParse, basicShapeCircleParse, basicShapeInsetParse, basicShapeEllipseParse];
+    var toParse = [basicShapePolygonParse, /* basicShapeCircleParse, */ basicShapeInsetParse, basicShapeEllipseParse];
     for (var i = 0; i < toParse.length; i++) {
       var result = toParse[i](shapeArguments[1], element);
       if (result) {

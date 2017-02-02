@@ -1,6 +1,6 @@
-/* global suite test internalScope */
+// /* global suite test internalScope */
 
-(function () {
+/* (function () {
   suite('offsetPath', function () {
     test('basicShapeCircle', function () {
       var assertTransformInterpolation = internalScope.assertTransformInterpolation;
@@ -62,4 +62,4 @@
         );
     });
   });
-})();
+})(); */
