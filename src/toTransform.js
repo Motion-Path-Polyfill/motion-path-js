@@ -38,8 +38,8 @@
 
   var pathElement = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 
-  function convertPath (properties, positionAnchor) {
-    var offsetPath = internalScope.offsetPathParse(properties['offsetPath']);
+  function convertPath (properties, positionAnchor, element) {
+    var offsetPath = internalScope.offsetPathParse(properties['offsetPath'], element);
 
     if (!offsetPath) {
       return null;
@@ -291,7 +291,7 @@
        https://drafts.fxtf.org/motion-1/#motion-paths-overview
     */
     var positionAnchor = convertOffsetAnchorPosition(properties, element);
-    var pathTransform = convertPath(properties, positionAnchor);
+    var pathTransform = convertPath(properties, positionAnchor, element);
     var parsedRotate = convertOffsetRotate(properties);
     var rotation = parsedRotate.angle;
     var path = internalScope.offsetPathParse(properties['offsetPath']);
