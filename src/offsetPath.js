@@ -11,6 +11,7 @@
     var previousX = 0;
     var previousY = 0;
     var path = '';
+    var parentProperties = null;
     // Do something here if not at least 3 vertices?
     for (var i = 0; i < argumentList.length; i++) {
       coordinate = argumentList[i].trim().split(/\s+/);
@@ -19,9 +20,24 @@
       }
       x = internalScope.offsetDistanceParse(coordinate[0]);
       y = internalScope.offsetDistanceParse(coordinate[1]);
-      if (!x || !y || x.unit === '%' || y.unit === '%') {
+      if (!x || !y) {
         return undefined;
       }
+
+      if (x.unit === '%' || y.unit === '%') {
+        parentProperties = element.offsetParent ? element.offsetParent.getBoundingClientRect() : null;
+        if (!parentProperties) {
+          return null;
+        }
+
+        if (x.unit === '%') {
+          x.value = (x.value * parentProperties.width) / 100;
+        }
+        if (y.unit === '%') {
+          y.value = (y.value * parentProperties.height) / 100;
+        }
+      }
+
       if (i === 0) {
         path += 'm ' + x.value + ' ' + y.value;
       } else {
