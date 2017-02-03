@@ -4,6 +4,7 @@
 (function () {
   suite('offsetPath', function () {
     test('polygon', function () {
+      // FIXME: Create a helper test function to handle the testing of interpolating when using percentages.
       var offsetPathParse = internalScope.offsetPathParse;
       var assertTransformInterpolation = internalScope.assertTransformInterpolation;
 
