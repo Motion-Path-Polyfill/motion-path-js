@@ -8,7 +8,7 @@
     return Math.round(number * 100) / 100;
   }
 
-  function basicShapePolygonParse (input) {
+  function basicShapePolygonParse (input, element) {
     // TODO: Support the fill-rule option and %
     var argumentList = input.split(',');
     var coordinate = null;
