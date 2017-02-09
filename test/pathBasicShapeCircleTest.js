@@ -1,11 +1,44 @@
-/* global suite test internalScope */
+/* global assert suite test internalScope */
 
- (function () {
-   suite('offsetPath', function () {
-     test('basicShapeCircle', function () {
-       var assertTransformInterpolation = internalScope.assertTransformInterpolation;
 
-       assertTransformInterpolation([
+(function () {
+  suite('offsetPath', function () {
+    test('basicShapeCircle', function () {
+        var assertTransformInterpolation = internalScope.assertTransformInterpolation;
+        var offsetPathParse = internalScope.offsetPathParse;  
+
+        var containerStyle = {
+        position: 'absolute',
+        height: '100px',
+        width: '200px'
+        };
+
+        var container = document.createElement('div');
+
+        for (var property in containerStyle) {
+        container.style[property] = containerStyle[property];
+        }
+
+        var target = document.createElement('div');
+        container.appendChild(target);
+        document.body.appendChild(container);
+
+        var circlePathString = offsetPathParse('circle(50%)', target).path;
+        assert.equal(circlePathString, 'M 100 50 m 0,-79.06 a 79.06,79.06 0 0,1 79.06,79.06 a 79.06,79.06 0 1,1 -79.06,-79.06 z');
+
+        circlePathString = offsetPathParse('circle(10px)', target).path;
+        assert.equal(circlePathString, 'M 100 50 m 0,-10 a 10,10 0 0,1 10,10 a 10,10 0 1,1 -10,-10 z');
+
+        circlePathString = offsetPathParse('circle(10px at 50%)', target).path;
+        assert.equal(circlePathString, 'M 100 50 m 0,-10 a 10,10 0 0,1 10,10 a 10,10 0 1,1 -10,-10 z');
+
+        circlePathString = offsetPathParse('circle(50% at 100px 200px)', target).path;
+        assert.equal(circlePathString, 'M 100 200 m 0,-79.06 a 79.06,79.06 0 0,1 79.06,79.06 a 79.06,79.06 0 1,1 -79.06,-79.06 z');
+
+        circlePathString = offsetPathParse('circle(10px at 50% 50%)', target).path;
+        assert.equal(circlePathString, 'M 100 50 m 0,-10 a 10,10 0 0,1 10,10 a 10,10 0 1,1 -10,-10 z');
+
+        assertTransformInterpolation([
                                     {'offsetPath': 'circle(10px at 0px 0px)', 'offsetDistance': '0%'},
                                     {'offsetPath': 'circle(10px at 0px 0px)', 'offsetDistance': '100%'}],
          [
