@@ -171,5 +171,38 @@
       targetStyle['offsetAnchor'] = 'auto';
       assertTransform(containerStyle, targetStyle, 'translate3d(100px, 150px, 0px) rotate(45deg)');
     });
+
+    test('offsetRotateAuto', function () {
+      var containerStyle = {
+        position: 'absolute',
+        left: '300px',
+        top: '300px',
+        width: '500px',
+        height: '500px'
+      };
+
+      var targetStyle = {
+        width: '100px',
+        height: '100px',
+        position: 'absolute',
+        left: '350px',
+        top: '200px',
+        offsetPosition: '80% 50%',
+        offsetPath: 'ray(180deg closest-side)',
+        offsetDistance: '100%',
+        offsetRotate: 'auto 45deg'
+      };
+      assertTransform(containerStyle, targetStyle, 'translate3d(0px, 100px, 0px) rotate(135deg)');
+
+      targetStyle['offsetPosition'] = '0% 100%';
+      targetStyle['offsetAnchor'] = 'auto';
+      targetStyle['offsetPath'] = 'ray(farthest-corner 45deg)';
+      assertTransform(containerStyle, targetStyle, 'translate3d(100px, -250px, 0px)');
+
+      targetStyle['offsetPosition'] = 'auto';
+      targetStyle['offsetAnchor'] = 'auto';
+      targetStyle['offsetPath'] = "path('m 0 0 L 300 300')";
+      assertTransform(containerStyle, targetStyle, 'translate3d(300px, 300px, 0px) rotate(90deg)');
+    });
   });
 })();
