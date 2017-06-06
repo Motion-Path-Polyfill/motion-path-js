@@ -18,6 +18,17 @@ suite('transforms', function () {
       {at: 1, is: '100px 0px 0px'}
     ]);
 
+    assertInterpolation({
+      property: 'translate',
+      from: 'none',
+      to: '100px 0px 0px'
+    }, [
+      {at: 0, is: 'none'},
+      {at: 0.25, is: '25px 0px 0px'},
+      {at: 0.75, is: '75px 0px 0px'},
+      {at: 1, is: '100px 0px 0px'}
+    ]);
+
     isAnimationEqual({translate: ['20px 30px 27px 90px', '20px']}, {transform: [InvalidTransformValue, 'translate3d(20px, 0px, 0px)']});
     isAnimationEqual({translate: ['garbage', '20px']}, {transform: [InvalidTransformValue, 'translate3d(20px, 0px, 0px)']});
     isAnimationEqual({translate: ['garbagepx', '20px']}, {transform: [InvalidTransformValue, 'translate3d(20px, 0px, 0px)']});

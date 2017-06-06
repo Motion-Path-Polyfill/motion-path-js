@@ -19,6 +19,32 @@
         {at: 1, is: '-100deg'}
       ]);
 
+      assertInterpolation({
+        property: 'rotate',
+        from: '0.25 -0.5 1.5 0deg',
+        to: '0.25 -0.5 1.5 180deg'
+      }, [
+        {at: 0, is: '0.25 -0.5 1.5 0deg'},
+        {at: 0.25, is: '0.25 -0.5 1.5 45deg'},
+        {at: 0.75, is: '0.25 -0.5 1.5 135deg'},
+        {at: 1, is: '0.25 -0.5 1.5 180deg'}
+      ]);
+
+      assertInterpolation({
+        property: 'rotate',
+        from: '0 0 1 -720deg',
+        to: 'none'
+      }, [
+        {at: 0, is: '0 0 1 -720deg'},
+        {at: 0.25, is: '0 0 1 -540deg'},
+        {at: 0.75, is: '0 0 1 -180deg'},
+        {at: 1, is: 'none'}
+      ]);
+
+      // TODO: Support and test SLERP animation between different axes.
+
+      // TODO: Support and test animation between rotations with and without axes.
+
       isAnimationEqual({rotate: ['100grad', '200grad']}, {transform: ['rotate(100grad)', 'rotate(200grad)']});
       // Web animations transform does not support turn, but it should!
       isAnimationEqual({rotate: ['1turn', '90deg']}, {transform: ['rotate(360deg)', 'rotate(90deg)']});
