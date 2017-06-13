@@ -76,4 +76,3 @@
   internalScope.offsetRotateParse = offsetRotateParse;
   internalScope.offsetRotateMerge = offsetRotateMerge;
 })();
-
