@@ -152,7 +152,7 @@
 
   function parseShape (input, element) {
     var isInArray = internalScope.isInArray;
-    var shapeType = /^[^\(]*/.exec(input);
+    var shapeType = /^[^(]*/.exec(input);
     if (shapeType == null) {
       return undefined;
     }

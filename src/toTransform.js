@@ -152,9 +152,10 @@
     var deltaX = Math.sin(offsetPath.angle * Math.PI / 180) * offsetDistanceLength;
     var deltaY = (-1) * Math.cos(offsetPath.angle * Math.PI / 180) * offsetDistanceLength;
 
-    return {deltaX: roundToHundredth(deltaX),
-            deltaY: roundToHundredth(deltaY),
-            rotation: (offsetPath.angle - 90)};
+    return {
+      deltaX: roundToHundredth(deltaX),
+      deltaY: roundToHundredth(deltaY),
+      rotation: (offsetPath.angle - 90)};
   }
 
   function convertOffsetAnchorPosition (properties, element) {
@@ -193,7 +194,7 @@
     var offsetLeft = element.offsetLeft;
     var offsetTop = element.offsetTop;
 
-    elementProperties = element.getBoundingClientRect();
+    var elementProperties = element.getBoundingClientRect();
     var parentProperties = element.offsetParent ? element.offsetParent.getBoundingClientRect() : null;
     element.style._style.transform = savedTransform;
 
@@ -207,8 +208,8 @@
         deltaY: 0,
         transformOriginX: transformOrigin[0].value,
         transformOriginY: transformOrigin[1].value,
-        offsetPosX: offsetPosX,
-        offsetPosY: offsetPosY,
+        offsetPosX: offsetLeft,
+        offsetPosY: offsetTop,
         containerWidth: parentProperties.width,
         containerHeight: parentProperties.height
       };
@@ -217,7 +218,6 @@
         result['anchorY'] = transformOrigin[1].value;
         return result;
       }
-      var elementProperties = element.getBoundingClientRect();
       if (anchor[0].unit === '%') {
         result['anchorX'] = (anchor[0].value * elementProperties.width) / 100;
       } else {

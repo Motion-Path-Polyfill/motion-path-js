@@ -116,4 +116,3 @@
   internalScope.assertNoInterpolation = assertNoInterpolation;
   internalScope.assertTransform = assertTransform;
 })();
-
