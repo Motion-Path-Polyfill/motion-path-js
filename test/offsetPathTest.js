@@ -9,24 +9,24 @@
 
       assertInterpolation({
         property: 'offsetPath',
-        from: 'ray(100deg)',
-        to: 'ray(-100deg)'
+        from: 'ray(100deg closest-side)',
+        to: 'ray(-100deg closest-side)'
       }, [
-        {at: 0, is: 'ray(100deg)'},
-        {at: 0.25, is: 'ray(50deg)'},
-        {at: 0.75, is: 'ray(-50deg)'},
-        {at: 1, is: 'ray(-100deg)'}
+        {at: 0, is: 'ray(100deg closest-side)'},
+        {at: 0.25, is: 'ray(50deg closest-side)'},
+        {at: 0.75, is: 'ray(-50deg closest-side)'},
+        {at: 1, is: 'ray(-100deg closest-side)'}
       ]);
 
       assertInterpolation({
         property: 'offsetPath',
-        from: 'ray(100deg contain)',
-        to: 'ray(-100deg contain)'
+        from: 'ray(100deg farthest-corner contain)',
+        to: 'ray(-100deg farthest-corner contain)'
       }, [
-        {at: 0, is: 'ray(100deg contain)'},
-        {at: 0.25, is: 'ray(50deg contain)'},
-        {at: 0.75, is: 'ray(-50deg contain)'},
-        {at: 1, is: 'ray(-100deg contain)'}
+        {at: 0, is: 'ray(100deg farthest-corner contain)'},
+        {at: 0.25, is: 'ray(50deg farthest-corner contain)'},
+        {at: 0.75, is: 'ray(-50deg farthest-corner contain)'},
+        {at: 1, is: 'ray(-100deg farthest-corner contain)'}
       ]);
 
       assertInterpolation({
@@ -42,13 +42,13 @@
 
       assertInterpolation({
         property: 'offsetPath',
-        from: 'ray(contain 100deg closest-side)',
-        to: 'ray(contain -100deg closest-side)'
+        from: 'ray( contain 100deg closest-side)',
+        to: 'ray(contain -100deg closest-side )'
       }, [
-        {at: 0, is: 'ray(contain 100deg closest-side)'},
+        {at: 0, is: 'ray( contain 100deg closest-side)'},
         {at: 0.25, is: 'ray(50deg closest-side contain)'},
         {at: 0.75, is: 'ray(-50deg closest-side contain)'},
-        {at: 1, is: 'ray(contain -100deg closest-side)'}
+        {at: 1, is: 'ray(contain -100deg closest-side )'}
       ]);
 
       assertInterpolation({
@@ -105,12 +105,12 @@
       assertNoInterpolation({
         property: 'offsetPath',
         from: 'none',
-        to: 'ray(180deg)'
+        to: 'ray(180deg closest-side)'
       });
 
       assertNoInterpolation({
         property: 'offsetPath',
-        from: 'ray(180deg)',
+        from: 'ray(180deg farthest-side)',
         to: 'none'
       });
 
@@ -128,37 +128,33 @@
 
       assertNoInterpolation({
         property: 'offsetPath',
-        from: 'ray(100deg contain)',
-        to: 'ray(-100deg)'
-      });
-
-      assertNoInterpolation({
-        property: 'offsetPath',
-        from: 'ray(0deg contain contain farthest-side closest-side 50deg 90deg)',
-        to: 'ray(10deg contain contain farthest-side closest-side 60deg 100deg)'
-      });
-
-      assertNoInterpolation({
-        property: 'offsetPath',
-        from: 'ray(0deg garbage)',
-        to: 'ray(10deg contain)'
+        from: 'ray(100deg sides contain)',
+        to: 'ray(-100deg sides)'
       });
 
       assertNoInterpolation({
         property: 'offsetPath',
         from: "path('m 0 0 h 100')",
-        to: 'ray(10deg contain)'
+        to: 'ray(10deg sides contain)'
       });
 
       assertNoInterpolation({
         property: 'offsetPath',
-        from: 'ray(farthest-side closest-side 0deg)',
-        to: 'ray(farthest-side closest-side 20deg)'
+        from: 'ray(0deg farthest-side)',
+        to: 'ray(20deg closest-side)'
       });
 
-      assert.equal(internalScope.offsetRotateParse('ray(garbage)'), undefined);
-      assert.equal(internalScope.offsetRotateParse('ray(garbagedeg)'), undefined);
-      assert.equal(internalScope.offsetRotateParse('ray(deg)'), undefined);
+      assert.equal(internalScope.offsetPathParse('ray(garbage)'), undefined);
+      assert.equal(internalScope.offsetPathParse('ray(garbagedeg)'), undefined);
+      assert.equal(internalScope.offsetPathParse('ray(0deg garbage)'), undefined);
+      assert.equal(internalScope.offsetPathParse('ray(deg)'), undefined);
+      assert.equal(internalScope.offsetPathParse('ray(deg closest-side)'), undefined);
+      assert.equal(internalScope.offsetPathParse('ray(0deg)'), undefined);
+      assert.equal(internalScope.offsetPathParse('ray(closest-side)'), undefined);
+      assert.equal(internalScope.offsetPathParse('ray(0deg closest-side 20deg)'), undefined);
+      assert.equal(internalScope.offsetPathParse('ray(farthest-side closest-side 0deg)'), undefined);
+      assert.equal(internalScope.offsetPathParse('ray(farthest-side closest-side 20deg)'), undefined);
+      assert.equal(internalScope.offsetPathParse('ray(0deg contain contain farthest-side closest-side 50deg 90deg)'), undefined);
     });
   });
 })();

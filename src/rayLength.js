@@ -12,9 +12,7 @@
     var distLeft = Math.abs(offsetPosX);
     var distTop = Math.abs(offsetPosY);
 
-    /* If size is omitted it defaults to closest-side.
-       https://drafts.fxtf.org/motion-1/#offset-path-property */
-    if (!size || size === 'closest-side') {
+    if (size === 'closest-side') {
       return Math.min(distLeft, distTop, distRight, distBottom);
     } else if (size === 'farthest-side') {
       return Math.max(distLeft, distTop, distRight, distBottom);
