@@ -19,6 +19,17 @@
         {at: 1, is: '10 -5 1'}
       ]);
 
+      assertInterpolation({
+        property: 'scale',
+        from: 'none',
+        to: '5'
+      }, [
+        {at: 0, is: 'none'},
+        {at: 0.25, is: '2 1 1'},
+        {at: 0.75, is: '4 1 1'},
+        {at: 1, is: '5'}
+      ]);
+
       isAnimationEqual({scale: ['0.5', '2.5']}, {transform: ['scale3d(0.5, 1, 1)', 'scale3d(2.5, 1, 1)']});
       isAnimationEqual({scale: ['9 2', '2 2']}, {transform: ['scale3d(9, 2, 1)', 'scale3d(2, 2, 1)']});
       isAnimationEqual({scale: ['1 2 3', '3 4 5']}, {transform: ['scale3d(1, 2, 3)', 'scale3d(3, 4, 5)']});
