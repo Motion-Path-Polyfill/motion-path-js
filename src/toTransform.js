@@ -138,7 +138,8 @@
                                              positionAnchor.containerWidth,
                                              positionAnchor.containerHeight,
                                              positionAnchor.offsetPosX,
-                                             positionAnchor.offsetPosY);
+                                             positionAnchor.offsetPosY,
+                                             offsetPath.angle);
     }
 
     var offsetDistance = internalScope.offsetDistanceParse(properties['offsetDistance']);
