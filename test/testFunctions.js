@@ -95,7 +95,26 @@
     assertInterpolationHelper(keyframes, expectation, 'transform');
   }
 
+  function propertyParser (property) {
+    switch (property) {
+      case 'offsetAnchor': return internalScope.offsetPositionAnchorParse;
+      case 'offsetDistance': return internalScope.offsetDistanceParse;
+      case 'offsetPath': return internalScope.offsetPathParse;
+      case 'offsetPosition': return internalScope.offsetPositionAnchorParse;
+      case 'offsetRotate': return internalScope.offsetRotateParse;
+      case 'rotate': return internalScope.rotateParse;
+      case 'scale': return internalScope.scaleParse;
+      case 'translate': return internalScope.translateParse;
+      default: return undefined;
+    }
+  }
+
   function assertInterpolation ({property, from, to}, expectation) {
+    var parser = propertyParser(property);
+    assert(parser !== undefined);
+    assert(parser(from) !== undefined);
+    assert(parser(to) !== undefined);
+
     assertInterpolationHelper({[property]: [from, to]}, expectation, property + 'ForTesting');
   }
 

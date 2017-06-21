@@ -109,12 +109,12 @@
     if (ray === null) {
       return undefined;
     }
-    var rayInput = ray[1].split(/\s+/);
+    var rayInput = ray[1].trim().split(/\s+/);
     if (rayInput.length > 3) {
       return undefined;
     }
     var result = {type: 'ray', angle: null, path: null, contain: false, size: null};
-    var validSizes = ['closest-side', 'farthest-side', 'closest-corner', 'farthest-corner'];
+    var validSizes = ['closest-side', 'farthest-side', 'closest-corner', 'farthest-corner', 'sides'];
 
     for (var i = 0; i < rayInput.length; i++) {
       if (rayInput[i] === 'contain') {
@@ -128,7 +128,7 @@
         }
         result.size = rayInput[i];
       } else {
-        if (result.angle) {
+        if (result.angle !== null) {
           return undefined;
         }
         var rayInputDegrees = parseAngleAsDegrees(rayInput[i]);
@@ -137,6 +137,9 @@
         }
         result.angle = rayInputDegrees;
       }
+    }
+    if (result.angle === null || result.size === null) {
+      return undefined;
     }
     return result;
   }

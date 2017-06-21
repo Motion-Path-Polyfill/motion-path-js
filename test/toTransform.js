@@ -118,22 +118,22 @@
     });
 
     test('offsetRotate', function () {
-      assert.equal(toTransform({offsetRotate: '20 10', offsetPath: 'ray(90deg)'}), 'translate3d(0px, 0px, 0px)');
-      assert.equal(toTransform({offsetRotate: '', offsetPath: 'ray(90deg)'}), 'translate3d(0px, 0px, 0px)');
-      assert.equal(toTransform({offsetRotate: 'garbage', offsetPath: 'ray(90deg)'}), 'translate3d(0px, 0px, 0px)');
-      assert.equal(toTransform({offsetRotate: '300degrees', offsetPath: 'ray(90deg)'}), 'translate3d(0px, 0px, 0px)');
-      assert.equal(toTransform({offsetRotate: 'threedegrees', offsetPath: 'ray(90deg)'}), 'translate3d(0px, 0px, 0px)');
-      assert.equal(toTransform({offsetRotate: '10 hello 20 30deg', offsetPath: 'ray(90deg)'}), 'translate3d(0px, 0px, 0px)');
-      assert.equal(toTransform({offsetRotate: 'garbagedeg', offsetPath: 'ray(90deg)'}), 'translate3d(0px, 0px, 0px)');
+      assert.equal(toTransform({offsetRotate: '20 10', offsetPath: 'ray(90deg closest-side)'}), 'translate3d(0px, 0px, 0px)');
+      assert.equal(toTransform({offsetRotate: '', offsetPath: 'ray(90deg farthest-side)'}), 'translate3d(0px, 0px, 0px)');
+      assert.equal(toTransform({offsetRotate: 'garbage', offsetPath: 'ray(90deg closest-corner)'}), 'translate3d(0px, 0px, 0px)');
+      assert.equal(toTransform({offsetRotate: '300degrees', offsetPath: 'ray(90deg farthest-corner)'}), 'translate3d(0px, 0px, 0px)');
+      assert.equal(toTransform({offsetRotate: 'threedegrees', offsetPath: 'ray(90deg sides)'}), 'translate3d(0px, 0px, 0px)');
+      assert.equal(toTransform({offsetRotate: '10 hello 20 30deg', offsetPath: 'ray(90deg closest-side)'}), 'translate3d(0px, 0px, 0px)');
+      assert.equal(toTransform({offsetRotate: 'garbagedeg', offsetPath: 'ray(90deg farthest-side)'}), 'translate3d(0px, 0px, 0px)');
       assert.equal(toTransform({offsetRotate: '100deg'}), 'none'); // no path specified
 
       var expectedDeg = 100 * (180 / Math.PI);
-      assert.equal(toTransform({offsetRotate: '100rad', offsetPath: 'ray(90deg)'}), 'translate3d(0px, 0px, 0px) rotate(' + expectedDeg + 'deg)');
-      assert.equal(toTransform({offsetRotate: '15turn', offsetPath: 'ray(90deg)'}), 'translate3d(0px, 0px, 0px) rotate(5400deg)');
-      assert.equal(toTransform({offsetRotate: '200deg', offsetPath: 'ray(90deg)'}), 'translate3d(0px, 0px, 0px) rotate(200deg)');
-      assert.equal(toTransform({offsetRotate: '20grad', offsetPath: 'ray(90deg)'}), 'translate3d(0px, 0px, 0px) rotate(18deg)');
+      assert.equal(toTransform({offsetRotate: '100rad', offsetPath: 'ray(90deg closest-side)'}), 'translate3d(0px, 0px, 0px) rotate(' + expectedDeg + 'deg)');
+      assert.equal(toTransform({offsetRotate: '15turn', offsetPath: 'ray(90deg farthest-side)'}), 'translate3d(0px, 0px, 0px) rotate(5400deg)');
+      assert.equal(toTransform({offsetRotate: '200deg', offsetPath: 'ray(90deg closest-corner)'}), 'translate3d(0px, 0px, 0px) rotate(200deg)');
+      assert.equal(toTransform({offsetRotate: '20grad', offsetPath: 'ray(90deg farthest-corner)'}), 'translate3d(0px, 0px, 0px) rotate(18deg)');
       expectedDeg = 164 * (180 / Math.PI);
-      assert.equal(toTransform({offsetRotate: '164rad', offsetPath: 'ray(90deg)'}), 'translate3d(0px, 0px, 0px) rotate(' + expectedDeg + 'deg)');
+      assert.equal(toTransform({offsetRotate: '164rad', offsetPath: 'ray(90deg sides)'}), 'translate3d(0px, 0px, 0px) rotate(' + expectedDeg + 'deg)');
     });
 
     test('rayLength', function () {
