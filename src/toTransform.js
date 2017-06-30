@@ -169,17 +169,23 @@
     var position = 'auto';
     if ('offsetPosition' in properties) {
       position = internalScope.offsetPositionAnchorParse(properties['offsetPosition']);
+      if (!position) {
+        position = 'auto';
+      }
     }
 
     var anchor = 'auto';
     if ('offsetAnchor' in properties) {
       anchor = internalScope.offsetPositionAnchorParse(properties['offsetAnchor']);
+      if (!anchor) {
+        anchor = 'auto';
+      }
     }
 
     var transformOrigin = window.getComputedStyle(element).transformOrigin;
     transformOrigin = transformOrigin.split(/\s+/).map(internalScope.offsetDistanceParse);
 
-    if (!anchor || anchor === 'auto') {
+    if (anchor === 'auto') {
       if (!properties['offsetPath'] || properties['offsetPath'] === 'none') {
         anchor = position;
       } else {
@@ -203,63 +209,42 @@
       return null;
     }
 
-    if (!position || position === 'auto') {
-      var result = {
-        deltaX: 0,
-        deltaY: 0,
-        transformOriginX: transformOrigin[0].value,
-        transformOriginY: transformOrigin[1].value,
-        offsetPosX: offsetLeft,
-        offsetPosY: offsetTop,
-        containerWidth: parentProperties.width,
-        containerHeight: parentProperties.height
-      };
-      if (!anchor || anchor === transformOrigin || anchor === 'auto') {
-        result['anchorX'] = transformOrigin[0].value;
-        result['anchorY'] = transformOrigin[1].value;
-        return result;
-      }
+    var anchorPosX;
+    var anchorPosY;
+    if (anchor === 'auto') {
+      anchorPosX = transformOrigin[0].value;
+      anchorPosY = transformOrigin[1].value;
+    } else {
+      anchorPosX = anchor[0].value;
+      anchorPosY = anchor[1].value;
       if (anchor[0].unit === '%') {
-        result['anchorX'] = (anchor[0].value * elementProperties.width) / 100;
-      } else {
-        result['anchorX'] = anchor[0].value;
+        anchorPosX = (anchorPosX * elementProperties.width) / 100;
       }
 
       if (anchor[1].unit === '%') {
-        result['anchorY'] = (anchor[1].value * elementProperties.height) / 100;
-      } else {
-        result['anchorY'] = anchor[1].value;
+        anchorPosY = (anchorPosY * elementProperties.height) / 100;
       }
-      return result;
     }
 
-    var anchorPosX = anchor[0].value;
-    var anchorPosY = anchor[1].value;
-    var offsetPosX = position[0].value;
-    var offsetPosY = position[1].value;
-
-    if (anchor[0].unit === '%') {
-      anchorPosX = (anchorPosX * elementProperties.width) / 100;
+    var offsetPosX;
+    var offsetPosY;
+    if (position === 'auto') {
+      offsetPosX = offsetLeft + anchorPosX;
+      offsetPosY = offsetTop + anchorPosY;
+    } else {
+      offsetPosX = position[0].value;
+      offsetPosY = position[1].value;
+      if (position[0].unit === '%') {
+        offsetPosX = (offsetPosX * parentProperties.width) / 100;
+      }
+      if (position[1].unit === '%') {
+        offsetPosY = (offsetPosY * parentProperties.height) / 100;
+      }
     }
-
-    if (anchor[1].unit === '%') {
-      anchorPosY = (anchorPosY * elementProperties.height) / 100;
-    }
-
-    if (position[0].unit === '%') {
-      offsetPosX = (offsetPosX * parentProperties.width) / 100;
-    }
-
-    if (position[1].unit === '%') {
-      offsetPosY = (offsetPosY * parentProperties.height) / 100;
-    }
-
-    var deltaX = (offsetPosX - anchorPosX) - offsetLeft;
-    var deltaY = (offsetPosY - anchorPosY) - offsetTop;
 
     return {
-      deltaX: deltaX,
-      deltaY: deltaY,
+      deltaX: (offsetPosX - anchorPosX) - offsetLeft,
+      deltaY: (offsetPosY - anchorPosY) - offsetTop,
       anchorX: anchorPosX,
       anchorY: anchorPosY,
       transformOriginX: transformOrigin[0].value,

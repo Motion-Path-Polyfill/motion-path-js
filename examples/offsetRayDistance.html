@@ -10,21 +10,30 @@
 <style>
   body {
     margin: 0px;
+    width: 800px;
+    height: 800px;
+    border: black 1px solid;
   }
 
   #target {
     width: 100px;
     height: 100px;
     position: absolute;
-    left: 500px;
-    top: 500px;
+    left: 400px;
+    top: 400px;
     background-color: grey;
     stroke : black;
   }
 </style>
 
 <script>
-  var keyframes = [{offsetPath: "ray(60deg)", offsetDistance: '0%'}, {offsetPath: "ray(60deg)", offsetDistance: '100%'}];
+  var keyframes = [
+    {offsetPath: "ray(60deg sides)", offsetDistance: '0%'},
+    {offsetPath: "ray(60deg sides)", offsetDistance: '100%'},
+    {offsetPath: "ray(360deg sides)", offsetDistance: '100%'},
+    {offsetPath: "ray(660deg sides)", offsetDistance: '100%'},
+    {offsetPath: "ray(660deg sides)", offsetDistance: '0%'}
+  ];
   var timing = {duration: 6000, iterations: 1};
   target.animate(keyframes, timing);
 </script>
