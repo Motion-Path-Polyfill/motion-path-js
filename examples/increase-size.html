@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="../third_party/web-animations-js/web-animations.dev.js"></script>
+  <script src="../motion-path-polyfill.min.js"></script>
+  <style>
+    #container {
+      position: absolute;
+      left: 500px;
+      top: 100px;
+      background-color: rgb(255, 223, 255);
+      transform-style: preserve-3d;
+      width: 250px;
+      height: 250px;
+    }
+    .box {
+      width: 60%;
+      height: 10%;
+    }
+    #redBox {
+      background-color: red;
+    }
+    #blueBox {
+      background-color: blue;
+    }
+  </style>
+<script>
+  'use strict';
+  var keyframeRed = {
+    offsetPosition: '20% 20%',
+    offsetDistance: '0%',
+    offsetAnchor: '200% -300%',
+    offsetRotate: '0deg',
+    offsetPath: 'ray(-90deg closest-side)'
+  };
+  var keyframeBlue = {
+    offsetPosition: '20% 20%',
+    offsetDistance: '0%',
+    offsetAnchor: '200% -300%',
+    offsetRotate: '0deg',
+    offsetPath: 'ray(-90deg closest-side contain)'
+  };
+  var timing = {duration: 0, fill: 'forwards'};
+  window.onload = function() {
+    redBox.animate([keyframeRed, keyframeRed], timing);
+    blueBox.animate([keyframeBlue, keyframeBlue], timing);
+  };
+</script>
+</head>
+<body>
+  <div id="container">
+    <div class="box" id="redBox"></div>
+    <div class="box" id="blueBox"></div>
+  </div>
+</body>
+</html>

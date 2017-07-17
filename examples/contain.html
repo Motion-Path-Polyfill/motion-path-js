@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="../third_party/web-animations-js/web-animations.dev.js"></script>
+  <script src="../motion-path-polyfill.min.js"></script>
+  <style>
+    body {
+      margin: 0px;
+    }
+
+    #container {
+      width: 800px;
+      height: 800px;
+      background-color: rgb(255, 223, 255);
+      transform-style: preserve-3d;
+    }
+
+    #target {
+      position: absolute;
+      left: 300px;
+      top: 150px;
+      width: 90px;
+      height: 90px;
+      background-color: green;
+      transform-origin: 0px 0px;
+    }
+  </style>
+<script>
+  'use strict';
+  var keyframe = {
+    offsetPosition: '300px 150px',
+    offsetPath: 'ray(0deg closest-side contain)',
+    offsetDistance: '3000px',
+    offsetRotate: '0deg',
+    offsetAnchor: '0px 0px'
+  };
+  var keyframes = [keyframe, keyframe];
+  var timing = {duration: 0, fill: 'forwards'};
+  window.onload = function() {
+    target.animate(keyframes, timing);
+  };
+</script>
+</head>
+<body>
+  <div id="container">
+    <div id="target">
+    </div>
+  </div>
+</body>
+</html>
