@@ -186,10 +186,10 @@
     transformOrigin = transformOrigin.split(/\s+/).map(internalScope.offsetDistanceParse);
 
     if (anchor === 'auto') {
-      if (!properties['offsetPath'] || properties['offsetPath'] === 'none') {
-        anchor = position;
-      } else {
+      if (position === 'auto' || (properties['offsetPath'] && properties['offsetPath'] !== 'none')) {
         anchor = transformOrigin;
+      } else {
+        anchor = position;
       }
     }
 
@@ -209,21 +209,13 @@
       return null;
     }
 
-    var anchorPosX;
-    var anchorPosY;
-    if (anchor === 'auto') {
-      anchorPosX = transformOrigin[0].value;
-      anchorPosY = transformOrigin[1].value;
-    } else {
-      anchorPosX = anchor[0].value;
-      anchorPosY = anchor[1].value;
-      if (anchor[0].unit === '%') {
-        anchorPosX = (anchorPosX * elementProperties.width) / 100;
-      }
-
-      if (anchor[1].unit === '%') {
-        anchorPosY = (anchorPosY * elementProperties.height) / 100;
-      }
+    var anchorPosX = anchor[0].value;
+    var anchorPosY = anchor[1].value;
+    if (anchor[0].unit === '%') {
+      anchorPosX = (anchorPosX * elementProperties.width) / 100;
+    }
+    if (anchor[1].unit === '%') {
+      anchorPosY = (anchorPosY * elementProperties.height) / 100;
     }
 
     var offsetPosX;
