@@ -129,6 +129,99 @@
     return {deltaX: roundToHundredth(currentPoint.x), deltaY: roundToHundredth(currentPoint.y), rotation: roundToHundredth(rotation)};
   }
 
+  function getContainedOffsetDistanceLength (offsetDistanceLength, properties, positionAnchor, rayLength) {
+    if (!positionAnchor) {
+      return 0;
+    }
+    var epsilon = 0.0001;
+
+    // We rotate by '90 - offsetPath.angle' so that the ray becomes the positive x axis.
+    var offsetPath = internalScope.offsetPathParse(properties['offsetPath']);
+    var parsedRotate = convertOffsetRotate(properties);
+    var angle = parsedRotate.angle;
+    if (!parsedRotate.auto) {
+      angle += 90 - offsetPath.angle;
+    }
+    var sin = Math.sin(angle * Math.PI / 180);
+    var cos = Math.cos(angle * Math.PI / 180);
+    function rotate (x, y) {
+      return [
+        cos * x - sin * y,
+        cos * y + sin * x
+      ];
+    }
+
+    var vertices = [
+      rotate(-positionAnchor.anchorX, -positionAnchor.anchorY),
+      rotate(positionAnchor.elementWidth - positionAnchor.anchorX, -positionAnchor.anchorY),
+      rotate(positionAnchor.elementWidth - positionAnchor.anchorX, positionAnchor.elementHeight - positionAnchor.anchorY),
+      rotate(-positionAnchor.anchorX, positionAnchor.elementHeight - positionAnchor.anchorY)
+    ].sort(function (a, b) {
+      return Math.abs(b[1]) - Math.abs(a[1]);
+    });
+
+    // Determine the offsetDistance interval such that all vertices lie within the path.
+    var lowerBound = -Infinity;
+    var upperBound = Infinity;
+    for (var i = 0; i < 4; ++i) {
+      var x = vertices[i][0];
+      var y = vertices[i][1];
+
+      // We require (offsetDistance + x)**2 + y**2 <= rayLength**2
+      var discriminant = rayLength * rayLength - y * y;
+      if (discriminant < 0) {
+        // No solution
+        lowerBound = Infinity;
+        upperBound = -Infinity;
+      } else {
+        lowerBound = Math.max(lowerBound, -x - Math.sqrt(discriminant));
+        upperBound = Math.min(upperBound, -x + Math.sqrt(discriminant));
+      }
+    }
+
+    if (lowerBound <= upperBound) {
+      return Math.max(lowerBound, Math.min(upperBound, offsetDistanceLength));
+    }
+
+    // The path length will need to be increased.
+    // We find the smallest path length such that an offsetDistance exists for all vertices to lie within the path.
+
+    // vertices[0] is furthest from the x-axis.
+    rayLength = Math.abs(vertices[0][1]);
+    offsetDistanceLength = -vertices[0][0];
+
+    for (i = 0; i < 3; ++i) {
+      for (var j = i + 1; j < 4; ++j) {
+        // Find the path length such that, for some offsetDistance, vertices[i] and vertices[j] both lie within the path.
+        var xi = vertices[i][0];
+        var yi = vertices[i][1];
+        var xj = vertices[j][0];
+        var yj = vertices[j][1];
+        var xd = xi - xj;
+
+        if (xd * xd + yj * yj <= yi * yi + epsilon) {
+          // Any path that encloses vertices[i] would also enclose vertices[j].
+          continue;
+        }
+
+        // If both lie on the path,
+        // (offsetDistance + xi)**2 + yi**2 = (offsetDistance + xj)**2 + yj**2 = (path length)**2
+        // 2 * xi * offsetDistance + xi**2 + yi**2 = 2 * xj * offsetDistance + xj**2 + yj**2
+
+        var candidateOffsetDistance = (xj * xj + yj * yj - xi * xi - yi * yi) / 2 / xd;
+        xi += candidateOffsetDistance;
+        xj += candidateOffsetDistance;
+        var candidateRayLength = Math.sqrt(xi * xi + yi * yi); // == Math.sqrt(xj * xj + yj * yj)
+        if (rayLength >= candidateRayLength) {
+          continue;
+        }
+        rayLength = candidateRayLength;
+        offsetDistanceLength = candidateOffsetDistance;
+      }
+    }
+    return offsetDistanceLength;
+  }
+
   function convertRayString (properties, positionAnchor) {
     var offsetPath = internalScope.offsetPathParse(properties['offsetPath']);
     var rayLength = 0;
@@ -149,6 +242,10 @@
     }
 
     var offsetDistanceLength = getOffsetDistanceLength(offsetDistance, rayLength, 0);
+
+    if (offsetPath.contain) {
+      offsetDistanceLength = getContainedOffsetDistanceLength(offsetDistanceLength, properties, positionAnchor, rayLength);
+    }
 
     var deltaX = Math.sin(offsetPath.angle * Math.PI / 180) * offsetDistanceLength;
     var deltaY = (-1) * Math.cos(offsetPath.angle * Math.PI / 180) * offsetDistanceLength;
@@ -243,6 +340,8 @@
       transformOriginY: transformOrigin[1].value,
       offsetPosX: offsetPosX,
       offsetPosY: offsetPosY,
+      elementWidth: elementProperties.width,
+      elementHeight: elementProperties.height,
       containerWidth: parentProperties.width,
       containerHeight: parentProperties.height
     };
