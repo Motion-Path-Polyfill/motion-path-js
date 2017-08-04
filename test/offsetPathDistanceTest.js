@@ -6,15 +6,33 @@
       var assertTransformInterpolation = internalScope.assertTransformInterpolation;
 
       assertTransformInterpolation([
-                                    {'offsetPath': "path('m 0, 0 h 100 v 100 h -100')", 'offsetDistance': '0px'},
+                                    {'offsetPath': "path('m 100, 0 v 100 h -100 v -100')", 'offsetDistance': '-200px'},
+                                    {'offsetPath': "path('m 100, 0 v 100 h -100 v -100')", 'offsetDistance': '600px'}],
+        [
+                                    {at: 0, is: 'translate3d(100px, 0px, 0px) rotate(90deg)'},
+                                    {at: 1 / 8, is: 'translate3d(100px, 0px, 0px) rotate(90deg)'},
+                                    {at: 2 / 8, is: 'translate3d(100px, 0px, 0px) rotate(90deg)'},
+                                    {at: 3 / 8, is: 'translate3d(100px, 100px, 0px) rotate(180deg)'},
+                                    {at: 4 / 8, is: 'translate3d(0px, 100px, 0px) rotate(-90deg)'},
+                                    {at: 5 / 8, is: 'translate3d(0px, 0px, 0px) rotate(270deg)'},
+                                    {at: 6 / 8, is: 'translate3d(0px, 0px, 0px) rotate(270deg)'},
+                                    {at: 7 / 8, is: 'translate3d(0px, 0px, 0px) rotate(270deg)'},
+                                    {at: 1, is: 'translate3d(0px, 0px, 0px) rotate(270deg)'}
+        ]
+      );
+
+      assertTransformInterpolation([
+                                    {'offsetPath': "path('m 0, 0 h 100 v 100 h -100')", 'offsetDistance': '-200px'},
                                     {'offsetPath': "path('m 0, 0 h 100 v 100 h -100')", 'offsetDistance': '600px'}],
         [
                                     {at: 0, is: 'translate3d(0px, 0px, 0px)'},
-                                    {at: 1 / 6, is: 'translate3d(100px, 0px, 0px) rotate(90deg)'},
-                                    {at: 2 / 6, is: 'translate3d(100px, 100px, 0px) rotate(180deg)'},
-                                    {at: 3 / 6, is: 'translate3d(0px, 100px, 0px) rotate(180deg)'},
-                                    {at: 4 / 6, is: 'translate3d(0px, 100px, 0px) rotate(180deg)'},
-                                    {at: 5 / 6, is: 'translate3d(0px, 100px, 0px) rotate(180deg)'},
+                                    {at: 1 / 8, is: 'translate3d(0px, 0px, 0px)'},
+                                    {at: 2 / 8, is: 'translate3d(0px, 0px, 0px)'},
+                                    {at: 3 / 8, is: 'translate3d(100px, 0px, 0px) rotate(90deg)'},
+                                    {at: 4 / 8, is: 'translate3d(100px, 100px, 0px) rotate(180deg)'},
+                                    {at: 5 / 8, is: 'translate3d(0px, 100px, 0px) rotate(180deg)'},
+                                    {at: 6 / 8, is: 'translate3d(0px, 100px, 0px) rotate(180deg)'},
+                                    {at: 7 / 8, is: 'translate3d(0px, 100px, 0px) rotate(180deg)'},
                                     {at: 1, is: 'translate3d(0px, 100px, 0px) rotate(180deg)'}
         ]
       );
@@ -99,7 +117,8 @@
                                     {at: 1 / 6, is: 'translate3d(0px, 100px, 0px) rotate(-90deg)'},
                                     {at: 2 / 6, is: 'translate3d(100px, 100px, 0px) rotate(180deg)'},
                                     {at: 3 / 6, is: 'translate3d(100px, 0px, 0px) rotate(90deg)'},
-                                    {at: 4 / 6, is: 'translate3d(0px, 0px, 0px)'},
+                                    {at: 3.99 / 6, is: 'translate3d(1px, 0px, 0px)'},
+                                    {at: 4.01 / 6, is: 'translate3d(0px, 1px, 0px) rotate(-90deg)'},
                                     {at: 5 / 6, is: 'translate3d(0px, 100px, 0px) rotate(-90deg)'},
                                     {at: 1, is: 'translate3d(100px, 100px, 0px) rotate(180deg)'}
         ]
