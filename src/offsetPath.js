@@ -2,6 +2,12 @@
 'use strict';
 
 (function () {
+  var isNumeric = internalScope.isNumeric;
+
+  function roundToHundredth (number) {
+    return Math.round(number * 100) / 100;
+  }
+
   function basicShapePolygonParse (input, element) {
     // TODO: Support the fill-rule option and %
     var argumentList = input.split(',');
@@ -50,37 +56,127 @@
     return {type: 'path', path: path};
   }
 
-  function basicShapeCircleParse (input, element) {
-    // TODO: Need element as an argument to this function
-    var radius;
-    var position = /at (.*?)$/.exec(input);
+  function getCirclePathPosition (parentProperties, position) {
+    var analysedPosition = [];
 
-    // TODO: Need to support other positions as currently this only supports positions in which both x and y are specified and are in px
-    if (position === null) {
-      // TODO: Set default position to the center of the reference box
-      position = '0px 0px';
-      if (input !== '') {
-        radius = input;
-      }
-    } else {
-      position = position[1].split(/\s+/);
-      radius = (/^(.*?) at/.exec(input));
-      if (radius === null) {
-        radius = 'closest-side';
-      } else {
-        radius = radius[1];
+    if (position !== null) {
+      var positionList = position[1].split(/\s+/);
+
+      // If only one value is specified, the second value is assumed to be 'center'
+      // https://drafts.csswg.org/css-backgrounds-3/#position
+      for (var index in positionList) {
+        var aPosition = positionList[index];
+
+        var aPositionUnit = /(%|px)$/.exec(aPosition)[1];
+        if (aPositionUnit === null) {
+          return null;
+        }
+
+        var aPositionValueString = aPosition.substring(0, aPosition.length - aPositionUnit.length);
+        if (!isNumeric(aPositionValueString) || aPositionValueString === '') {
+          return null;
+        }
+
+        var aPositionValue = Number(aPositionValueString);
+        if (aPositionUnit === '%') {
+          if (Number(index) === 0) {
+            if (!parentProperties || !parentProperties.width) {
+              return null;
+            }
+            aPositionValue *= (parentProperties.width / 100);
+          }
+          if (Number(index) === 1) {
+            if (!parentProperties || !parentProperties.height) {
+              return null;
+            }
+            aPositionValue *= (parentProperties.height / 100);
+          }
+        }
+        analysedPosition[index] = aPositionValue;
       }
     }
 
-    radius = Number(radius.substring(0, radius.length - 2));
+    if (analysedPosition.length < 2) {
+      for (var i = analysedPosition.length; i < 2; i++) {
+        if (Number(i) === 0) {
+          if (!parentProperties || !parentProperties.width) {
+            return null;
+          }
+          analysedPosition[i] = parentProperties.width / 2;
+        } else if (Number(i) === 1) {
+          if (!parentProperties || !parentProperties.height) {
+            return null;
+          }
+          analysedPosition[i] = parentProperties.height / 2;
+        }
+      }
+    }
 
-    var positionX = Number(position[0].substring(0, position[0].length - 2));
-    var positionY = Number(position[1].substring(0, position[1].length - 2));
+    return analysedPosition;
+  }
 
-    var pathString = 'M ' + positionX + ' ' + positionY +
-                      ' m 0,' + (-radius) +
-                      ' a ' + radius + ',' + radius + ' 0 0,1 ' + radius + ',' + radius +
-                      ' a ' + radius + ',' + radius + ' 0 1,1 ' + (-radius) + ',' + (-radius) + ' z';
+  function getCirclePathRadius (parentProperties, position, input) {
+    var radiusString;
+    if (position === null) {
+      if (input !== '') {
+        radiusString = input;
+      }
+    } else {
+      radiusString = (/^(.*?) at/.exec(input));
+      // TODO: Add support for when a radius had not been specified
+      if (radiusString === null) {
+        radiusString = 'closest-side';
+      } else {
+        radiusString = radiusString[1];
+      }
+    }
+
+    var radiusUnit = /(%|px)$/.exec(radiusString);
+    if (radiusUnit === null) {
+      return null;
+    }
+
+    var radiusValueString = radiusString.substring(0, radiusString.length - radiusUnit[1].length);
+    if (!isNumeric(radiusValueString)) {
+      return null;
+    }
+    var radiusValue = Number(radiusValueString);
+
+    if (radiusUnit[1] === '%') {
+      var height = parentProperties.height;
+      var width = parentProperties.width;
+      if (!height || !width) {
+        return null;
+      }
+
+      return roundToHundredth((Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)) / Math.sqrt(2)) * radiusValue / 100);
+    }
+
+    return Number(radiusValueString);
+  }
+
+  function basicShapeCircleParse (input, element) {
+    var parentProperties = null;
+    if (element) {
+      parentProperties = element.offsetParent ? element.offsetParent.getBoundingClientRect() : null;
+    }
+
+    var position = /at (.*?)$/.exec(input);
+
+    var radiusValue = getCirclePathRadius(parentProperties, position, input);
+    if (!radiusValue) {
+      return undefined;
+    }
+
+    var analysedPosition = getCirclePathPosition(parentProperties, position);
+    if (!analysedPosition) {
+      return undefined;
+    }
+
+    var pathString = 'M ' + analysedPosition[0] + ' ' + analysedPosition[1] +
+                      ' m 0,' + (-radiusValue) +
+                      ' a ' + radiusValue + ',' + radiusValue + ' 0 0,1 ' + radiusValue + ',' + radiusValue +
+                      ' a ' + radiusValue + ',' + radiusValue + ' 0 1,1 ' + (-radiusValue) + ',' + (-radiusValue) + ' z';
 
     return {type: 'path', path: pathString};
   }
@@ -169,6 +265,7 @@
       return undefined;
     }
     var toParse = [basicShapePolygonParse, basicShapeCircleParse, basicShapeInsetParse, basicShapeEllipseParse];
+    // var toParse = [basicShapeCircleParse];
     for (var i = 0; i < toParse.length; i++) {
       var result = toParse[i](shapeArguments[1], element);
       if (result) {
@@ -231,4 +328,5 @@
 
   internalScope.offsetPathParse = offsetPathParse;
   internalScope.offsetPathMerge = offsetPathMerge;
+  internalScope.roundToHundredth = roundToHundredth;
 })();

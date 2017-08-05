@@ -2,6 +2,8 @@
 'use strict';
 
 (function () {
+  var roundToHundredth = internalScope.roundToHundredth;
+
   function convertTranslate (input) {
     var valuesArray = internalScope.translateParse(input);
 
@@ -88,10 +90,6 @@
     }
 
     return offsetDistanceLength;
-  }
-
-  function roundToHundredth (number) {
-    return Math.round(number * 100) / 100;
   }
 
   function convertPathString (properties) {
