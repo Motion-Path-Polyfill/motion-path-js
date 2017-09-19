@@ -60,6 +60,16 @@
                                     {at: 1, is: 'translate3d(100px, 90px, 0px)'}
          ]
         );
+
+       // TODO: Support path interpolation for basic shapes.
+       assertTransformInterpolation([
+                                    {'offsetPath': 'circle(0px at 100px 200px)', 'offsetDistance': '1000px', 'offsetRotate': '0deg', 'offsetAnchor': '50% 50%'},
+                                    {'offsetPath': 'circle(0px at 300px 400px)', 'offsetDistance': '1000px', 'offsetRotate': '0deg', 'offsetAnchor': '50% 50%'}],
+         [
+                                    {at: 0, is: 'translate3d(100px, 200px, 0px)'},
+                                    {at: 1, is: 'translate3d(300px, 400px, 0px)'}
+         ]
+        );
      });
    });
  })();

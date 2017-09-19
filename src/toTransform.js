@@ -76,7 +76,9 @@
     var offsetDistanceLength = getOffsetDistanceLength(offsetDistance, pathLength);
 
     if (closedLoop) {
-      if (offsetDistanceLength < 0) {
+      if (pathLength === 0) {
+        offsetDistanceLength = 0;
+      } else if (offsetDistanceLength < 0) {
         offsetDistanceLength = offsetDistanceLength % pathLength + pathLength;
       } else {
         offsetDistanceLength = offsetDistanceLength % pathLength;
