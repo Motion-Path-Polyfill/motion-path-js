@@ -50,15 +50,15 @@
       return Math.max(distLeft, distTop, distRight, distBottom);
     }
 
-    var distTopLeft = hypotenuseLength(distLeft, distTop);
+    var distTopLeftCorner = hypotenuseLength(distLeft, distTop);
     var distTopRightCorner = hypotenuseLength(distRight, distTop);
     var distBottomLeftCorner = hypotenuseLength(distLeft, distBottom);
     var distBottomRightCorner = hypotenuseLength(distRight, distBottom);
 
     if (size === 'closest-corner') {
-      return Math.min(distTopLeft, distTopRightCorner, distBottomLeftCorner, distBottomRightCorner);
+      return Math.min(distTopLeftCorner, distTopRightCorner, distBottomLeftCorner, distBottomRightCorner);
     } else if (size === 'farthest-corner') {
-      return Math.max(distTopLeft, distTopRightCorner, distBottomLeftCorner, distBottomRightCorner);
+      return Math.max(distTopLeftCorner, distTopRightCorner, distBottomLeftCorner, distBottomRightCorner);
     }
   }
   internalScope.getRayLength = getRayLength;
